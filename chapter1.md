@@ -97,4 +97,4 @@ map to scenarios in your own work. By the end of this chapter you’ll understan
 why Docker is a technology you need to know, and you’ll see how this book will get
 you there.
 
-## 1.4立即见效
+## 1.4 立即见效
