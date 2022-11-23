@@ -8,6 +8,12 @@
 
 - **第一部分** 理解什么是 Docker 容器及镜像
 
-  - 第一章 开始之前
+  - 第一章 [开始之前](./chapter1.md)
 
     - 1.1 [为什么容器将会接管世界](./chapter1.md#saldfjsalj2222)
+
+    - 1.2 [这本书适合你吗?](./chapter1.md#saldfjsalj2222)
+
+    - 1.3 [创建你的实验环境](./chapter1.md#saldfjsalj2222)
+
+    - 1.4 [立即见效](./chapter1.md##1.4立即见效)
