@@ -1,100 +1,35 @@
 # 第一章 开始之前
 
-Docker is a platform for running applications in lightweight units called containers.
-Containers have taken hold in software everywhere, from serverless functions in
-the cloud to strategic planning in the enterprise. Docker is becoming a core competency for operators and developers across the industry—in the 2019 Stack
-Overflow survey, Docker polled as people’s number one “most wanted” technology
-(http://mng.bz/04lW).
+Docker 是一个在称为容器的轻量级单元中运行应用程序的平台。
+容器已经在软件中无处不在，从云上的 serverless functions 直至企业的战略规划。在相关的技术栈中，Docker 已然成为整个行业运营商和开发人员的核心竞争力。
 
- And Docker is a simple technology to learn. You can pick up this book as a complete beginner, and you’ll be running containers in chapter 2 and packaging applications to run in Docker in chapter 3. Each chapter focuses on practical tasks, with
-examples and labs that work on any machine that runs Docker—Windows, Mac,
-and Linux users are all welcome here.
+Docker 是一门很容易学习的技术。你可以作为一个完全的初学者来阅读这本书，你将在第二章中运行容器，在第三章中封装在Docker中运行的应用程序。每一章都着重于实际操作，
+在 Linx Mac Windows 等操作系统上都可以进行实操。
 
- The journey you’ll follow in this book has been honed over the many years I’ve
-been teaching Docker. Every chapter is hands-on—except this one. Before you start
-learning Docker, it’s important to understand just how containers are being used in
-the real world and the type of problems they solve—that’s what I’ll cover here. This
-chapter also describes how I’ll be teaching Docker, so you can figure out if this is
-the right book for you. 
+基于多年的磨练，你将跟随我一起学习 Docker。除了本章，都可以动手实操。在开始之前，了解容器是如何在现实世界被使用以及它可以解决的问题很有必要。同时将会说明我将如何教大家 docker，你可以弄清楚是否适合你。
 
- Now let’s look at what people are doing with containers—I’ll cover the five main
-scenarios where organizations are seeing huge success with Docker. You’ll see the
-wide range of problems you can solve with containers, some of which will certainly
-map to scenarios in your own work. By the end of this chapter you’ll understand
-why Docker is a technology you need to know, and you’ll see how this book will get
-you there.
+现在让我们看看人们使用容器做了什么——我将介绍五个主要的容器
+组织在Docker上取得巨大成功的场景。你会看到
+使用容器可以解决很多问题，其中一些肯定会符合你的工作场景。读完本章你就会明白了
+为什么 Docker 是一项你需要了解的技术，你会看到这本书是如何带你入门的。
 
 ## 1.1 为什么容器将会接管世界
-Docker is a platform for running applications in lightweight units called containers.
-Containers have taken hold in software everywhere, from serverless functions in
-the cloud to strategic planning in the enterprise. Docker is becoming a core competency for operators and developers across the industry—in the 2019 Stack
-Overflow survey, Docker polled as people’s number one “most wanted” technology
-(http://mng.bz/04lW).
 
- And Docker is a simple technology to learn. You can pick up this book as a complete beginner, and you’ll be running containers in chapter 2 and packaging applications to run in Docker in chapter 3. Each chapter focuses on practical tasks, with
-examples and labs that work on any machine that runs Docker—Windows, Mac,
-and Linux users are all welcome here.
+我自己的Docker之旅始于2016年，当时我正在做一个基于 Docker 的 Paas 平台项目。我们开始使用 Docker 作为开发构建工具。然后我们获得了信心并开始运行 api用于测试环境的容器。在项目结束时，每个环境都是由 Docker驱动，包括生产，我们对可用性和规模有严格的要求。
 
- The journey you’ll follow in this book has been honed over the many years I’ve
-been teaching Docker. Every chapter is hands-on—except this one. Before you start
-learning Docker, it’s important to understand just how containers are being used in
-the real world and the type of problems they solve—that’s what I’ll cover here. This
-chapter also describes how I’ll be teaching Docker, so you can figure out if this is
-the right book for you. 
+当我离开这个项目时，向新团队的交接是单一的一个 GitLab 仓库的README文件。构建，部署和
+管理应用程序(在任何环境中)的是Docker。新的开发人员获取源代码通过运行一个命令来构建和运行本地的一切。管理员使用完全相同的工具在生产集群中部署和管理容器。
+ 
+通常这种规模的项目，移交需要两周时间。需要新的开发人员要安装半打特定版本的工具，管理员同样需要安装类似完全不同的工具。Docker集中了工具链，让所有事情都变得更容易，我认为有一天每个项目都必须这样做来使用容器。
 
- Now let’s look at what people are doing with containers—I’ll cover the five main
-scenarios where organizations are seeing huge success with Docker. You’ll see the
-wide range of problems you can solve with containers, some of which will certainly
-map to scenarios in your own work. By the end of this chapter you’ll understand
-why Docker is a technology you need to know, and you’ll see how this book will get
-you there.
+近几年的发展，Docker 正在接近无所不在，部分原因是它使交付变得简单很多，部分原因是它非常灵活——你可以把它带进你所有的项目，包括旧的和新的，Windows 或者 Linux。
+
+### 1.1.1 应用上云
+
+### 1.1.2 更新旧版应用
 ## 1.2 这本书适合你吗?
-Docker is a platform for running applications in lightweight units called containers.
-Containers have taken hold in software everywhere, from serverless functions in
-the cloud to strategic planning in the enterprise. Docker is becoming a core competency for operators and developers across the industry—in the 2019 Stack
-Overflow survey, Docker polled as people’s number one “most wanted” technology
-(http://mng.bz/04lW).
 
- And Docker is a simple technology to learn. You can pick up this book as a complete beginner, and you’ll be running containers in chapter 2 and packaging applications to run in Docker in chapter 3. Each chapter focuses on practical tasks, with
-examples and labs that work on any machine that runs Docker—Windows, Mac,
-and Linux users are all welcome here.
-
- The journey you’ll follow in this book has been honed over the many years I’ve
-been teaching Docker. Every chapter is hands-on—except this one. Before you start
-learning Docker, it’s important to understand just how containers are being used in
-the real world and the type of problems they solve—that’s what I’ll cover here. This
-chapter also describes how I’ll be teaching Docker, so you can figure out if this is
-the right book for you. 
-
- Now let’s look at what people are doing with containers—I’ll cover the five main
-scenarios where organizations are seeing huge success with Docker. You’ll see the
-wide range of problems you can solve with containers, some of which will certainly
-map to scenarios in your own work. By the end of this chapter you’ll understand
-why Docker is a technology you need to know, and you’ll see how this book will get
-you there.
 ## 1.3 创建你的实验环境
-Docker is a platform for running applications in lightweight units called containers.
-Containers have taken hold in software everywhere, from serverless functions in
-the cloud to strategic planning in the enterprise. Docker is becoming a core competency for operators and developers across the industry—in the 2019 Stack
-Overflow survey, Docker polled as people’s number one “most wanted” technology
-(http://mng.bz/04lW).
 
- And Docker is a simple technology to learn. You can pick up this book as a complete beginner, and you’ll be running containers in chapter 2 and packaging applications to run in Docker in chapter 3. Each chapter focuses on practical tasks, with
-examples and labs that work on any machine that runs Docker—Windows, Mac,
-and Linux users are all welcome here.
-
- The journey you’ll follow in this book has been honed over the many years I’ve
-been teaching Docker. Every chapter is hands-on—except this one. Before you start
-learning Docker, it’s important to understand just how containers are being used in
-the real world and the type of problems they solve—that’s what I’ll cover here. This
-chapter also describes how I’ll be teaching Docker, so you can figure out if this is
-the right book for you. 
-
- Now let’s look at what people are doing with containers—I’ll cover the five main
-scenarios where organizations are seeing huge success with Docker. You’ll see the
-wide range of problems you can solve with containers, some of which will certainly
-map to scenarios in your own work. By the end of this chapter you’ll understand
-why Docker is a technology you need to know, and you’ll see how this book will get
-you there.
 
 ## 1.4 立即见效
