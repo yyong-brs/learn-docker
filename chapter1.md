@@ -24,7 +24,7 @@ map to scenarios in your own work. By the end of this chapter you’ll understan
 why Docker is a technology you need to know, and you’ll see how this book will get
 you there.
 
-## 1.1为什么容器将会接管世界
+## 1.1 为什么容器将会接管世界
 Docker is a platform for running applications in lightweight units called containers.
 Containers have taken hold in software everywhere, from serverless functions in
 the cloud to strategic planning in the enterprise. Docker is becoming a core competency for operators and developers across the industry—in the 2019 Stack
@@ -48,7 +48,7 @@ wide range of problems you can solve with containers, some of which will certain
 map to scenarios in your own work. By the end of this chapter you’ll understand
 why Docker is a technology you need to know, and you’ll see how this book will get
 you there.
-## 1.2这本书适合你吗?
+## 1.2 这本书适合你吗?
 Docker is a platform for running applications in lightweight units called containers.
 Containers have taken hold in software everywhere, from serverless functions in
 the cloud to strategic planning in the enterprise. Docker is becoming a core competency for operators and developers across the industry—in the 2019 Stack
@@ -72,7 +72,7 @@ wide range of problems you can solve with containers, some of which will certain
 map to scenarios in your own work. By the end of this chapter you’ll understand
 why Docker is a technology you need to know, and you’ll see how this book will get
 you there.
-## 1.3创建你的实验环境
+## 1.3 创建你的实验环境
 Docker is a platform for running applications in lightweight units called containers.
 Containers have taken hold in software everywhere, from serverless functions in
 the cloud to strategic planning in the enterprise. Docker is becoming a core competency for operators and developers across the industry—in the 2019 Stack
