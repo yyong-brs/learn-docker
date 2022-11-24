@@ -41,8 +41,46 @@ Docker 提供了没有妥协的第三种选择。您可以迁移你的应用中�
 
 迁移到容器需要一些投资：您需要将现有的安装步骤转换为名为 Dockerfile 的脚本文件，并且使用类似 Docker Compose 或者 Kubernetes 格式的应用声明式清单文件来转换部署文档。你不需要更改任何的代码，最终从你的个人电脑到云端，以同样的方式使用同样的技术栈在所有环境运行应用程序。
 
-
 ### 1.1.2 更新旧版应用
+
+You can run pretty much any app in the cloud in a container, but you won’t get the
+full value of Docker or the cloud platform if it uses an older, monolithic design.
+Monoliths work just fine in containers, but they limit your agility. You can do an
+automated staged rollout of a new feature to production in 30 seconds with containers. But if the feature is part of a monolith built from two million lines of code,you’ve probably had to sit through a two-week regression test cycle before you get to the release.
+
+Moving your app to Docker is a great first step to modernizing the architecture, adopting new patterns without needing a full rewrite of the app. The approach is simple—you start by moving your app to a single container with the Dockerfile and Docker Compose syntax you’ll learn in this book. Now you have a monolith in a container.
+
+Containers run in their own virtual network, so they can communicate with each
+other without being exposed to the outside world. That means you can start breaking your application up, moving features into their own containers, so gradually your monolith can evolve into a distributed application with the whole feature set being provided by multiple containers. Figure 1.3 shows how that looks with a sample application architecture.
+
+![图1.4](./images/Figure1.4.png)
+<center>图1.4 </center>
+
+This gives you a lot of the benefits of a microservice architecture. Your key features are in small, isolated units that you can manage independently. That means you can test changes quickly, because you’re not changing the monolith, only the containers that run your feature. You can scale features up and down, and you can use different technologies to suit requirements.
+
+Modernizing older application architectures is easy with Docker—you’ll do it
+yourself with practical examples in chapters 20 and 21. You can deliver a more agile,scalable, and resilient app, and you get to do it in stages, rather than stopping for an 18-month rewrite.
+
+### 1.1.3 构建新的云原生应用
+
+Docker helps you get your existing apps to the cloud, whether they’re distributed apps or monoliths. If you have monoliths, Docker helps you break them up into modern architectures, whether you’re running in the cloud or in the datacenter. And brand-new projects built on cloud-native principles are greatly accelerated with Docker.The Cloud Native Computing Foundation (CNCF) characterizes these new architectures as using “an open source software stack to deploy applications as microservices,packaging each part into its own container, and dynamically orchestrating those containers to optimize resource utilization.”
+
+Figure 1.4 shows a typical architecture for a new microservices application—this is a demo application from the community, which you can find on GitHub at https://
+github.com/microservices-demo.
+
+![图1.3](./images/Figure1.3.png)
+<center>图1.3 </center>
+
+It’s a great sample application if you want to see how microservices are actually
+implemented. Each component owns its own data and exposes it through an API. The
+frontend is a web application that consumes all the API services. The demo application uses various programming languages and different database technologies, but every component has a Dockerfile to package it, and the whole application is defined in a Docker Compose file.
+
+You’ll learn in chapter 4 how you can use Docker to compile code, as part of packaging your app. That means you don’t need any development tools installed to build and run apps like this. Developers can just install Docker, clone the source code, and build and run the whole application with a single command.
+
+Docker also makes it easy to bring third-party software into your application, adding features without writing your own code. Docker Hub is a public service where teams share software that runs in containers. The CNCF publishes a map of opensource projects you can use for everything from monitoring to message queues, and they’re all available for free from Docker Hub.
+### 1.1.4 技术创新：Serverless 等
+
+### 1.1.5 利用 DevOps 进行数字化转型
 ## 1.2 这本书适合你吗?
 
 ## 1.3 创建你的实验环境
