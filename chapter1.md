@@ -87,7 +87,8 @@ Serverless 是与容器技术相关的。Serverless 的目标是让开发人员�
 其他主要创新，如机器学习、区块链和物联网，都得益于Docker一致的打包和部署模型。你会发现所有部署到Docker hub的主要项目- tensorflow和Hyperledger都是很好的例子。物联网尤其有趣，因为Docker已经与Arm合作，使容器成为Edge和物联网设备的默认运行时。
 
 ### 1.1.5 利用 DevOps 进行数字化转型
-All these scenarios involve technology, but the biggest problem facing many organizations is operational—particularly so for larger and older enterprises. Teams have been siloed into “developers” and “operators,” responsible for different parts of the project life cycle. Problems at release time become a blame cycle, and quality gates are put into prevent future failures. Eventually you have so many quality gates you can only manage two or three releases a year, and they are risky and labor-intensive.
+
+所有这些场景都涉及到技术，但许多组织面临的最大问题是实际转型操作——特别是对大型和老企业而言。团队被划分为“开发人员”和“运维人员”，负责项目生命周期的不同部分。发布时的问题变成了一个责备循环，质量门被用来防止未来的失败。最终，你会有如此多的质量门槛，你一年只能管理两到三个版本，而且它们是有风险和劳动密集型的。
 
 DevOps aims to bring agility to software deployment and maintenance by having a single team own the whole application life cycle, combining “dev” and “ops” into one deliverable. DevOps is mainly about cultural change, and it can take organizations from huge quarterly releases to small daily deployments. But it’s hard to do that without changing the technologies the team uses.
 
