@@ -90,7 +90,7 @@ Serverless 是与容器技术相关的。Serverless 的目标是让开发人员�
 
 所有这些场景都涉及到技术，但许多组织面临的最大问题是实际转型操作——特别是对大型和老企业而言。团队被划分为“开发人员”和“运维人员”，负责项目生命周期的不同部分。发布时的问题变成了一个责备循环，质量门被用来防止未来的失败。最终，你会有如此多的质量门槛，你一年只能管理两到三个版本，而且它们是有风险和劳动密集型的。
 
-DevOps aims to bring agility to software deployment and maintenance by having a single team own the whole application life cycle, combining “dev” and “ops” into one deliverable. DevOps is mainly about cultural change, and it can take organizations from huge quarterly releases to small daily deployments. But it’s hard to do that without changing the technologies the team uses.
+DevOps 旨在为软件部署和维护带来敏捷性，方法是让一个团队拥有整个应用程序生命周期，将“开发”和“运维”结合到一个交付产品中。DevOps主要是关于文化的改变，它可以将组织从巨大的季度发布变成小型的每日部署。但如果不改变团队使用的技术，就很难做到这一点。
 
 Operators may have a background in tools like Bash, Nagios, PowerShell, and System Center. Developers work in Make, Maven, NuGet, and MSBuild. It’s difficult to bring a team together when they don’t use common technologies, which is where Docker really helps. You can underpin your DevOps transformation with the move to containers, and suddenly the whole team is working with Dockerfiles and Docker Compose files, speaking the same languages and working with the same tools.
 
