@@ -73,7 +73,28 @@ Docker 帮助您将现有的应用程序上云，无论它们是分布式应用�
 Docker还可以方便地将第三方软件引入应用程序，无需编写自己的代码就可以添加功能。Docker Hub是一个公共服务，团队可以在这里共享运行在容器中的软件。CNCF发布了一份开源项目的地图，您可以将其用于从监视到消息队列的所有事情，而且它们都可以从Docker Hub免费获得。
 ### 1.1.4 技术创新：Serverless 等
 
+现代 IT 的一个关键驱动因素是一致性:团队希望对所有项目使用相同的工具、过程和运行时。你可以用 Docker 做到这一点，从运行在Windows上的旧的.net整体程序到运行在Linux上的新Go应用程序，都可以使用容器。您可以构建一个Docker集群来运行所有这些应用程序，因此您可以以相同的方式构建、部署和管理整个应用程序环境。
+
+技术创新不应该与常规应用分离。Docker是一些最大创新的核心，因此在探索新的领域时，您可以继续使用相同的工具和技术。最令人兴奋的创新之一(当然是继容器之后)是 serverless functions: 无服务器函数。图1.5显示了如何在单个Docker集群上运行所有应用程序(旧的单体应用程序、新的云原生应用程序和 serverless functions)，该集群可以运行在云端或数据中心。
+
+![图1.5](./images/Figure1.5.png)
+<center>图1.5 </center>
+
+Serverless 是与容器技术相关的。Serverless 的目标是让开发人员编写函数代码，将其推送给服务，然后服务构建并打包代码。当消费者使用该函数时，服务启动该函数的一个实例来处理请求。不需要构建服务器、管道或管理生产服务器;所有这些都由平台负责。
+
+在底层，所有云上的 serverless 选择使用 Docker 来打包代码并通过容器来运行函数。但是云端的函数是不可移植的——您不能将AWS Lambda函数放到Azure中运行，因为没有针对serverless 的开放标准。如果你想要serverless 而没有云商锁定，或者如果你在数据中心运行，你可以使用Nuclio、OpenFaaS或Fn 项目在 Docker 中托管自己的平台，这些都是流行的开源 serverless 框架。
+
+其他主要创新，如机器学习、区块链和物联网，都得益于Docker一致的打包和部署模型。你会发现所有部署到Docker hub的主要项目- tensorflow和Hyperledger都是很好的例子。物联网尤其有趣，因为Docker已经与Arm合作，使容器成为Edge和物联网设备的默认运行时。
+
 ### 1.1.5 利用 DevOps 进行数字化转型
+All these scenarios involve technology, but the biggest problem facing many organizations is operational—particularly so for larger and older enterprises. Teams have been siloed into “developers” and “operators,” responsible for different parts of the project life cycle. Problems at release time become a blame cycle, and quality gates are put into prevent future failures. Eventually you have so many quality gates you can only manage two or three releases a year, and they are risky and labor-intensive.
+
+DevOps aims to bring agility to software deployment and maintenance by having a single team own the whole application life cycle, combining “dev” and “ops” into one deliverable. DevOps is mainly about cultural change, and it can take organizations from huge quarterly releases to small daily deployments. But it’s hard to do that without changing the technologies the team uses.
+
+Operators may have a background in tools like Bash, Nagios, PowerShell, and System Center. Developers work in Make, Maven, NuGet, and MSBuild. It’s difficult to bring a team together when they don’t use common technologies, which is where Docker really helps. You can underpin your DevOps transformation with the move to containers, and suddenly the whole team is working with Dockerfiles and Docker Compose files, speaking the same languages and working with the same tools.
+
+It goes further too. There’s a powerful framework for implementing DevOps called CALMS—Culture, Automation, Lean, Metrics, and Sharing. Docker works on all those initiatives: automation is central to running containers, distributed apps are built on lean principles, metrics from production apps and from the deployment process can be easily published, and Docker Hub is all about sharing and not duplicating effort.
+
 ## 1.2 这本书适合你吗?
 
 ## 1.3 创建你的实验环境
