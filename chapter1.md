@@ -177,7 +177,8 @@ prise. There are versions for all the major Linux distributions and for Windows 
 2016 and 2019. You can find all the Docker Enterprise editions together with installa-
 tion instructions on Docker Hub at http://mng.bz/K29E.
 
-<b>Verifying your Docker setup</b>
+### 1.3.2 检查 Docker 设置
+
 There are several components that make up the Docker platform, but for this book
 you just need to verify that Docker is running and that Docker Compose is installed.
 First check Docker itself with the docker version command:
@@ -221,8 +222,6 @@ OpenSSL version: OpenSSL 1.1.1c 28 May 2019
 
 Again, your exact output will be different from mine, but as long as you get a list of
 versions with no errors, you are good to go.
-
-### 1.3.2 检查 Docker 设置
 
 ### 1.3.3 下载本书代码
 
