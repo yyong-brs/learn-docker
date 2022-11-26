@@ -92,7 +92,7 @@ Serverless 是与容器技术相关的。Serverless 的目标是让开发人员�
 
 DevOps 旨在为软件部署和维护带来敏捷性，方法是让一个团队拥有整个应用程序生命周期，将“开发”和“运维”结合到一个交付产品中。DevOps主要是关于文化的改变，它可以将组织从巨大的季度发布变成小型的每日部署。但如果不改变团队使用的技术，就很难做到这一点。
 
-Operators may have a background in tools like Bash, Nagios, PowerShell, and System Center. Developers work in Make, Maven, NuGet, and MSBuild. It’s difficult to bring a team together when they don’t use common technologies, which is where Docker really helps. You can underpin your DevOps transformation with the move to containers, and suddenly the whole team is working with Dockerfiles and Docker Compose files, speaking the same languages and working with the same tools.
+运维人员可能有Bash、Nagios、PowerShell和System Center等工具的使用背景。开发人员在Make、Maven、NuGet和MSBuild中工作。当一个团队不使用通用技术时，很难将他们团结在一起，这正是Docker真正有用的地方。你可以通过迁移到容器来支持你的DevOps转换，突然之间，整个团队都在使用dockerfile和Docker Compose文件，使用相同的语言和相同的工具。
 
 It goes further too. There’s a powerful framework for implementing DevOps called CALMS—Culture, Automation, Lean, Metrics, and Sharing. Docker works on all those initiatives: automation is central to running containers, distributed apps are built on lean principles, metrics from production apps and from the deployment process can be easily published, and Docker Hub is all about sharing and not duplicating effort.
 
