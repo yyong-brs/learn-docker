@@ -94,7 +94,7 @@ DevOps 旨在为软件部署和维护带来敏捷性，方法是让一个团队�
 
 运维人员可能有Bash、Nagios、PowerShell和System Center等工具的使用背景。开发人员在Make、Maven、NuGet和MSBuild中工作。当一个团队不使用通用技术时，很难将他们团结在一起，这正是Docker真正有用的地方。你可以通过迁移到容器来支持你的DevOps转换，突然之间，整个团队都在使用dockerfile和Docker Compose文件，使用相同的语言和相同的工具。
 
-It goes further too. There’s a powerful framework for implementing DevOps called CALMS—Culture, Automation, Lean, Metrics, and Sharing. Docker works on all those initiatives: automation is central to running containers, distributed apps are built on lean principles, metrics from production apps and from the deployment process can be easily published, and Docker Hub is all about sharing and not duplicating effort.
+其实还有更深远的意义，实现DevOps有一个强大的框架，叫做calm - 文化（Culture）、自动化(Automation)、精益(Lean)、指标(Metrics)和共享(sharing)。Docker致力于所有这些举措:自动化是运行容器的核心，分布式应用是基于精益原则构建的，来自生产应用和部署过程的指标可以轻松发布，Docker Hub是关于共享而不是重复工作的。
 
 ## 1.2 这本书适合你吗?
 
