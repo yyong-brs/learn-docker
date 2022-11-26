@@ -128,6 +128,100 @@ source code for the samples.
 
 ### 1.3.1 安装 Docker
 
+The free Docker Community Edition is fine for development and even production
+use. If you’re running a recent version of Windows 10 or macOS, the best option is
+Docker Desktop; older versions can use Docker Toolbox. Docker also supplies installa-
+tion packages for all the major Linux distributions. Start by installing Docker using
+the most appropriate option for you—you’ll need to create a Docker Hub account for
+the downloads, which is free and lets you share applications you’ve built for Docker.
+
+<b>INSTALLING DOCKER DESKTOP ON WINDOWS 10</b>
+You’ll need Windows 10 Professional or Enterprise to use Docker Desktop, and you’ll
+want to make sure that you have all the Windows updates installed—you should be on
+release 1809 as a minimum (run winver from the command line to check your ver-
+sion). Browse to www.docker.com/products/docker-desktop and choose to install the
+stable version. Download the installer and run it, accepting all the defaults. When
+Docker Desktop is running you’ll see Docker’s whale icon in the taskbar near the Win-
+dows clock.
+
+<b>INSTALLING DOCKER DESKTOP ON MACOS</b>
+You’ll need macOS Sierra 10.12 or above to use Docker Desktop for Mac—click the
+Apple icon in the top left of the menu bar and select About this Mac to see your ver-
+sion. Browse to www.docker.com/products/docker-desktop and choose to install the
+stable version. Download the installer and run it, accepting all the defaults. When
+Docker Desktop is running, you’ll see Docker’s whale icon in the Mac menu bar near
+the clock.
+
+<b>INSTALLING DOCKER TOOLBOX</b>
+If you’re using an older version of Windows or OS X, you can use Docker Toolbox.
+The end experience with Docker is the same, but there are a few more pieces behind
+the scenes. Browse to https://docs.docker.com/toolbox and follow the instructions—
+you’ll need to set up virtual machine software first, like VirtualBox (Docker Desktop is
+a better option if you can use it, because you don’t need a separate VM manager).
+
+<b>INSTALLING DOCKER COMMUNITY EDITION AND DOCKER COMPOSE</b>
+If you’re running Linux, your distribution probably comes with a version of Docker
+you can install, but you don’t want to use that. It will likely be a very old version of
+Docker, because the Docker team now provides their own installation packages. You
+can use a script that Docker updates with each new release to install Docker in a non-
+production environment—browse to https://get.docker.com and follow the instruc-
+tions to run the script, and then to https://docs.docker.com/compose/install to
+install Docker Compose.
+
+<b>INSTALLING DOCKER ON WINDOWS SERVER OR LINUX SERVER DISTRIBUTIONS</b>
+Production deployments of Docker can use the Community Edition, but if you want a
+supported container runtime, you can use the commercial version provided by
+Docker, called Docker Enterprise. Docker Enterprise is built on top of the Commu-
+nity Edition, so everything you learn in this book works just as well with Docker Enter-
+prise. There are versions for all the major Linux distributions and for Windows Server
+2016 and 2019. You can find all the Docker Enterprise editions together with installa-
+tion instructions on Docker Hub at http://mng.bz/K29E.
+
+<b>Verifying your Docker setup</b>
+There are several components that make up the Docker platform, but for this book
+you just need to verify that Docker is running and that Docker Compose is installed.
+First check Docker itself with the docker version command:
+
+```powershell
+PS> docker version
+Client: Docker Engine - Community
+Version: 19.03.5
+API version: 1.40
+Go version: go1.12.12
+Git commit: 633a0ea
+Built: Wed Nov 13 07:22:37 2019
+OS/Arch: windows/amd64
+Experimental: false
+Server: Docker Engine - Community
+Engine:
+Version: 19.03.5
+API version: 1.40 (minimum version 1.24)
+Go version: go1.12.12
+Git commit: 633a0ea
+Built: Wed Nov 13 07:36:50 2019
+OS/Arch: windows/amd64
+Experimental: false
+```
+
+Your output will be different from mine, because the versions will have changed and you
+might be using a different operating system, but as long as you can see a version number
+for the Client and the Server, Docker is working fine. Don’t worry about what the client
+and server are just yet—you’ll learn about the architecture of Docker in the next chapter.
+
+Next you need to test Docker Compose, which is a separate command line that
+also interacts with Docker. Run docker-compose version to check:
+
+```powershell
+PS> docker-compose version
+docker-compose version 1.25.4, build 8d51620a
+docker-py version: 4.1.0
+CPython version: 3.7.4
+OpenSSL version: OpenSSL 1.1.1c 28 May 2019
+```
+
+Again, your exact output will be different from mine, but as long as you get a list of
+versions with no errors, you are good to go.
+
 ### 1.3.2 检查 Docker 设置
 
 ### 1.3.3 下载本书代码
