@@ -97,31 +97,14 @@ DevOps 旨在为软件部署和维护带来敏捷性，方法是让一个团队�
 其实还有更深远的意义，实现DevOps有一个强大的框架，叫做calm - 文化（Culture）、自动化(Automation)、精益(Lean)、指标(Metrics)和共享(sharing)。Docker致力于所有这些举措:自动化是运行容器的核心，分布式应用是基于精益原则构建的，来自生产应用和部署过程的指标可以轻松发布，Docker Hub是关于共享而不是重复工作的。
 
 ## 1.2 这本书适合你吗?
-The five scenarios I outlined in the previous section cover pretty much all the activity
-that’s happening in the IT industry right now, and I hope it’s clear that Docker is the
-key to it all. This is the book for you if you want to put Docker to work on this kind of
-real-world problem. It takes you from zero knowledge through to running apps in
-containers on a production-grade cluster.
 
-The goal of this book is to teach you how to use Docker, so I don’t go into much detail
-on how Docker itself works under the hood. I won’t talk in detail about containerd or
-lower-level details like Linux cgroups and namespaces or the Windows Host Compute
-Service. If you want the internals, Manning’s Docker in Action, second edition, by Jeff
-Nickoloff and Stephen Kuenzli is a great choice.
+我在前一节中概述的五个场景几乎涵盖了现在IT行业正在发生的所有的活动，我希望大家清楚，Docker是这一切的关键。如果你想让 Docker 解决现实世界的问题，那么这本书是为你准备的。它让你从零知识到在生产级别集群上通过容器运行应用程序。
 
-The samples in this book are all cross-platform, so you can work along using Win-
-dows, Mac, or Linux—including Arm processors, so you can use a Raspberry Pi too.
-I use several programming languages, but only those that are cross-platform, so among
-others I use .NET Core instead of .NET Framework (which only runs on Windows). If
-you want to learn Windows containers in depth, my blog is a good source for that
-(https://blog.sixeyed.com).
+本书的目标是教你如何使用Docker，所以我不会详细介绍 Docker 本身是如何工作的。同时我就不详细讲解更低层次的技术细节，如Linux的cgroups和命名空间或Windows主机计算服务。如果你想了解内幕，可以阅读《Docker in Action》。
 
-Lastly, this book is specifically on Docker, so when it comes to production deploy-
-ment I’ll be using Docker Swarm, the clustering technology built into Docker. In
-chapter 12 I’ll talk about Kubernetes and how to choose between Swarm and Kuber-
-netes, but I won’t go into detail on Kubernetes. Kubernetes needs a month of lunches
-itself, but Kubernetes is just a different way of running Docker containers, so every-
-thing you learn in this book applies.
+本书中的示例都是跨平台的，所以您可以使用windows,Mac,或者 linux 包括 Arm 处理器下的 linux，同时也可以使用树莓派。
+
+最后，本书是专门讨论Docker的，Docker swarm 以及 Kubernetes 都是用来管理容器的，后面章节重点会讲到比较火热的 Kubernetes ，至于 Kubernetes 的详细后续会通过另外一本书进行细致介绍。
 ## 1.3 创建你的实验环境
 Now let’s get started. All you need to follow along with this book is Docker and the
 source code for the samples.
