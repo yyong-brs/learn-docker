@@ -177,8 +177,7 @@ OpenSSL version: OpenSSL 1.1.1c 28 May 2019
 同样，您的确切输出将与我的不同，但只要您得到一个版本列表信息，没有错误，就可以开始了。
 
 ### 1.3.3 下载本书代码
-The source code for this book is in a public Git repository on GitHub. If you have a
-Git client installed, just run this command:
+
 本书的源代码在 GitHub 上的一个公共Git库中。如果你已经安装了 Git 客户端，只需运行以下命令:
 
 `git clone https://github.com/sixeyed/diamol.git`
@@ -187,19 +186,15 @@ Git client installed, just run this command:
 
 ### 1.3.4 熟记清理命令
 
-Docker doesn’t automatically clean up containers or application packages for you.
-When you quit Docker Desktop (or stop the Docker service), all your containers stop
-and they don’t use any CPU or memory, but if you want to, you can clean up at the
-end of every chapter by running this command:
+Docker 不会自动为您清理容器或应用程序包。当你退出 Docker Desktop(或停止Docker服务)时，所有的容器都会停止,它们不会占用任何CPU或内存，但如果你想，你可以在在每一章结束时运行这个命令:
 
 `docker container rm -f $(docker container ls -aq)`
 
-And if you want to reclaim disk space after following the exercises, you can run this command:
+如果你想在练习之后回收磁盘空间，你可以运行这个命令:
 
 `docker image rm -f $(docker image ls -f reference='diamol/*' -q)`
 
-Docker is smart about downloading what it needs, so you can safely run these commands at any time. The next time you run containers, if Docker doesn’t find what it
-needs on your machine, it will download it for you.
+Docker 在下载所需内容方面很聪明，因此您可以在任何时候安全地运行这些命令。下次运行容器时，如果Docker在你的机器上没有找到它，它会为你下载它。
 
 ## 1.4 立即见效
 “Immediately effective” is another principle of the Month of Lunches series. In all the
