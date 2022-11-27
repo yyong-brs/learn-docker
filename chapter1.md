@@ -118,6 +118,8 @@ tion packages for all the major Linux distributions. Start by installing Docker 
 the most appropriate option for you—you’ll need to create a Docker Hub account for
 the downloads, which is free and lets you share applications you’ve built for Docker.
 
+如果
+
 <b>INSTALLING DOCKER DESKTOP ON WINDOWS 10</b>
 You’ll need Windows 10 Professional or Enterprise to use Docker Desktop, and you’ll
 want to make sure that you have all the Windows updates installed—you should be on
