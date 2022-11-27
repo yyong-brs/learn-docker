@@ -179,12 +179,11 @@ OpenSSL version: OpenSSL 1.1.1c 28 May 2019
 ### 1.3.3 下载本书代码
 The source code for this book is in a public Git repository on GitHub. If you have a
 Git client installed, just run this command:
+本书的源代码在 GitHub 上的一个公共Git库中。如果你已经安装了 Git 客户端，只需运行以下命令:
 
 `git clone https://github.com/sixeyed/diamol.git`
 
-If you don’t have a Git client, browse to https://github.com/sixeyed/diamol and click
-the Clone or Download button to download a zip file of the source code to your local
-machine, and expand the archive.
+如果你没有 Git Client，那么你直接访问 https://github.com/sixeyed/diamol 点击 Code 按钮去下载源码 zip 文件到本地并解压使用。
 
 ### 1.3.4 熟记清理命令
 
