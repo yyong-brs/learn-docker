@@ -197,14 +197,10 @@ Docker 不会自动为您清理容器或应用程序包。当你退出 Docker De
 Docker 在下载所需内容方面很聪明，因此您可以在任何时候安全地运行这些命令。下次运行容器时，如果Docker在你的机器上没有找到它，它会为你下载它。
 
 ## 1.4 立即见效
-“Immediately effective” is another principle of the Month of Lunches series. In all the
-chapters that follow, the focus is on learning skills and putting them into practice.
 
-Every chapter starts with a short introduction to the topic, followed by try-it-now
-exercises where you put the ideas into practice using Docker. Then there’s a recap
-with some more detail that fills in some of the questions you may have from diving in.
-Lastly there’s a hands-on lab for you to go the next stage.
+“立即生效”是本书的另一个原则。在所有的接下来的章节，重点是动手去学习技能并将其付诸实践。
 
-All the topics center around tasks that are genuinely useful in the real world. You’ll
-learn how to be immediately effective with the topic during the chapter, and you’ll fin-
-ish by understanding how to apply the new skill. Let’s start running some containers!
+每一章都以简短的主题介绍开始，然后是“现在就试试” 使用Docker将想法付诸实践的练习。然后我们来回顾一下有更多的细节，填补你可能产生的一些问题。
+最后还有一个实践实验室，这样就可以进入下一个阶段。
+
+所有的主题都围绕着在现实世界中真正有用的任务。你会学习如何在本章中立即有效地解决这个问题，你就会找到答案通过理解如何应用新技能来获得成功。让我们开始运行一些容器!
