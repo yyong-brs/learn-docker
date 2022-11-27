@@ -139,9 +139,8 @@ Docker 的生产部署可以使用社区版本，但是如果您需要受支持�
 
 ### 1.3.2 检查 Docker 设置
 
-There are several components that make up the Docker platform, but for this book
-you just need to verify that Docker is running and that Docker Compose is installed.
-First check Docker itself with the docker version command:
+Docker 平台由几个组件组成,你只需要验证Docker正在运行并且Docker Compose已经安装。
+首先用Docker version命令检查Docker本身:
 
 ```powershell
 PS> docker version
@@ -163,14 +162,9 @@ Built: Wed Nov 13 07:36:50 2019
 OS/Arch: windows/amd64
 Experimental: false
 ```
+你的输出和我的不一样，因为版本持续在变更，而你可能是使用不同的操作系统，但只要你能看到版本号就行，您将在下一章了解Docker的架构。
 
-Your output will be different from mine, because the versions will have changed and you
-might be using a different operating system, but as long as you can see a version number
-for the Client and the Server, Docker is working fine. Don’t worry about what the client
-and server are just yet—you’ll learn about the architecture of Docker in the next chapter.
-
-Next you need to test Docker Compose, which is a separate command line that
-also interacts with Docker. Run docker-compose version to check:
+接下来你需要测试 Docker Compose，它是一个单独的命令行，也可以和Docker交互。运行docker-compose version查看：
 
 ```powershell
 PS> docker-compose version
@@ -180,8 +174,7 @@ CPython version: 3.7.4
 OpenSSL version: OpenSSL 1.1.1c 28 May 2019
 ```
 
-Again, your exact output will be different from mine, but as long as you get a list of
-versions with no errors, you are good to go.
+同样，您的确切输出将与我的不同，但只要您得到一个版本列表信息，没有错误，就可以开始了。
 
 ### 1.3.3 下载本书代码
 The source code for this book is in a public Git repository on GitHub. If you have a
