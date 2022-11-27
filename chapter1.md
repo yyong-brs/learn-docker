@@ -111,56 +111,31 @@ DevOps 旨在为软件部署和维护带来敏捷性，方法是让一个团队�
 
 ### 1.3.1 安装 Docker
 
-The free Docker Community Edition is fine for development and even production
-use. If you’re running a recent version of Windows 10 or macOS, the best option is
-Docker Desktop; older versions can use Docker Toolbox. Docker also supplies installa-
-tion packages for all the major Linux distributions. Start by installing Docker using
-the most appropriate option for you—you’ll need to create a Docker Hub account for
-the downloads, which is free and lets you share applications you’ve built for Docker.
+免费的 Docker Community Edition(社区版本)已经可以适用于开发甚至生产环境。如果你运行的是最新版本的 Windows 10或macOS，最好的选择是安装 Docker Desktop; 旧版本可以使用 Docker Toolbox。Docker 为主流的 linux 发行版提供了安装包。在刚开始安装 Docker 之后——您需要为其创建一个Docker Hub帐户，它是免费的，可以让你分享你自己的 Docker 应用。
 
-如果
+<b>在 Windows 10 上安装 DOCKER DESKTOP</b>
 
-<b>INSTALLING DOCKER DESKTOP ON WINDOWS 10</b>
-You’ll need Windows 10 Professional or Enterprise to use Docker Desktop, and you’ll
-want to make sure that you have all the Windows updates installed—you should be on
-release 1809 as a minimum (run winver from the command line to check your ver-
-sion). Browse to www.docker.com/products/docker-desktop and choose to install the
-stable version. Download the installer and run it, accepting all the defaults. When
-Docker Desktop is running you’ll see Docker’s whale icon in the taskbar near the Win-
-dows clock.
+您需要 Windows 10 专业版或企业版才能使用 Docker Desktop，并且您需要确保安装了所有的Windows更新—您至少应该是发行版1809(从命令行运行winver来检查您的版本)。浏览访问 www.docker.com/products/docker-desktop 并选择安装稳定版本。下载安装程序并运行它，接受所有默认值。当Docker Desktop运行时，你会在任务栏中看到Docker的鲸鱼图标。
 
-<b>INSTALLING DOCKER DESKTOP ON MACOS</b>
-You’ll need macOS Sierra 10.12 or above to use Docker Desktop for Mac—click the
-Apple icon in the top left of the menu bar and select About this Mac to see your ver-
-sion. Browse to www.docker.com/products/docker-desktop and choose to install the
-stable version. Download the installer and run it, accepting all the defaults. When
-Docker Desktop is running, you’ll see Docker’s whale icon in the Mac menu bar near
-the clock.
+<b>在 MacOS 安装 DOCKER DESKTOP</b>
 
-<b>INSTALLING DOCKER TOOLBOX</b>
-If you’re using an older version of Windows or OS X, you can use Docker Toolbox.
-The end experience with Docker is the same, but there are a few more pieces behind
-the scenes. Browse to https://docs.docker.com/toolbox and follow the instructions—
-you’ll need to set up virtual machine software first, like VirtualBox (Docker Desktop is
-a better option if you can use it, because you don’t need a separate VM manager).
+您需要 macOS Sierra 10.12或以上版本才能使用Docker Desktop ,打开菜单栏左上角的苹果图标，选择“关于这台Mac”，查看您的版本。浏览器访问 www.docker.com/products/docker-desktop 并选择安装稳定的版本。下载安装程序并运行它，接受所有默认值。当
+Docker桌面正在运行，你将在 Mac 菜单栏附近看到Docker的鲸鱼图标。
 
-<b>INSTALLING DOCKER COMMUNITY EDITION AND DOCKER COMPOSE</b>
-If you’re running Linux, your distribution probably comes with a version of Docker
-you can install, but you don’t want to use that. It will likely be a very old version of
-Docker, because the Docker team now provides their own installation packages. You
-can use a script that Docker updates with each new release to install Docker in a non-
-production environment—browse to https://get.docker.com and follow the instruc-
-tions to run the script, and then to https://docs.docker.com/compose/install to
-install Docker Compose.
+<b>安装 DOCKER TOOLBOX</b>
 
-<b>INSTALLING DOCKER ON WINDOWS SERVER OR LINUX SERVER DISTRIBUTIONS</b>
-Production deployments of Docker can use the Community Edition, but if you want a
-supported container runtime, you can use the commercial version provided by
-Docker, called Docker Enterprise. Docker Enterprise is built on top of the Commu-
-nity Edition, so everything you learn in this book works just as well with Docker Enter-
-prise. There are versions for all the major Linux distributions and for Windows Server
-2016 and 2019. You can find all the Docker Enterprise editions together with installa-
-tion instructions on Docker Hub at http://mng.bz/K29E.
+如果您使用的是较老版本的Windows或OS X，则可以使用Docker Toolbox。
+使用Docker的最终体验是一样的。浏览器访问https://docs.docker.com/toolbox 并遵循说明进行安装。你需要先安装虚拟机软件，比如VirtualBox (如果你可以 使用 Docker Desktop 是更好的选择，因为你不需要一个单独的VM管理器)。
+
+<b>安装社区版本的 DOCKER 以及 DOCKER COMPOSE</b>
+
+如果您运行的是Linux，那么您的发行版可能附带 Docker 版本，你可以安装它，但估计你不想使用它，因为它可能是一个非常古老的版本。因为 Docker 团队现在提供了安装包，你
+可以使用 Docker 在非生产环境随每个新版本更新的脚本-浏览https://get.docker.com 并遵循说明运行脚本，然后转到 https://docs.docker.com/compose/install 进行
+安装Docker Compose 操作。
+
+<b>在 WINDOWS SERVER 或者 LINUX SERVER 上安装 Docker</b>
+
+Docker 的生产部署可以使用社区版本，但是如果您需要受支持的容器运行时，您可以使用提供的商业版本Docker，叫做Docker Enterprise，Docker Enterprise是建立在社区版本之上的，所以你在这本书中学习的一切都与Docker Enterprise 是一样的。有针对所有主要Linux发行版和Windows Server 2016/2019的版本。您可以通过访问 DockerHub http://mng.bz/K29E 来获取安装说明。
 
 ### 1.3.2 检查 Docker 设置
 
