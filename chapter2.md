@@ -536,8 +536,9 @@ give you a visual way to interact with your containers. The API exposes all the 
 about containers, images, and the other resources Docker manages so it can power
 rich dashboards like the one in figure 2.9.
 
+![图2.9](./images/Figure2.9.png)
+<center>图2.9 </center>
 
- 
  This is Universal Control Plane (UCP), a commercial product from the company
 behind Docker (https://docs.docker.com/ee/ucp/). Portainer is another option,
 which is an open source project. Both UCP and Portainer run as containers them-
@@ -558,3 +559,31 @@ the only one. You can confidently invest in containers without being concerned t
 you’re getting locked in to one vendor’s platform.
 
 ## 2.6 实验：索引容器文件系统
+
+This is the first lab in the book, so here’s what it’s all about. The lab sets you a task to
+achieve by yourself, which will really help you cement what you’ve learned in the chap-
+ter. There will be some guidance and a few hints, but mostly this is about you going
+further than the prescriptive try-it-now exercises and finding your own way to solve the
+problem.
+ 
+ Every lab has a sample solution on the book’s GitHub repository. It’s worth spend-
+ing some time trying it out yourself, but if you want to check my solution you can find
+it here: https://github.com/sixeyed/diamol/tree/master/ch02/lab.
+ 
+ Here we go: your task is to run the website container from this chapter, but replace
+the index.html file so when you browse to the container you see a different home-
+page (you can use any content you like). Remember that the container has its own
+filesystem, and in this application, the website is serving files that are on the con-
+tainer’s filesystem. 
+ Here are some hints to get you going:
+
+- You can run docker container to get a list of all the actions you can perform on
+a container.
+
+- Add --help to any docker command, and you’ll see more detailed help text.
+
+- In the diamol/ch02-hello-diamol-web Docker image, the content from the
+website is served from the directory /usr/local/apache2/htdocs (that’s
+C:\usr\local\apache2\htdocs on Windows). 
+
+Good luck :)
