@@ -1,11 +1,8 @@
 # 第二章 了解 Docker 并运行 Hello World
 
-It’s time to get hands-on with Docker. In this chapter you’ll get lots of experience
-with the core feature of Docker: running applications in containers. I’ll also cover
-some background that will help you understand exactly what a container is, and
-why containers are such a lightweight way to run apps. Mostly you’ll be following
-try-it-now exercises, running simple commands to get a feel for this new way of
-working with applications.
+是时候动手使用 Docker了。在这一章,通过在容器中运行应用程序，你会了解到 Docker的核心特性。我还会讲到
+一些背景知识，将帮助您准确理解容器是什么，以及为什么容器是运行应用程序的一种轻量级方式。你将会跟上
+尝试一些练习，运行简单的命令来感受这种新的方式来处理应用程序。
 
 ## 2.1 运行 Hello World 容器
 
