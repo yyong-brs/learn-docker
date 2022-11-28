@@ -6,10 +6,7 @@
 
 ## 2.1 运行 Hello World 容器
 
-Let’s get started with Docker the same way we would with any new computing con-
-cept: running Hello World. You have Docker up and running from chapter 1, so
-open your favorite terminal—that could be Terminal on the Mac or a Bash shell on
-Linux, and I recommend PowerShell in Windows.
+让我们以处理任何新的计算机概念的相同方式开始使用Docker: 即运行Hello World。在第一章你已经安装了 Docker 并运行了它，所以打开你最喜欢的终端——可以是Mac上的终端，也可以是Bash shell Linux，我推荐Windows中的 PowerShell。
 
 You’re going to send a command to Docker, telling it to run a container that
 prints out some simple “Hello, World” text.
