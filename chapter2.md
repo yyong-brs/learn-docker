@@ -8,21 +8,18 @@
 
 让我们以处理任何新的计算机概念的相同方式开始使用Docker: 即运行Hello World。在第一章你已经安装了 Docker 并运行了它，所以打开你最喜欢的终端——可以是Mac上的终端，也可以是Bash shell Linux，我推荐Windows中的 PowerShell。
 
-You’re going to send a command to Docker, telling it to run a container that
-prints out some simple “Hello, World” text.
+你将执行 Docker 命令，让他运行一个可以输出类似 “Hello,World” 字样的容器。
 
-<b>TRY IT NOW</b> Enter this command, which will run the Hello World container:
+<b>现在就试试</b> 运行下面的命令，将会运行一个 Hello World 容器:
 
 `docker container run diamol/ch02-hello-diamol`
 
-When we’re done with this chapter, you’ll understand exactly what’s happening
-here. For now, just take a look at the output. It will be something like figure 2.1.
+当你学完本章，你将会理解上面的命令执行后发生了什么。现在，你只需要看看输出，就像图 2.1 一样。
 
 ![图2.1](./images/Figure2.1.png)
 <center>图2.1 </center>
 
- There’s a lot in that output. I’ll trim future code listings to keep them short, but
-this is the very first one, and I wanted to show it in full so we can dissect it. 
+在这个输出中有很多内容。后面我将删减一些代码清单以保持简短，但是这是第一次尝试，我想把它完整地展示出来，这样我们就可以剖析它了。
 
 First of all, what’s actually happened? The docker container run command tells
 Docker to run an application in a container. This application has already been
