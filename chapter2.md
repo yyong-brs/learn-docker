@@ -75,70 +75,36 @@ inet addr:172.17.0.5 Bcast:172.17.255.255 Mask:255.255.0.0
 ---------------------
 ```
 
-现在，我的应用程序运行在一台名为 858a26ee2741 和IP地址为 172.17.0.5 的机器上. 机器名称每次都会更改，IP地址也经常
-改变，但是每个容器都在同一台计算机上运行，所以这些差异在哪里呢？不同的机器名称和网络地址来自哪里?我们将深入研究一些理论
+现在，我的应用程序运行在一台名为 858a26ee2741 和IP地址为 172.17.0.5 的机器上. 机器名称每次都会更改，IP地址也经常改变，但是每个容器都在同一台计算机上运行，所以这些差异在哪里呢？不同的机器名称和网络地址来自哪里?我们将深入研究一些理论
 ，接下来解释一下，然后继续练习。
 
 ## 2.2 什么是容器？
 
-A Docker container is the same idea as a physical container—think of it like a box with
-an application in it. Inside the box, the application seems to have a computer all to
-itself: it has its own machine name and IP address, and it also has its own disk drive
-(Windows containers have their own Windows Registry too). Figure 2.2 shows how the
-app is boxed by the container.
+你可以把 Docker 容器想象成一个包含应用程序的物理盒子。在盒子里，应用程序似乎有它自己独立的计算机环境：它有自己的机器名和IP地址，也有自己的磁盘驱动器（Windows容器也有自己的Windows注册表）。图2.2显示了应用程序是如何被容器装箱的。
 
 ![图2.2](./images/Figure2.2.png)
 <center>图2.2 </center>
 
-Those things are all virtual resources—the hostname, IP address, and filesystem are
-created by Docker. They’re logical objects that are managed by Docker, and they’re all
-joined together to create an environment where an application can run. That’s the
-“box” of the container.
+被 Docker 创建的资源：像主机名、ip地址以及文件系统等都是虚拟的，他们都是被 docker 管理的逻辑对象，他们被放在一起，用于创建一个应用程序可以运行的环境，就像一个容器的盒子。
 
-The application inside the box can’t see anything outside the box, but the box is
-running on a computer, and that computer can also be running lots of other boxes.
-The applications in those boxes have their own separate environments (managed by
-Docker), but they all share the CPU and memory of the computer, and they all share
-the computer’s operating system. You can see in figure 2.3 how containers on the
-same computer are isolated.
+
+这个盒子里的应用程序无法访问盒子外面的世界，但是盒子是运行在一台计算机中的，同时该计算机可以运行很多其他的盒子。这些盒子里的应用拥有各自隔离的环境，但是它们共享主机的 cpu 以及内存，同时也共享主机的操作系统。在图2.3中可以看到同一台计算机上的容器是如何隔离的。
 
 ![图2.3](./images/Figure2.3.png)
 <center>图2.3 </center>
 
-Why is this so important? It fixes two conflicting problems in computing: isolation and
-density. Density means running as many applications on your computers as possible,
-to utilize all the processor and memory that you have. But apps may not work nicely
-with other apps—they might use different versions of Java or .NET, they may use
-incompatible versions of tools or libraries, or one might have a heavy workload and
-starve the others of processing power. Applications really need to be isolated from
-each other, and that stops you running lots of them on a single computer, so you don’t
-get density.
+为什么以上如此重要?它解决了计算中两个相互冲突的问题:隔离和密度。密度意味着在您的计算机上运行尽可能多的应用程序，以利用所有的处理器和内存。但是应用程序可能不能很好地与其他应用程序一起工作——它们可能使用不同版本的Java或.net，它们可能使用不兼容版本的工具或库，或者一个应用程序的工作负载很重，使其他应用程序的处理能力不足。应用程序确实需要彼此隔离，这阻止了您在一台计算机上运行大量应用程序，因此您无法获得密度。
 
-The original attempt to fix that problem was to use virtual machines (VMs). Virtual
-machines are similar in concept to containers, in that they give you a box to run your
-application in, but the box for a VM needs to contain its own operating system—it
-doesn’t share the OS of the computer where the VM is running. Compare figure 2.3,
-which shows multiple containers, with figure 2.4, which shows multiple VMs on one
-computer.
+解决这个问题的最初尝试是使用虚拟机(vm)。虚拟机在概念上与容器相似，它们提供一个盒子来运行您的应用程序，但虚拟机的盒子需要包含它自己的操作系统-它与虚拟机所在计算机的操作系统不同。对比图2.3，其中显示了一台计算机中的多个容器，如图2.4所示，显示了一台计算机中的多个虚拟机。
 
 ![图2.4](./images/Figure2.4.png)
 <center>图2.4 </center>
 
- That may look like a small difference in the diagrams, but it has huge implica-
-tions. Every VM needs its own operating system, and that OS can use gigabytes of
-memory and lots of CPU time—soaking up compute power that should be available
-for your applications. There are other concerns too, like licensing costs for the OS
-and the maintenance burden of installing OS updates. VMs provide isolation at the
-cost of density.
+对比两张图，可以看到一些小的差异，但这点差异有着巨大的影响。每个虚拟机都需要自己的操作系统，而该操作系统可以占用千兆字节的内存和大量CPU时间，消耗了本应给予你的应用的计算能力。然后，还有其他问题，比如操作系统的许可成本以及安装OS更新的维护负担。VM牺牲了密度以提供隔离性。
 
-Containers give you both. Each container shares the operating system of the com-
-puter running the container, and that makes them extremely lightweight. Containers
-start quickly and run lean, so you can run many more containers than VMs on the same
-hardware—typically five to ten times as many. You get density, but each app is in its own
-container, so you get isolation too. That’s another key feature of Docker: efficiency. 
+容器让你两者兼得。每个容器共享主机的操作系统，这使它们变得非常轻量。容器快速启动并精简运行，因此您可以在同一个平台上运行比虚拟机多得多的容器，通常是虚机下硬件资源的五到十倍。你获得了密度，但每个应用程序都有自己的容器，所以你也会被隔离。这是Docker的另一个关键特性：效率。
 
-Now you know how Docker does its magic. In the next exercise we’ll work more
-closely with containers.
+现在你已经知道 Docker 是如何发挥其魔力了。在下一个练习中，我们会更深入的运用容器。
 
 ## 2.3 像远程连接计算机一样连接容器
 
