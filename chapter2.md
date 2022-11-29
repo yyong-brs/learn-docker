@@ -202,7 +202,7 @@ Docker 使用容器中应用程序的输出收集日志条目。在此前终端�
 
 ## 2.4 在容器中运行 Web 站点
 
-So far we’ve run a few containers. The first couple ran a task that printed some text
+我们已经运行了一些容器， The first couple ran a task that printed some text
 and then exited. The next used interactive flags and connected us to a terminal session
 in the container, which stayed running until we exited the session. docker container
 ls will show that you have no containers, because the command only shows running
