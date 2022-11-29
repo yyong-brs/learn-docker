@@ -202,11 +202,7 @@ Docker 使用容器中应用程序的输出收集日志条目。在此前终端�
 
 ## 2.4 在容器中运行 Web 站点
 
-我们已经运行了一些容器， The first couple ran a task that printed some text
-and then exited. The next used interactive flags and connected us to a terminal session
-in the container, which stayed running until we exited the session. docker container
-ls will show that you have no containers, because the command only shows running
-containers.
+我们已经运行了一些容器， 输出一些简单的文本信息，然后使用了 interactive 参数并连接到了容器内的会话终端, 当你退出时容器也就停止运行了，docker container ls 命令执行后你看不到任何容器,因为这个命令只显示运行态的容器。
 
 <b>TRY IT NOW</b> Run docker container ls --all, which shows all containers in
 any status:
