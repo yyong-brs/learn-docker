@@ -108,35 +108,20 @@ inet addr:172.17.0.5 Bcast:172.17.255.255 Mask:255.255.0.0
 
 ## 2.3 像远程连接计算机一样连接容器
 
-The first container we ran just did one thing—the application printed out some text
-and then it ended. There are plenty of situations where one thing is all you want to do.
-Maybe you have a whole set of scripts that automate some process. Those scripts need
-a specific set of tools to run, so you can’t just share the scripts with a colleague; you
-also need to share a document that describes setting up all the tools, and your col-
-league needs to spend hours installing them. Instead, you could package the tools and
-the scripts in a Docker image, share the image, and then your colleague can run your
-scripts in a container with no extra setup work.
+我们运行的第一个容器只做了一件事,打印了一些文本然后就结束了。在很多情况下，你只想做一件事。也许您有一整套脚本可以自动化某些过程,这些脚本需要运行一组特定的工具，因此您不能只与同事共享脚本；你还需要共享一份文档，该文档描述了所有工具的设置，然后同事需要花费数小时安装它们。相反，您可以在 Docker 镜像中打包工具和脚本，共享该镜像，然后您的同事可以运行容器中的脚本，而无需额外的设置工作。
  
- You can work with containers in other ways too. Next you’ll see how you can run a
-container and connect to a terminal inside the container, just as if you were connecting
-to a remote machine. You use the same docker container run command, but you pass
-some additional flags to run an interactive container with a connected terminal session.
+你也可以用其他方式处理容器。接下来，您将了解如何运行容器并连接到容器内的终端，就像您连接到远程计算机一样。使用相同的docker容器运行命令，但是需要一些附加标志用于运行具有连接的终端会话的交互式容器。
 
-<b>TRY IT NOW</b> Run the following command in your terminal session:
+<b>现在就试试</b>在你的终端运行下面的命令:
 
 `docker container run --interactive --tty diamol/base`
 
-The --interactive flag tells Docker you want to set up a connection to the container,
-and the --tty flag means you want to connect to a terminal session inside the con-
-tainer. The output will show Docker pulling the image, and then you’ll be left with a
-command prompt. That command prompt is for a terminal session inside the con-
-tainer, as you can see in figure 2.5.
+`--interactive` 参数告诉 Docker 你想建立一个到容器的连接，而 `--tty` 参数表示你想要连接到容器内的终端会话。输出将显示 Docker 拉取镜像，然后您将看到终端命令提示符，该命令提示符用于控制容器内的终端会话-如图2.5所示。
 
 ![图2.5](./images/Figure2.5.png)
 <center>图2.5 </center>
 
-The exact same Docker command works in the same way on Windows, but you’ll drop
-into a Windows command-line session instead:
+完全相同的 Docker 命令在 Windows 上的运行方式也是同样的：
 
 ```
 Microsoft Windows [Version 10.0.17763.557]
@@ -144,11 +129,9 @@ Microsoft Windows [Version 10.0.17763.557]
 C:\>
 ```
 
-Either way, you’re now inside the container and you can run any commands that you
-can normally run in the command line for the operating system. 
+无论哪种方式，您现在已经进入到容器中，可以运行任何操作系统的命令。
 
-<b>TRY IT NOW</b> Run the commands hostname and date and you’ll see details of
-the container’s environment:
+<b>现在就试试</b> 运行 hostname 以及 date 命令，可以看到容器环境的输出信息：
 
 ```
 / # hostname 
@@ -157,46 +140,27 @@ f1695de1f2ec
 Thu Jun 20 12:18:26 UTC 2019
 ```
 
-You’ll need some familiarity with your command line if you want to explore further,
-but what you have here is a local terminal session connected to a remote machine—
-the machine just happens to be a container that is running on your computer. For
-instance, if you use Secure Shell (SSH) to connect to a remote Linux machine, or
-Remote Desktop Protocol (RDP) to connect to a remote Windows Server Core
-machine, you’ll get exactly the same experience as you have here with Docker.
+你可以深入使用，就像 ssh 到linux 机器或者通过 RDP 协议远程到 windows server 机器一样。
  
- Remember that the container is sharing your computer’s operating system, which
-is why you see a Linux shell if you’re running Linux and a Windows command line if
-you’re using Windows. Some commands are the same for both (try ping google.com),
-but others have different syntax (you use ls to list directory contents in Linux, and
-dir in Windows).
- 
- Docker itself has the same behavior regardless of which operating system or pro-
-cessor you’re using. It’s the application inside the container that sees it’s running on
-an Intel-based Windows machine or an Arm-based Linux one. You manage containers
-with Docker in the same way, whatever is running inside them.
+请记住，容器共享主机的操作系统，这就是为什么在 linux 机器运行容器时会看到Linux shell，而在Windows 机器运行容器时会看到Windows命令行。
 
-<b>TRY IT NOW</b> Open up a new terminal session, and you can get details of all
-the running containers with this command:
+不管你是基于什么类型的系统运行的容器，最终对应用的管理是没有影响的，无论你在容器中运行什么，管理容器的方式是一样的。
+
+<b>现在就试试</b> 打开一个新的终端会话，通过如下命令获取所有运行状态的容器：
 
 `docker container ls`
 
-The output shows you information about each container, including the image it’s
-using, the container ID, and the command Docker ran inside the container when it
-started—this is some abbreviated output:
+命令执行的输出将显示每个容器的信息，包括使用的镜像信息、容器的 id 以及容器启动时docker 内部执行的命令，类似下面：
 
 ```
 CONTAINER ID IMAGE COMMAND CREATED STATUS 
 f1695de1f2ec diamol/base "/bin/sh" 16 minutes ago Up 16 minutes 
 ```
 
-If you have a keen eye, you’ll notice that the container ID is the same as the hostname
-inside the container. Docker assigns a random ID to each container it creates, and
-part of that ID is used for the hostname. There are lots of docker container com-
-mands that you can use to interact with a specific container, which you can identify
-using the first few characters of the container ID you want.
+如果您目光敏锐，就会注意到容器的 ID 与容器的主机名相同，Docker 为它创建的每个容器分配一个随机ID，并且该ID的一部分用于主机名。您可以使用许多docker容器命令指定容器id 的前几位与特定的容器进行交互。
 
-<b>TRY IT NOW</b> docker container top lists the processes running in the con-
-tainer. I’m using f1 as a short form of the container ID f1695de1f2ec:
+
+<b>现在就试试</b> docker container top 命令列出了容器中运行的进程，我使用f1作为容器ID f1695de1f2ec的缩写形式：
 
 ```
 > docker container top f1
@@ -204,11 +168,9 @@ PID USER TIME COMMAND
 69622 root 0:00 /bin/sh
 ```
 
-If you have multiple processes running in the container, Docker will show them all.
-That will be the case for Windows containers, which always have several background
-processes running in addition to the container application.
-TRY IT NOW docker container logs displays any log entries the container
-has collected:
+如果你的容器中不止一个进程在运行，那么将显示所有的进程。Windows 下运行容器就是这样，它总是有几个在容器应用程序之外后台运行的进程。
+
+<b>现在就试试</b> docker container logs 命令显示了容器执行输出的日志信息：
 
 ```
 > docker container logs f1
@@ -216,14 +178,10 @@ has collected:
 f1695de1f2ec
 ```
 
-Docker collects log entries using the output from the application in the container. In
-the case of this terminal session, I see the commands I ran and their results, but for a
-real application you would see your code’s log entries. For example, a web application
-may write a log entry for every HTTP request processed, and these will show in the
-container logs.
+Docker 使用容器中应用程序的输出收集日志条目。在此前终端会话中，我看到了我运行的命令及其结果，但对于在实际应用程序中，您将看到程序代码的日志条目。例如，web应用程序
+可以为处理的每个HTTP请求写入日志条目，这些将显示在容器日志中。
 
-<b>TRY IT NOW</b> docker container inspect shows you all the details of a
-container:
+<b>现在就试试</b> docker container inspect 命令查看容器详情:
 
 ```
 > docker container inspect f1
@@ -234,30 +192,13 @@ container:
  "Created": "2019-06-20T12:13:52.8360567Z"
 ```
 
-The full output shows lots of low-level information, including the paths of the con-
-tainer’s virtual filesystem, the command running inside the container, and the virtual
-Docker network the container is connected to—this can all be useful if you’re track-
-ing down a problem with your application. It comes as a large chunk of JSON, which is
-great for automating with scripts, but not so good for a code listing in a book, so I’ve
-just shown the first few lines.
+完整的输出显示了很多底层的信息，包括容器的虚拟文件系统路径、容器中运行的命令以及容器连接的虚拟Docker 网络。这些信息在你解决应用程序问题时是很有用的。它是一大块JSON，对于自动化脚本可能会有用处，但对于书中的代码显示来说就不太好了，所以我只展示了前几行。
  
- These are the commands you’ll use all the time when you’re working with contain-
-ers, when you need to troubleshoot application problems, when you want to check if
-processes are using lots of CPU, or if you want to see the networking Docker has set up
-for the container.
+这些都是一些常用的命令，比如当你检查应用程序的网络、cpu大量占用等等
  
- There’s another point to these exercises, which is to help you realize that as far as
-Docker is concerned, containers all look the same. Docker adds a consistent manage-
-ment layer on top of every application. You could have a 10-year-old Java app running
-in a Linux container, a 15-year-old .NET app running in a Windows container, and a
-brand-new Go application running on a Raspberry Pi. You’ll use the exact same com-
-mands to manage them—run to start the app, logs to read out the logs, top to see the
-processes, and inspect to get the details.
+这些练习体现了另外一点，那就是所有的容器看起来都差不多。Docker 在每个应用程序的顶部添加了一个管理层，你可以让一个 10年前的 Java 应用运行在 Linux 容器中，让一个15年前的 .net 应用运行在 windows 容器中，以及一个新的 go程序运行在树莓派中。你将使用同样的命令管理它们：启动、查看日志、查看进程以及查看明细。
  
- You’ve now seen a bit more of what you can do with Docker; we’ll finish with some
-exercises for a more useful application. You can close the second terminal window you
-opened (where you ran docker container logs), go back to the first terminal, which
-is still connected to the container, and run exit to close the terminal session.
+到现在，您已经看到了使用Docker可以做很多事情；我们会用一些练习运行更丰富的应用。
 
 ## 2.4 在容器中运行 Web 站点
 
