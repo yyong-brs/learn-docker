@@ -21,33 +21,17 @@
 
 在这个输出中有很多内容。后面我将删减一些代码清单以保持简短，但是这是第一次尝试，我想把它完整地展示出来，这样我们就可以剖析它了。
 
-First of all, what’s actually happened? The docker container run command tells
-Docker to run an application in a container. This application has already been
-packaged to run in Docker and has been published on a public site that anyone can
-access. The container package (which Docker calls an “image”) is named diamol/
-ch02-hello-diamol (I use the acronym diamol throughout this book—it stands for
-Docker In A Month Of Lunches). The command you’ve just entered tells Docker to run a
-container from that image.
+首先，发生了什么？ docker 容器运行了命令告诉 Docker 引擎在一个容器中运行应用程序，该应用已经打包在 docker 运行并且发布到了所有人都可以访问的公共网站。这个所谓的容器包也就是“镜像”的名字是 `diamol/ch02-hello-diamol`, 上面的命令就是告诉 Docker 通过该镜像运行一个容器。 
 
- Docker needs to have a copy of the image locally before it can run a container
-using the image. The very first time you run this command, you won’t have a copy of
-the image, and you can see that in the first output line: unable to find image
-locally. Then Docker downloads the image (which Docker calls “pulling”), and you
-can see that the image has been downloaded.
+在通过镜像运行容器之前，docker 必须在本地拥有一个镜像的副本。第一次运行命令，由于本地没有镜像副本，所以你可以看到首先输出的是：unable to find image locally。然后 Docker 下载了镜像（在 Docker 概念里叫做 "pulling" 拉取镜像）,然后你可以看到镜像已经被下载。
 
-Now Docker starts a container using that image. The image contains all the con-
-tent for the application, along with instructions telling Docker how to start the appli-
-cation. The application in this image is just a simple script, and you see the output
-which starts Hello from Chapter 2! It writes out some details about the computer it’s
-running on:
-- The machine name, in this example e5943557213b
-- The operating system, in this example Linux 4.9.125-linuxkit x86_64
-- The network address, in this example 172.17.0.2
+现在 Docker 使用该镜像启动了一个容器。该镜像包含了应用程序的所有内容以及告诉 Docker 如何启动应用的说明。这个镜像中，只是一个简单的脚本示例，输出了一些关于它所在机器的信息：
+- 机器名，在本例中是 e5943557213b
+- 操作系统，本例中是 Linux 4.9.125-linuxkit x86_64
+- 网络地址，本例中是 172.17.0.2
 
-I said your output will be “something like this”—it won’t be exactly the same, because
-some of the information the container fetches depends on your computer. I ran this
-on a machine with a Linux operating system and a 64-bit Intel processor. If you run it
-using Windows containers, the I'm running on line will show this instead:
+
+你的输出和上面提到的应该差不多，并不是完全一样的，因为容器获得的信息取决于你自己的机器。如果你运行的是一个 windows 上的容器，那么输出可能是这样的：
 
 ```
 --------------------- 
@@ -56,9 +40,7 @@ Microsoft Windows [Version 10.0.17763.557]
 ---------------------
 ```
 
-If you’re running on a Raspberry Pi, the output will show that it’s using a different
-processor (armv7l is the codename for ARM’s 32-bit processing chip, and x86_64 is
-the code for Intel’s 64-bit chip):
+如果是树莓派，也可能是这样的：
 
 ```
 ---------------------
@@ -67,30 +49,17 @@ Linux 4.19.42-v7+ armv7l
 ---------------------
 ```
 
-This is a very simple example application, but it shows the core Docker workflow.
-Someone packages their application to run in a container (I did it for this app, but
-you will do it yourself in the next chapter), and then publishes it so it’s available to
-other users. Then anyone with access can run the app in a container. Docker calls this
-build, share, run. 
+这是一个非常简单的应用，但是它显示了 Docker 的核心流程。开发者将他们的程序打包在容器中运行（后面的章节会详细介绍如何制作镜像），然后将它发不出去，这样子别人也可以使用它。然后大家就可以在容器中运行它。docker 将这些过程描述为构建、分享、运行。
 
-It’s a hugely powerful concept, because the workflow is the same no matter how
-complicated the application is. In this case it was a simple script, but it could be a Java
-application with several components, configuration files, and libraries. The workflow
-would be exactly the same. And Docker images can be packaged to run on any com-
-puter that supports Docker, which makes the app completely portable—portability is
-one of Docker’s key benefits.
+这是一个非常重要的概念，因为无论你的应用多么复杂，工作流程都是一样的。在本例中，仅仅执行了一个简单的脚本，但是也可以是一个包含多组件的 Java 程序、配置文件以及库等等。最后工作的过程也是一样的。然后镜像可以在任何支持 Docker 的机器中运行，可移植性就是 Docker的主要特点之一。
 
-What happens if you run another container using the same command?
+那么如果你使用同样的命令再次运行一个容器会发生什么？
 
-<b>TRY IT NOW</b> Repeat the exact same Docker command:
+<b>现在就试试</b> 重复执行同样的 Docker 命令:
 
 `docker container run diamol/ch02-hello-diamol`
 
-You’ll see similar output to the first run, but there will be differences. Docker already
-has a copy of the image locally so it doesn’t need to download the image first; it gets
-straight to running the container. The container output shows the same operating sys-
-tem details, because you’re using the same computer, but the computer name and the
-IP address of the container will be different:
+您将看到与第一次运行类似的输出，但也有不同之处。Docker 已经在本地拥有镜像的副本，因此不需要先下载镜像;它直接运行容器。容器输出显示相同的操作系统信息，因为你们使用的是同一台计算机，但是计算机名和容器的IP地址将不同:
 
 ```
 Hello from Chapter 2!
@@ -106,11 +75,9 @@ inet addr:172.17.0.5 Bcast:172.17.255.255 Mask:255.255.0.0
 ---------------------
 ```
 
-Now my app is running on a machine with the name 858a26ee2741 and the IP address
-172.17.0.5. The machine name will change every time, and the IP address will often
-change, but every container is running on the same computer, so where do these dif-
-ferent machine names and network addresses come from? We’ll dig into a little theory
-next to explain that, and then it’s back to the exercises.
+现在，我的应用程序运行在一台名为 858a26ee2741 和IP地址为 172.17.0.5 的机器上. 机器名称每次都会更改，IP地址也经常
+改变，但是每个容器都在同一台计算机上运行，所以这些差异在哪里呢？不同的机器名称和网络地址来自哪里?我们将深入研究一些理论
+，接下来解释一下，然后继续练习。
 
 ## 2.2 什么是容器？
 
