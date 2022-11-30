@@ -204,8 +204,7 @@ Docker 使用容器中应用程序的输出收集日志条目。在此前终端�
 
 我们已经运行了一些容器， 输出一些简单的文本信息，然后使用了 interactive 参数并连接到了容器内的会话终端, 当你退出时容器也就停止运行了，docker container ls 命令执行后你看不到任何容器,因为这个命令只显示运行态的容器。
 
-<b>TRY IT NOW</b> Run docker container ls --all, which shows all containers in
-any status:
+<b>现在就试试</b> 运行 docker container ls --all, 显示所有状态的容器:
 
 ```
 > docker container ls --all
@@ -219,18 +218,11 @@ ago Exited (0)
 ago Exited (0)
 ```
 
-The containers have the status Exited. There are a couple of key things to understand
-here. 
+可以看到 Existed 状态的容器，有两点需要知道： 
 
- First, containers are running only while the application inside the container is run-
-ning. As soon as the application process ends, the container goes into the exited state.
-Exited containers don’t use any CPU time or memory. The “Hello World” container
-exited automatically as soon as the script completed. The interactive container we
-were connected to exited as soon as we exited the terminal application.
+第一点，只有当容器中运行的应用是运行状态时容器才是运行状态. 一旦应用程序运行退出,那么容器也将变成 exited 状态。退出状态的容器不会占用任何 cpu 和内存资源。 之前的 Hello Word 容器，在内部的脚本完成时退出，还有之前我们连接进去的交互式容器当我们在退出时也变成退出状态。
  
- Second, containers don’t disappear when they exit. Containers in the exited state
-still exist, which means you can start them again, check the logs, and copy files to and
-from the container’s filesystem. You only see running containers with docker container
+第二点， 容器退出时并不会消失。退出状态的容器还是存在的,这就意味着你可以再次启动他们。 You only see running containers with docker container
 ls, but Docker doesn’t remove exited containers unless you explicitly tell it to do so.
 Exited containers still take up space on disk because their filesystem is kept on the
 computer’s disk.
