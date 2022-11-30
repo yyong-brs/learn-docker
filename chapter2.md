@@ -325,6 +325,7 @@ Docker是迄今为止最流行、最容易使用的容器平台，但它不是�
 
 ## 2.6 实验：索引容器文件系统
 
+
 This is the first lab in the book, so here’s what it’s all about. The lab sets you a task to
 achieve by yourself, which will really help you cement what you’ve learned in the chap-
 ter. There will be some guidance and a few hints, but mostly this is about you going
