@@ -222,27 +222,19 @@ ago Exited (0)
 
 第一点，只有当容器中运行的应用是运行状态时容器才是运行状态. 一旦应用程序运行退出,那么容器也将变成 exited 状态。退出状态的容器不会占用任何 cpu 和内存资源。 之前的 Hello Word 容器，在内部的脚本完成时退出，还有之前我们连接进去的交互式容器当我们在退出时也变成退出状态。
  
-第二点， 容器退出时并不会消失。退出状态的容器还是存在的,这就意味着你可以再次启动他们。 You only see running containers with docker container
-ls, but Docker doesn’t remove exited containers unless you explicitly tell it to do so.
-Exited containers still take up space on disk because their filesystem is kept on the
-computer’s disk.
- 
- So what about starting containers that stay in the background and just keep run-
-ning? That’s actually the main use case for Docker: running server applications like
-websites, batch processes, and databases.
+第二点， 容器退出时并不会消失。退出状态的容器还是存在的,这就意味着你可以再次启动他们。`docker container ls` 只能看到运行状态容器,docker 不会删除 exited 状态的容器，除非你明确执行了删除操作。existed 容器也占用磁盘空间，因为他们的文件系统就保存在主机磁盘上。
 
-<b>TRY IT NOW</b> Here’s a simple example, running a website in a container:
+那么启动一个容器，让它保持在后台运行有什么意义？这实际上是 Docker 最主要的用法：运行服务器应用程序就像web 站点、批处理以及数据库等。
+
+<b>现在就试试</b> 在容器中运行一个 web 站点:
 
 ```
-docker container run --detach --publish 8088:80 diamol/ch02-hello-
-diamol-web
+docker container run --detach --publish 8088:80 diamol/ch02-hello-diamol-web
 ```
 
-This time the only output you’ll see is a long container ID, and you get returned to
-your command line. The container is still running in the background.
+这一次执行的输出只能看到一个很长的容器 id，然后输出完成后回到你自己的命令行，容器以后台方式保持运行状态。
 
-<b>TRY IT NOW</b> Run docker container ls and you’ll see that the new container
-has the status Up:
+<b>现在就试试</b> 运行 docker container ls 可以看到你刚刚运行的容器保持运行状态:
 
 ```
 > docker container ls
@@ -254,14 +246,9 @@ e53085ff0cc4 diamol/ch02-hello-diamol-web
 443/tcp, 0.0.0.0:8088->80/tcp reverent_dubinsky
 ```
 
-The image you’ve just used is diamol/ch02-hello-diamol-web. That image includes
-the Apache web server and a simple HTML page. When you run this container, you
-have a full web server running, hosting a custom website. Containers that sit in the
-background and listen for network traffic (HTTP requests in this case) need a couple
-of extra flags in the container run command:
-
-- --detach—Starts the container in the background and shows the container ID
-- --publish—Publishes a port from the container to the computer
+你刚刚使用的镜像是 `diamol/ch02-hello-diamol-web`， 这个镜像里面包括了一个 Apache web server 以及一个简单的 html 页面文件。当你运行这个容器，你将运行一个完整的 web 服务，提供一个自定义网站。容器位于后台并监听网络流量(在本例中是HTTP请求)，用到了两个特别的参数:
+- `--detach` — 在后台启动容器并显示容器ID
+- `--publish` — 将容器端口从容器映射到主机端口
 
 Running a detached container just puts the container in the background so it starts
 up and stays hidden, like a Linux daemon or a Windows service. Publishing ports
