@@ -292,77 +292,36 @@ $() 语法通过将命令的输出输入到另外一个命令，它在 linux 、
 
 ## 2.5 理解 Docker 如何运行容器
 
-We’ve done a lot of try-it-now exercises in this chapter, and you should be happy now
-with the basics of working with containers. 
+在本章中我们已经进行了很多联练习，你现在应该很开心，你已经掌握了容器的基本使用。
  
- In the first try-it-now for this chapter, I talked about the build, share, run workflow that
-is at the core of Docker. That workflow makes it very easy to distribute software—I’ve built
-all the sample container images and shared them, knowing you can run them in Docker
-and they will work the same for you as they do for me. A huge number of projects now use
-Docker as the preferred way to release software. You can try a new piece of software—say,
-Elasticsearch, or the latest version of SQL Server, or the Ghost blogging engine—with
-the same type of docker container run commands you’ve been using here.
+本章开始的第一次尝试，我们讨论了关于 docker 核心的构建、分享以及运行流程。该流程使得分发软件非常简单，我已经构建了所有的样例镜像并分享出来，现在你可以通过 Docker 运行它们。很多项目现在选择 Docker 作为它们发布软件的方式，你可以尝试通过同样的 Docker 命令来运行一个新的软件，比如说Elasticsearch，或者最新版本的SQL Server，或者Ghost博客引擎。
  
- We’re going to end with a little more background, so you have a solid understand-
-ing of what’s actually happening when you run applications with Docker. Installing
-Docker and running containers is deceptively simple—there are actually a few differ-
-ent components involved, which you can see in figure 2.8.
+我们将讲解更多的背景知识来结束本章，这样你们就能有一个稳固的理解关于：当你用Docker运行应用程序时，实际发生了什么。安装Docker和运行容器看起来很简单，但实际上涉及了一些不同的组件，如图2.8所示。
 
 ![图2.8](./images/Figure2.8.png)
 <center>图2.8 </center>
 
-- The Docker Engine is the management component of Docker. It looks after the
-local image cache, downloading images when you need them, and reusing
-them if they’re already downloaded. It also works with the operating system to
-create containers, virtual networks, and all the other Docker resources. The
-Engine is a background process that is always running (like a Linux daemon or
-a Windows service).
-- The Docker Engine makes all the features available through the Docker API,
-which is just a standard HTTP-based REST API. You can configure the Engine
-to make the API accessible only from the local computer (which is the default),
-or make it available to other computers on your network.
-- The Docker command-line interface (CLI) is a client of the Docker API. When you
-run Docker commands, the CLI actually sends them to the Docker API, and the
-Docker Engine does the work.
+- Docker 引擎作为 Docker 主要的管理组件，它负责本地镜像缓存，当你需要镜像时下载它们，并在你已经下载时重复使用它们。它同样协同操作系统去创建容器、虚拟网络以及其它的容器资源。Docker 引擎作为后台进程持续运行（就像一个 linux 后台进程或者 windows 的服务）。
+- Docker引擎通过 Docker API 提供了所有的功能，它只是一个标准的基于http的REST API。您可以配置引擎使API只能从本地计算机访问(这是默认值)，
+或者让网络上的其他计算机也可以使用它。
+-  Docker命令行接口(CLI)是Docker API的一个客户端。当你运行Docker命令，CLI会将它们发送到Docker API，而 Docker 引擎完成具体的工作。
 
-It’s good to understand the architecture of Docker. The only way to interact with the
-Docker Engine is through the API, and there are different options for giving access to
-the API and securing it. The CLI works by sending requests to the API. 
+理解 Docker 的体系结构对你来说很重要。唯一与 Docker 互动的方法就是通过 API 实现的，然后有不同的配置选项可以访问API以及保护它。CLI的工作原理就是向 API 发送请求。
  
- So far we’ve used the CLI to manage containers on the same computer where Docker
-is running, but you can point your CLI to the API on a remote computer running Docker
-and control containers on that machine—that’s what you’ll do to manage containers in
-different environments, like your build servers, test, and production. The Docker API is
-the same on every operating system, so you can use the CLI on your Windows laptop to
-manage containers on your Raspberry Pi, or on a Linux server in the cloud.
+到目前为止，我们使用CLI来管理Docker所在计算机上运行的容器，但是您可以将您的 CLI 指向运行Docker的远程机器，并控制该机器上的容器— 这就是你后面所要做的在不同的环境中管理容器，比如构建服务、测试以及部署到生产。Docker API 在每个操作系统上都是一样的，所以你可以在你的Windows笔记本电脑上使用命令行管理树莓派上的容器，或者云中Linux服务器上的容器。
  
- The Docker API has a published specification, and the Docker CLI is not the only
-client. There are several graphical user interfaces that connect to the Docker API and
-give you a visual way to interact with your containers. The API exposes all the details
-about containers, images, and the other resources Docker manages so it can power
-rich dashboards like the one in figure 2.9.
+Docker API 有一个发布的规范，Docker CLI 并不是唯一的客户端类型，有一些图形用户界面可以连接 docker api 然后以可视化界面的方式来管理容器。API公开了所有细节，包括容器、镜像以及 Docker 管理的其他资源，这样就可以展现一个非常丰富的仪表板，如图2.9所示：
 
 ![图2.9](./images/Figure2.9.png)
 <center>图2.9 </center>
 
- This is Universal Control Plane (UCP), a commercial product from the company
-behind Docker (https://docs.docker.com/ee/ucp/). Portainer is another option,
-which is an open source project. Both UCP and Portainer run as containers them-
-selves, so they’re easy to deploy and manage.
+这是一个叫做 UCP 的程序，一款基于 Docker 的商业产品 (https://docs.docker.com/ee/ucp/)。Portainer是另一种选择，它是一个开源项目。UCP和Portainer 本身都可以以 docker 方式运行，所以它们很容易部署和管理。
+
+我们不会再深入讨论 Docker 架构了，Dcoker 引擎使用一个叫做 containerd 的组件来实际管理容器,然后 Containerd 反过来利用操作系统特性来创建虚拟的容器环境。
  
- We won’t be diving any deeper into the Docker architecture than this. The Docker
-Engine uses a component called containerd to actually manage containers, and con-
-tainerd in turn makes use of operating system features to create the virtual environ-
-ment that is the container. 
+您不需要了解容器的底层细节，但是了解它是有好处的，要知道: containerd 是一个由 CNCF 监管的开源组件，它运行容器的规范是开源公开的;它被称为 OCI。
  
- You don’t need to understand the low-level details of containers, but it is good to
-know this: containerd is an open source component overseen by the Cloud Native
-Computing Foundation, and the specification for running containers is open and
-public; it’s called the Open Container Initiative (OCI). 
- 
- Docker is by far the most popular and easy to use container platform, but it’s not
-the only one. You can confidently invest in containers without being concerned that
-you’re getting locked in to one vendor’s platform.
+Docker是迄今为止最流行、最容易使用的容器平台，但它不是唯一的一个。您可以自信地投身于容器，而不必担心被锁定在固定的供应商的平台上。
 
 ## 2.6 实验：索引容器文件系统
 
