@@ -250,54 +250,27 @@ e53085ff0cc4 diamol/ch02-hello-diamol-web
 - `--detach` — 在后台启动容器并显示容器ID
 - `--publish` — 将容器端口从容器映射到主机端口
 
-Running a detached container just puts the container in the background so it starts
-up and stays hidden, like a Linux daemon or a Windows service. Publishing ports
-needs a little more explanation. When you install Docker, it injects itself into your
-computer’s networking layer. Traffic coming into your computer can be intercepted
-by Docker, and then Docker can send that traffic into a container. 
+运行一个分离的容器只是把容器放在后台，这样它就启动了并保持后台运行，就像Linux守护进程或Windows服务一样。关于发布端口需要更多的解释：当您安装Docker时，它将自己注入到您的
+计算机的网络层，进入你电脑的流量会被拦截，通过Docker，然后Docker可以把流量发送到某个容器。
  
- Containers aren’t exposed to the outside world by default. Each has its own IP
-address, but that’s an IP address that Docker creates for a network that Docker
-manages—the container is not attached to the physical network of the computer.
-Publishing a container port means Docker listens for network traffic on the computer
-port, and then sends it into the container. In the preceding example, traffic sent to
-the computer on port 8088 will get sent into the container on port 80—you can see
-the traffic flow in figure 2.6.
+
+默认情况下，容器不会对外暴露端口。它们都有自己的IP地址，但那是受 docker 管理的网络创建的—容器没有附加到主机的物理网络上。发布容器端口意味着 Docker监听计算机上的网络流量端口，然后将其发送到容器中。在上面的例子中，发送到主机端口 8888 的流量将被发送到端口 80 的容器中——您可以看到图2.6中的流向：
 
 ![图2.6](./images/Figure2.6.png)
 <center>图2.6 </center>
 
-In this example my computer is the machine running Docker, and it has the IP
-address 192.168.2.150. That’s the IP address for my physical network, and it was
-assigned by the router when my computer connected. Docker is running a single con-
-tainer on that computer, and the container has the IP address 172.0.5.1. That
-address is assigned by Docker for a virtual network managed by Docker. No other
-computers in my network can connect to the container’s IP address, because it only
-exists in Docker, but they can send traffic into the container, because the port has
-been published. 
+在这个例子中，我的计算机运行 Docker，它拥有 IP 地址192.168.2.150，那是我物理网络的IP地址，而且它是由路由器分配的。Docker正在运行一个单一的容器，容器的IP地址为172.0.5.1。那个地址是 Docker 管理的虚拟网络分配的。网络中的其他计算机是无法连接到这个容器 ip 的，因为它只存在于Docker中，但是他们可以将流量发送到容器中，因为端口被转发出去。
 
-<b>TRY IT NOW</b> Browse to http:/ /localhost:8088 on a browser. That’s an HTTP
-request to the local computer, but the response (see figure 2.7) comes from
-the container. (One thing you definitely won’t learn from this book is effec-
-tive website design.)
+<b>现在就试试</b> 通过浏览器访问 http://localhost:8088 ，这是一个指向我本地计算机的请求, 但是响应 (查看图 2.7) 来自于容器。
 
 ![图2.7](./images/Figure2.7.png)
 <center>图2.7 </center>
 
-This is a very simple website, but even so, this app still benefits from the portability
-and efficiency that Docker brings. The web content is packaged with the web server, so
-the Docker image has everything it needs. A web developer can run a single container
-on their laptop, and the whole application—from the HTML to the web server stack—
-will be exactly the same as if an operator ran the app on 100 containers across a server
-cluster in production.
+这是一个非常简单的网站，即使如此，这个应用程序仍然受益于 Docker 的可移植性及其带来的效率。网页内容是和网页服务器一起打包的，所以Docker 镜像拥有它所需要的一切。web开发人员可以在他们的个人计算机上运行单个容器及整个应用程序——从HTML到web服务器栈。
  
- The application in this container keeps running indefinitely, so the container will
-keep running too. You can use the docker container commands we’ve already used
-to manage it.
+此容器中的应用程序将无限期地运行，因此容器将持续运行。您可以使用我们已经使用过的docker container 命令去管理它。
 
-<b>TRY IT NOW</b> docker container stats is another useful one: it shows a live
-view of how much CPU, memory, network, and disk the container is using.
-The output is slightly different for Linux and Windows containers:
+<b>现在就试试</b> docker container stats 另一个很有用的命令: 它实时显示了容器占用的 CPU、内存、网络以及磁盘情况。Linux 和 windows 上运行的输出可能会有点区别:
 
 ```
 > docker container stats e53 
@@ -307,22 +280,15 @@ e53085ff0cc4 reverent_dubinsky 0.36% 16.88MiB 250kB / 53.2kB
 19.4MB / 6.21MB
 ```
 
-When you’re done working with a container, you can remove it with `docker container
-rm ` and the container ID, using the `--force` flag to force removal if the container is
-still running. 
+当你的容器结束工作,你可以通过 `docker container rm ` 删除它, 通过 `--force` 参数可以强制删除运行状态的容器。
 
-We’ll end this exercise with one last command that you’ll get used to running
-regularly.
+我们将通过一个经常使用的命令来结束本次练习。
 
-<b>TRY IT NOW</b> Run this command to remove all your containers:
+<b>现在就试试</b> 运行下面的命令删除所有的容器:
 
 `docker container rm --force $(docker container ls --all --quiet)`
 
-The $() syntax sends the output from one command into another command—it
-works just as well on Linux and Mac terminals, and on Windows PowerShell. Combin-
-ing these commands gets a list of all the container IDs on your computer, and removes
-them all. This is a good way to tidy up your containers, but use it with caution, because
-it won’t ask for confirmation.
+$() 语法通过将命令的输出输入到另外一个命令，它在 linux 、mac 终端以及 windows 的 PowerShell 下都能正常使用。这两个命令的组合获得了你机器上的所有容器 id 然后强制删除它们。这是一个清理你容器的比较便捷的方式，但是使用时要注意，它不会二次确认直接删除。
 
 ## 2.5 理解 Docker 如何运行容器
 
