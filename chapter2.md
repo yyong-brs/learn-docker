@@ -327,25 +327,16 @@ Docker是迄今为止最流行、最容易使用的容器平台，但它不是�
 
 这是本书提到的第一个实验室，本次实验室给你设定了一个任务，你必须自己完成，这将有助于巩固你在本章学习的内容。实验中将会有一些指导和提示，但是主要还是靠你自己去完成它。
  
- Every lab has a sample solution on the book’s GitHub repository. It’s worth spend-
-ing some time trying it out yourself, but if you want to check my solution you can find
-it here: https://github.com/sixeyed/diamol/tree/master/ch02/lab.
-每个实验在本书的 github 仓库都有一些示例解决方案，非常值得你自己花点时间进行一些尝试，如果你想查看解决方案可以访问：https://github.com/yyong-brs/learn-docker/tree/master/diamol/ch02/lab
- 
- Here we go: your task is to run the website container from this chapter, but replace
-the index.html file so when you browse to the container you see a different home-
-page (you can use any content you like). Remember that the container has its own
-filesystem, and in this application, the website is serving files that are on the con-
-tainer’s filesystem. 
- Here are some hints to get you going:
+每个实验在本书的 github 仓库都有一些示例解决方案，非常值得你自己花点时间进行一些尝试，如果你想查看解决方案可以访问：https://github.com/yyong-brs/learn-docker/tree/master/diamol/ch02/lab。
 
-- You can run docker container to get a list of all the actions you can perform on
-a container.
+这就开始吧：您的任务是运行本章中的网站容器，然后替换 index.html 文件内容，这样子当您访问网站时，会看到不同的主页。记住，容器有自己的
+文件系统，在这个应用程序中，网站提供的文件位于容器的文件系统中。
+以下是一些让您完成实验的提示：
 
-- Add --help to any docker command, and you’ll see more detailed help text.
+- 你可以直接运行 `docker container` 命令来查看针对容器可以执行的相关命令。
 
-- In the diamol/ch02-hello-diamol-web Docker image, the content from the
-website is served from the directory /usr/local/apache2/htdocs (that’s
-C:\usr\local\apache2\htdocs on Windows). 
+- 添加 `--help` 参数可以看到详细的帮助信息。
 
-Good luck :)
+- 在镜像 `diamol/ch02-hello-diamol-web` 中, web 站点提供的首页文件在容器的文件系统目录：` /usr/local/apache2/htdocs` 下 (如果是 windows 就在目录 C:\usr\local\apache2\htdocs 下). 
+
+祝你好运 :)
