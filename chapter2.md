@@ -323,18 +323,14 @@ Docker API 有一个发布的规范，Docker CLI 并不是唯一的客户端类�
  
 Docker是迄今为止最流行、最容易使用的容器平台，但它不是唯一的一个。您可以自信地投身于容器，而不必担心被锁定在固定的供应商的平台上。
 
-## 2.6 实验：索引容器文件系统
+## 2.6 实验室：索引容器文件系统
 
-
-This is the first lab in the book, so here’s what it’s all about. The lab sets you a task to
-achieve by yourself, which will really help you cement what you’ve learned in the chap-
-ter. There will be some guidance and a few hints, but mostly this is about you going
-further than the prescriptive try-it-now exercises and finding your own way to solve the
-problem.
+这是本书提到的第一个实验室，本次实验室给你设定了一个任务，你必须自己完成，这将有助于巩固你在本章学习的内容。实验中将会有一些指导和提示，但是主要还是靠你自己去完成它。
  
  Every lab has a sample solution on the book’s GitHub repository. It’s worth spend-
 ing some time trying it out yourself, but if you want to check my solution you can find
 it here: https://github.com/sixeyed/diamol/tree/master/ch02/lab.
+每个实验在本书的 github 仓库都有一些示例解决方案，非常值得你自己花点时间进行一些尝试，如果你想查看解决方案可以访问：
  
  Here we go: your task is to run the website container from this chapter, but replace
 the index.html file so when you browse to the container you see a different home-
