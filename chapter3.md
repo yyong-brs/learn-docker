@@ -71,6 +71,9 @@ docker container logs web-ping
 You’ll see output like that in figure 3.2, showing the app making HTTP requests to
 blog.sixeyed.com.
 
+![图3.2](./images/Figure3.2.png)
+<center>图3.2 </center>
+
 An app that makes web requests and logs how long the response took is fairly useful—
 you could use it as the basis for monitoring the uptime of a website. But this applica-
 tion looks like it’s hardcoded to use my blog, so it’s pretty useless to anyone but me.
@@ -100,6 +103,9 @@ docker container run --env TARGET=google.com diamol/ch03-web-ping
 
 Your output this time will look like mine in figure 3.3.
 
+![图3.3](./images/Figure3.3.png)
+<center>图3.3 </center>
+
 This container is doing something different. First, it’s running interactively because
 you didn’t use the --detach flag, so the output from the app is shown on your con-
 sole. The container will keep running until you end the app by pressing Ctrl-C. Second,
@@ -114,6 +120,9 @@ tion code looks for an environment variable with the key TARGET. That key is set
 value of blog.sixeyed.com in the image, but you can provide a different value with
 the docker container run command by using the --env flag. Figure 3.4 shows how
 containers have their own settings, different from each other and from the image.
+
+![图3.4](./images/Figure3.4.png)
+<center>图3.4 </center>
 
 The host computer has its own set of environment variables too, but they’re sepa-
 rate from the containers. Each container only has the environment variables that
@@ -186,6 +195,10 @@ You should see that you have three files:
 - README.md, which is just documentation for using the image
 
 You can see these in figure 3.5.
+
+![图3.5](./images/Figure3.5.png)
+<center>图3.5 </center>
+
 You don’t need any understanding of Node.js or JavaScript to package this app and
 run it in Docker. If you do look at the code in app.js, you’ll see that it’s pretty basic,
 and it uses standard Node.js libraries to make the HTTP calls and to get configuration
@@ -211,6 +224,9 @@ tory where the Dockerfile and related files are. Docker calls this directory the
 text,” and the period means “use the current directory.” You’ll see output from the
 build command, executing all the instructions in the Dockerfile. My build is shown in
 figure 3.6.
+
+![图3.6](./images/Figure3.6.png)
+<center>图3.6 </center>
 
 If you get any errors from the build command, you’ll first need to check that the
 Docker Engine is started. You need the Docker Desktop app to be running on Win-
@@ -254,6 +270,9 @@ docker container run -e TARGET=docker.com -e INTERVAL=5000 web-ping
 
 Your output will be like mine in figure 3.7, with the first log line confirming that the
 target web URL is docker.com and the ping interval is 5000 milliseconds.
+
+![图3.7](./images/Figure3.7.png)
+<center>图3.7 </center>
 
 That container is running in the foreground, so you’ll need to stop it with Ctrl-C. That
 ends the application, and the container will go into the exited state.
@@ -299,6 +318,9 @@ layers can be shared between different images and different containers. If you h
 lots of containers all running Node.js apps, they will all share the same set of image
 layers that contain the Node.js runtime. Figure 3.8 shows how that works.
 
+![图3.8](./images/Figure3.8.png)
+<center>图3.8 </center>
+
 The diamol/node image has a slim operating system layer, and then the Node.js run-
 time. The Linux image takes up about 75 MB of disk (the base OS layer for Windows
 containers is larger, so the Windows version of the image uses closer to 300 MB). Your
@@ -314,6 +336,9 @@ images:
 docker image ls
 
 Your output will be like mine in figure 3.9.
+
+![图3.9](./images/Figure3.9.png)
+<center>图3.9 </center>
 
 It looks like all the Node.js images take up the same amount of space—75 MB each
 on Linux. There are three of those: diamol/node, the original sample app you pulled
@@ -332,6 +357,9 @@ My image list shows a total of 363.96 MB of images, but that’s the
 total logical size. The system df command shows exactly how much disk
 space Docker is using:
 docker system df
+
+![图3.10](./images/Figure3.10.png)
+<center>图3.10 </center>
 
 You can see in figure 3.10 that my image cache is actually using 202.2 MB, meaning
 163 MB of image layers are being shared between images, a 45% saving on disk space.
@@ -363,6 +391,9 @@ docker image build -t web-ping:v2 .
 
 You’ll see the same output as mine in figure 3.11. Steps 2 through 5 of the build use
 layers from the cache, and steps 6 and 7 generate new layers.
+
+![图3.11](./images/Figure3.11.png)
+<center>图3.11 </center>
 
 Every Dockerfile instruction results in an image layer, but if the instruction doesn’t
 change between builds, and the content going into the instruction is the same,
