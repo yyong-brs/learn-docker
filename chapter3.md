@@ -1,138 +1,80 @@
 # 第三章 构建你自己的镜像
 
-You ran some containers in the last chapter and used Docker to manage them.
-Containers provide a consistent experience across applications, no matter what
-technology stack the app uses. Up till now you’ve used Docker images that I’ve built
-and shared; in this chapter you’ll see how to build your own images. This is where
-you’ll learn about the Dockerfile syntax, and some of the key patterns you will
-always use when you containerize your own apps.
+在上一章你已经通过 Docker 运行了一些容器，本章将让你了解如何构建自己的镜像。你将接触到学习 Dockerfile语法以及一些构建镜像的技巧。
 
 ## 3.1 使用 Docker Hub 的镜像
 
-We’ll start with the finished version of the image you’ll build in this chapter, so you
-can see how it’s been designed to work well with Docker. The try-it-now exercises all
-use a simple application called web-ping, which checks if a website is up. The app
-will run in a container and make HTTP requests to the URL for my blog every
-three seconds until the container is stopped.
+我们将从您将在本章中构建的镜像的最终版本开始，可以看到它是如何与Docker协同工作的。现在就试试吧，使用一个名为web-ping的简单应用程序，它检查网站是否正常。应用程序
+将在容器中运行，并每隔三秒钟执行一次直到容器停止。
 
-You know from chapter 2 that docker container run will download the con-
-tainer image locally if it isn’t already on your machine. That’s because software dis-
-tribution is built into the Docker platform. You can leave Docker to manage this for
-you, so it pulls images when they’re needed, or you can explicitly pull images using
-the Docker CLI.
+你从第2章中知道 docker container run 命令执行时，将会下载你机器上还没有镜像。这是因为软件被分发到了 Docker 平台中，你可以让 Docker 来管理应用，当你需要的时候它会提取镜像或者你可以显式地通过 Docker ClI 运行。
 
-TRY IT NOW
-Pull the container image for the web-ping application:
+<b>现在就试试</b> 拉取 web-ping 应用的镜像:
+
+```
 docker image pull diamol/ch03-web-ping
-You’ll see output similar to mine in figure 3.1.
+```
+
+你将会看到 图3.1 类似的输出：
 
 ![图3.1](./images/Figure3.1.png)
 <center>图3.1 </center>
 
-The image name is diamol/ch03-web-ping, and it’s stored on Docker Hub, which is
-the default location where Docker looks for images. Image servers are called regis-
-tries, and Docker Hub is a public registry you can use for free. Docker Hub also has a
-web interface, and you’ll find details about this image at https://hub.docker.com/r/
-diamol/ch03-web-ping.
+镜像名称是 `diamol/ch03-web-ping` ,它被存储在 Docker Hub 中。Docker Hub 是 Docker 获取镜像的默认仓库。镜像服务器被称为 registry,然后 Docker Hub 是你可以使用的一个免费的公共 registry。同时 Docker Hub 也提供了 web 界面，你可以通过网站 https://hub.docker.com/r/diamol/ch03-web-ping 来获取上面提到的镜像的信息。
 
-There’s some interesting output from the docker image pull command, which
-shows you how images are stored. A Docker image is logically one thing—you can
-think of it as a big zip file that contains the whole application stack. This image has the
-Node.js runtime together with my application code.
+`docker image pull` 命令有一些有趣的输出,它向您展示镜像如何存储。Docker 镜像在逻辑上是可以把它看作一个包含整个应用程序堆栈的大的zip文件。这个镜像包含了 Node.js运行时以及我的应用程序代码。
 
-During the pull you don’t see one single file downloaded; you see lots of down-
-loads in progress. Those are called image layers. A Docker image is physically
-stored as lots of small files, and Docker assembles them together to create the con-
-tainer’s filesystem. When all the layers have been pulled, the full image is available
-to use.
-TRY IT NOW
-Let’s run a container from the image and see what the app does:
-docker container run -d --name web-ping diamol/ch03-web-ping
+在拉取过程中，你看不到一个文件被下载;但是你会看到很多下载的信息。这些被称为镜像层。Docker 镜像在物理上被存储为许多小文件，Docker 将它们组装在一起创建容器的文件系统。当所有镜像层都被拉取后，完整的镜像就可用使用了。
 
-The -d flag is a short form of --detach, so this container will run in the background.
-The application runs like a batch job with no user interface. Unlike the website con-
-tainer we ran detached in chapter 2, this one doesn’t accept incoming traffic, so you
-don’t need to publish any ports.
+<b>现在就试试</b> 让我们基于这个镜像运行一个容器并且看看应用做了什么:
 
-There’s one new flag in this command, which is --name. You know that you can
-work with containers using the ID that Docker generates, but you can also give them a
-friendly name. This container is called web-ping, and you can use that name to refer
-to the container instead of using the random ID.
+`docker container run -d --name web-ping diamol/ch03-web-ping`
 
-My blog is getting pinged by the app running in your container now. The app runs
-in an endless loop, and you can see what it’s doing using the same docker container
-commands you’re familiar with from chapter 2.
+`-d` 参数是 `--detach` 的简写，所以这个容器将在后台运行。这个程序运行时就像一个没有用户界面的批处理任务，不像我们之前在第二章运行的 web 站点容器，这个容器不再接收网络请求，所以你不用公开任何的端口。
 
-TRY IT NOW
-Have a look at the logs from the application, which are being
-collected by Docker:
-docker container logs web-ping
+这里出现了一个新的参数 `--name`,你知道的你可以使用 Docker 生成的 ID 来管理容器，但是你也可以给容器一个友好的名字。在这个容器中被命名为 web-ping ,你可以使用这个名字来替代随机生成的 id 来指向容器。
 
-You’ll see output like that in figure 3.2, showing the app making HTTP requests to
-blog.sixeyed.com.
+我的博客网站现在被你运行的容器中的应用 ping，这个应用运行在一个无限循环中，你可以通过在第二章中熟悉的命令来查看做了些什么。
+
+<b>现在就试试</b> 查看一下容器产生的日志:
+`docker container logs web-ping`
+
+你将会看到类似 图 3.2 的输出，显示了应用请求 博客网站的信息：
 
 ![图3.2](./images/Figure3.2.png)
 <center>图3.2 </center>
 
-An app that makes web requests and logs how long the response took is fairly useful—
-you could use it as the basis for monitoring the uptime of a website. But this applica-
-tion looks like it’s hardcoded to use my blog, so it’s pretty useless to anyone but me.
+一款能够发出网络请求并记录响应时间的应用程序是相当有用的，您可以使用它作为监控网站正常运行时间的基础。但是这个应用程序看起来像是用我的博客的硬编码，所以除了我，它对任何人都没什么用。
 
-Except that it isn’t. The application can actually be configured to use a different
-URL, a different interval between requests, and even a different type of HTTP call.
-This app reads the configuration values it should use from the system’s environment
-variables.
+但事实并非如此。应用程序实际上可以配置为使用不同的URL、请求之间的不同间隔，甚至是不同类型的HTTP调用。这个应用程序从系统环境中读取它应该使用的配置值变量。
 
-Environment variables are just key/value pairs that the operating system provides.
-They work in the same way on Windows and Linux, and they’re a very simple way to
-store small pieces of data. Docker containers also have environment variables, but
-instead of coming from the computer’s operating system, they’re set up by Docker in
-the same way that Docker creates a hostname and IP address for the container.
+环境变量只是操作系统提供的键/值对。它们在 Windows 和 Linux 上以相同的方式工作，而且它们是一种非常简单的方法来存储小块数据。Docker容器也有环境变量，但是它们不是来自计算机的操作系统，而是由 Docker 设置的，这与 Docker为容器创建主机名和IP地址的方式相同。
 
-The web-ping image has some default values set for environment variables. When
-you run a container, those environment variables are populated by Docker, and that’s
-what the app uses to configure the website’s URL. You can specify different values for
-environment variables when you create the container, and that will change the behav-
-ior of the app.
+web-ping 镜像为环境变量设置了一些默认值。当你运行一个容器，那些环境变量被Docker填充，那是应用程序使用什么来配置网站的URL。可以在创建容器时指定不同的环境变量值，这将改变应用程序的行为。
 
-TRY IT NOW
-Remove the existing container, and run a new one with a value
-specified for the TARGET environment variable:
+<b>现在就试试</b> 删除之前运行的容器，通过指定 TARGET 环境变量值来运行一个新的容器：
+
+```
 docker rm -f web-ping
 docker container run --env TARGET=google.com diamol/ch03-web-ping
-
-Your output this time will look like mine in figure 3.3.
+```
+你可以看到图 3.3 类似的输出:
 
 ![图3.3](./images/Figure3.3.png)
 <center>图3.3 </center>
 
-This container is doing something different. First, it’s running interactively because
-you didn’t use the --detach flag, so the output from the app is shown on your con-
-sole. The container will keep running until you end the app by pressing Ctrl-C. Second,
-it’s pinging google.com now instead of blog.sixeyed.com.
+这个容器正在做一些不同的事情。首先，它是交互式运行的，因为你没有使用 `--detach` 标志，因此应用程序的输出显示在控制台。容器将继续运行，直到按Ctrl-C结束应用程序。第二,现在是 pinging google.com 而不是 blog.sixeyed.com。
 
-This is going to be one of your major takeaways from this chapter—Docker images
-may be packaged with a default set of configuration values for the application, but you
-should be able to provide different configuration settings when you run a container.
+这将是你从本章中学到的主要内容之一——docker 镜像可以打包为应用程序的一组默认配置值，但是您应该能够在运行容器时提供不同的配置设置。
 
-Environment variables are a very simple way to achieve that. The web-ping applica-
-tion code looks for an environment variable with the key TARGET. That key is set with a
-value of blog.sixeyed.com in the image, but you can provide a different value with
-the docker container run command by using the --env flag. Figure 3.4 shows how
-containers have their own settings, different from each other and from the image.
+环境变量是实现这一点的一种非常简单的方法。web-ping应用程序代码查找带有 TARGET 键的环境变量，那个键有一个在镜像中的blog.sixeyed.com的值，但您可以用`docker container run `命令使用 `--env` 参数。图3.4显示了如何让容器有自己的设置，它们彼此不同，也不同于镜像。
 
 ![图3.4](./images/Figure3.4.png)
 <center>图3.4 </center>
 
-The host computer has its own set of environment variables too, but they’re sepa-
-rate from the containers. Each container only has the environment variables that
-Docker populates. The important thing in figure 3.4 is that the web-ping applications
-are the same in each container—they use the same image, so the app is running the
-exact same set of binaries, but the behavior is different because of the configuration.
+主机也有它自己的一组环境变量，但它们和容器的环境变量是分开管理的。每个容器只有 Docker 填充的环境变量。图3.4中重要的一件事是 web-ping 应用程序在每个容器中都是相同的—它们使用相同的镜像，因此应用程序正在运行完全相同的二进制文件集，但由于配置的不同，其行为有所不同。
 
-It’s down to the author of the Docker image to provide that flexibility, and you’re
-going to see how to do that now, as you build your first Docker image from a Dockerfile.
-
+这取决于 Docker 镜像的作者来提供这种灵活性，而当你从Dockerfile构建你的第一个 Docker 镜像时，我们会看到如何做到这一点。
 ## 3.2 编写第一个 Dockerfile
 
 The Dockerfile is a simple script you write to package up an application—it’s a set of
