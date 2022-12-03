@@ -26,6 +26,9 @@ Pull the container image for the web-ping application:
 docker image pull diamol/ch03-web-ping
 You’ll see output similar to mine in figure 3.1.
 
+![图3.1](./images/Figure3.1.png)
+<center>图3.1 </center>
+
 The image name is diamol/ch03-web-ping, and it’s stored on Docker Hub, which is
 the default location where Docker looks for images. Image servers are called regis-
 tries, and Docker Hub is a public registry you can use for free. Docker Hub also has a
