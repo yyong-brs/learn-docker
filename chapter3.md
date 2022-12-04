@@ -153,24 +153,19 @@ web-ping latest f2a5c430ab2a 14 minutes ago 75.3MB
 
 你可以和通过 Docker Hub 仓库下载的那个镜像一样的方式使用此处构建的镜像，因为应用的内容是一样的，然后配置信息可以通过环境变量进行指定。
 
-TRY IT NOW
-Run a container from your own image to ping Docker’s website
-every five seconds:
-docker container run -e TARGET=docker.com -e INTERVAL=5000 web-ping
+<b>现在就试试</b> 基于你自己构建的镜像运行一个每隔 5 秒 ping Docker 网站的容器:
 
-Your output will be like mine in figure 3.7, with the first log line confirming that the
-target web URL is docker.com and the ping interval is 5000 milliseconds.
+`docker container run -e TARGET=docker.com -e INTERVAL=5000 web-ping`
+
+你将会看到类似图 3.7 的输出，对比一下环境变量信息：
 
 ![图3.7](./images/Figure3.7.png)
 <center>图3.7 </center>
 
-That container is running in the foreground, so you’ll need to stop it with Ctrl-C. That
-ends the application, and the container will go into the exited state.
+容器在前台运行，所以需要通过 Ctrl-C 停止它，那样会终止应用程序，最终容器进入 exited 状态。
 
-You’ve packaged a simple application to run in Docker, and the process is exactly
-the same for more complicated apps. You write the Dockerfile with all the steps to
-package your app, collect the resources that need to go into the Docker image, and
-decide how you want users of your image to configure the behavior of the app.
+你已经打包了一个简单的应用程序在 Docker 中运行，该应用进程和那些复杂的应用其实是差不多的。你编写了 Dockerfile 描述了打包应用的步骤，收集了需要包含进镜像的资源，然后配置了用户如何通过配置信息来控制应用程序的行为。
+
 ## 3.4 理解 Docker 镜像以及镜像层
 
 You’ll be building plenty more images as you work through this book. For this chapter
