@@ -78,21 +78,9 @@ docker container run --env TARGET=google.com diamol/ch03-web-ping
 
 ## 3.2 编写第一个 Dockerfile
 
-The Dockerfile is a simple script you write to package up an application—it’s a set of
-instructions, and a Docker image is the output. Dockerfile syntax is simple to learn,
-and you can package up any kind of app using a Dockerfile. As scripting languages
-go, it is very flexible. Common tasks have their own commands, and for anything
-custom you need to do, you can use standard shell commands (Bash on Linux or
-PowerShell on Windows). Listing 3.1 shows the full Dockerfile to package up the
-web-ping application.
-Dockerfile 是一个用来打包应用程序的简单脚本，它是一组指令，Docker图像是输出。Dockerfile语法简单易学，
-您可以使用Dockerfile打包任何类型的应用程序。作为脚本语言
-去吧，它很灵活。普通任务都有自己的命令
-您可以使用标准的shell命令（Linux上的Bash或
-Windows上的PowerShell）。清单3.1显示了打包
-web ping应用程序。
+Dockerfile 是一个用来打包应用程序的简单脚本，它是一组指令，最终输出 Docker 镜像。Dockerfile 语法简单易学，您可以使用 Dockerfile 打包任何类型的应用程序。作为脚本语言，它很灵活。常见的任务都有自己的命令，您可以使用标准的shell命令（Linux上的Bash或Windows上的PowerShell）。清单3.1显示了如何打包 web-ping 应用程序。
 
-> Listing 3.1 The web-ping Dockerfile
+> 展示 3.1 web-ping 应用的 Dockerfile
 
 ```
 FROM diamol/node
@@ -104,75 +92,45 @@ COPY app.js .
 CMD ["node", "/web-ping/app.js"]
 ```
 
-Even if this is the first Dockerfile you’ve ever seen, you can probably take a good guess
-about what’s happening here. The Dockerfile instructions are FROM, ENV, WORKDIR,
-COPY, and CMD; they’re in capitals, but that’s a convention, not a requirement. Here’s
-the breakdown for each instruction:
-- FROM—Every image has to start from another image. In this case, the web-ping
-image will use the diamol/node image as its starting point. That image has
-Node.js installed, which is everything the web-ping application needs to run.
-- ENV—Sets values for environment variables. The syntax is [key]="[value]",
-and there are three ENV instructions here, setting up three different environ-
-ment variables.
-- WORKDIR—Creates a directory in the container image filesystem, and sets that to
-be the current working directory. The forward-slash syntax works for Linux and
-Windows containers, so this will create /web-ping on Linux and C:\web-ping
-on Windows.
-- COPY—Copies files or directories from the local filesystem into the container
-image. The syntax is [source path] [target path]—in this case, I’m copying
-app.js from my local machine into the working directory in the image.
-- CMD—Specifies the command to run when Docker starts a container from the
-image. This runs Node.js, starting the application code in app.js.
+即使这是你见到过的第一个 Dockerfile，你可能也会猜到文件内容发生了什么。Dockerfile 的指令包括 FROM、ENV、WORKDIR、Copy和CMD；它们都是大写的，这是惯例，但是不是必须的。每条指令的详细说明如下：
+- FROM—每个镜像都必须基于另一个镜像开始构建，在本例中，web-ping 镜像将使用 diamol/node 镜像作为起点。这个镜像已经安装好了 Node.js，这就是 web-ping 应用程序运行所需的一切。
+- ENV—设置环境变量的值。语法为[key]="[value]"，这里有三个ENV指令，设置三个不同的环境变量值。
+- WORKDIR—在容器镜像文件系统中创建一个目录，并将其设置为当前工作目录。前斜杠语法适用于Linux和Windows容器，所以这个指令将在 Linux 镜像创建 /web-ping，在 Windows 镜像创建 C:\web-ping。
+- COPY—将文件或目录从本地文件系统复制到容器镜像。语法是[源路径] [目标路径]-在本例中，我正在复制我的本地机器的App.js到镜像中的工作目录。
+- CMD—指定从镜像启动容器时要运行的命令，此处将运行Node.js，启动 app.js 中的应用程序。
 
-That’s it. Those instructions are pretty much all you need to package your own appli-
-cations in Docker, and in those five lines there are already some good practices.
+就是这样，在Docker中打包自己的应用程序所需的基本就是这些信息，在这五行代码中已经包好了一些良好的实践。
 
-TRY IT NOW
-You don’t need to copy and paste this Dockerfile; it’s all there in
-the book’s source code, which you cloned or downloaded in chapter 1. Navi-
-gate to where you downloaded it, and check that you have all the files to build
-this image:
+<b>现在就试试</b>  你无需从此处拷贝 Dockerfile 内容，所有的代码片段都在本书的源码中，在第一章中你已经下载了代码，找到你下载的目录，检查目录文件：
 
 ```
 cd ch03/exercises/web-ping
 ls
 ```
 
-You should see that you have three files:
-- Dockerfile (no file extension), which has the same content as listing 3.1
-- app.js, which has the Node.js code for the web-ping application
-- README.md, which is just documentation for using the image
+你可以看到三个文件：
+- Dockerfile (没有后缀), 和清单 3.1 内容一致
+- app.js,  web-ping 应用的 Node.js 程序代码
+- README.md, 使用该镜像的简单说明
 
-You can see these in figure 3.5.
+你可看到与图 3.5 一样的内容.
 
 ![图3.5](./images/Figure3.5.png)
 <center>图3.5 </center>
 
-You don’t need any understanding of Node.js or JavaScript to package this app and
-run it in Docker. If you do look at the code in app.js, you’ll see that it’s pretty basic,
-and it uses standard Node.js libraries to make the HTTP calls and to get configuration
-values from environment variables.
+你不需要了解docker 运行的本应用所涉及的 Node.js 或者 javascript 语言知识。如果你查看 app.js 的代码，你会发现它非常基础，它使用了标准的 Node.js 库执行 Http 调用，同时从环境变量获取配置信息。 
 
-In this directory you have everything you need to build your own image for the
-web-ping application.
+在这个目录你拥有构建 web-ping 应用程序镜像的所有文件。
 
 ## 3.3 构建镜像
 
-Docker needs to know a few things before it can build an image from a Dockerfile. It
-needs a name for the image, and it needs to know the location for all the files that it’s
-going to package into the image. You already have a terminal open in the right direc-
-tory, so you’re ready to go.
+Docker 在基于 Dockerfile 构建镜像之前，需要掌握一些信息，它需要知道目标镜像的名称，以及将要打包到镜像中的所有文件的位置信息。你已经在终端中打开了正确的目录，所以你已经准备好构建镜像了。
 
-TRY IT NOW
-Turn this Dockerfile into a Docker image by running docker
-image build:
-docker image build --tag web-ping .
+<b>现在就试试</b>  通过运行 docker image build 命令根据 Dockerfile 去构建镜像：
 
-The --tag argument is the name for the image, and the final argument is the direc-
-tory where the Dockerfile and related files are. Docker calls this directory the “con-
-text,” and the period means “use the current directory.” You’ll see output from the
-build command, executing all the instructions in the Dockerfile. My build is shown in
-figure 3.6.
+`docker image build --tag web-ping .`
+
+`--tag` 参数指定了构建的目标镜像名称，最后的参数指定了 Dockerfile 以及相关文件的目录，Docker 将这个目录称作“上下文”，此处的点号代表“当前目录”。通过这个构建命令你将会看到执行所有 Dockerfile 指令的输出信息。类似图 3.6：
 
 ![图3.6](./images/Figure3.6.png)
 <center>图3.6 </center>
