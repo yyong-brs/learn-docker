@@ -135,30 +135,15 @@ Docker 在基于 Dockerfile 构建镜像之前，需要掌握一些信息，它�
 ![图3.6](./images/Figure3.6.png)
 <center>图3.6 </center>
 
-If you get any errors from the build command, you’ll first need to check that the
-Docker Engine is started. You need the Docker Desktop app to be running on Win-
-dows or Mac (check for the whale icon in your taskbar). Then check that you’re in the
-right directory. You should be in the ch03-web-ping directory where the Dockerfile and
-the app.js files are. Lastly, check that you’ve entered the build command correctly—the
-period at the end of the command is required to tell Docker that the build context is
-the current directory.
+如果构建命令返回错误信息，你首先需要检查 Docker 引擎是否启动。必须确保 Docker Desktop 程序运行在你的 Windows 或 Mac 机器上。然后检查是否处于正确的目录，你应该位于 ch03-web-ping 目录，该目录包含了 Dockerfile 以及 app.js 文件。最后，检查是否输入了正确的构建命令。
 
-If you get a warning during the build about file permissions, that’s because you’re
-using the Docker command line on Windows to build Linux containers, thanks to
-Docker Desktop’s Linux container mode. Windows doesn’t record file permissions in
-the same way that Linux does, so the warning is telling you that all the files copied
-from your Windows machine are set with full read and write permissions in the Linux
-Docker image.
+当你看到“successfully built”以及“successfully tagged” 的信息输出，说明你的镜像已构建。它被保存在本地的镜像缓存目录,然后你可以通过 Docker 命令查询镜像。
 
-When you see the “successfully built” and “successfully tagged” messages in the
-output, your image is built. It’s stored locally in your image cache, and you can see it
-with the Docker command to list images.
+<b>现在就试试</b> 查询所有以 “w” 开头的镜像名:
 
-TRY IT NOW
-List all the images where the tag name starts with “w”:
-docker image ls 'w*'
+`docker image ls 'w*'`
 
-You’ll see your web-ping image listed:
+你将会看到 web-ping 镜像被查询出来:
 
 ```
 > docker image ls w*
@@ -166,9 +151,7 @@ REPOSITORY TAG IMAGE ID CREATED SIZE
 web-ping latest f2a5c430ab2a 14 minutes ago 75.3MB
 ```
 
-You can use this image in exactly the same way as the one you downloaded from
-Docker Hub. The contents of the app are the same, and the configuration settings can
-be applied with environment variables.
+你可以和通过 Docker Hub 仓库下载的那个镜像一样的方式使用此处构建的镜像，因为应用的内容是一样的，然后配置信息可以通过环境变量进行指定。
 
 TRY IT NOW
 Run a container from your own image to ping Docker’s website
