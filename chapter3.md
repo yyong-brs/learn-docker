@@ -75,6 +75,7 @@ docker container run --env TARGET=google.com diamol/ch03-web-ping
 主机也有它自己的一组环境变量，但它们和容器的环境变量是分开管理的。每个容器只有 Docker 填充的环境变量。图3.4中重要的一件事是 web-ping 应用程序在每个容器中都是相同的—它们使用相同的镜像，因此应用程序正在运行完全相同的二进制文件集，但由于配置的不同，其行为有所不同。
 
 这取决于 Docker 镜像的作者来提供这种灵活性，而当你从Dockerfile构建你的第一个 Docker 镜像时，我们会看到如何做到这一点。
+
 ## 3.2 编写第一个 Dockerfile
 
 The Dockerfile is a simple script you write to package up an application—it’s a set of
@@ -84,6 +85,12 @@ go, it is very flexible. Common tasks have their own commands, and for anything
 custom you need to do, you can use standard shell commands (Bash on Linux or
 PowerShell on Windows). Listing 3.1 shows the full Dockerfile to package up the
 web-ping application.
+Dockerfile 是一个用来打包应用程序的简单脚本，它是一组指令，Docker图像是输出。Dockerfile语法简单易学，
+您可以使用Dockerfile打包任何类型的应用程序。作为脚本语言
+去吧，它很灵活。普通任务都有自己的命令
+您可以使用标准的shell命令（Linux上的Bash或
+Windows上的PowerShell）。清单3.1显示了打包
+web ping应用程序。
 
 > Listing 3.1 The web-ping Dockerfile
 
