@@ -168,21 +168,15 @@ web-ping latest f2a5c430ab2a 14 minutes ago 75.3MB
 
 ## 3.4 理解 Docker 镜像以及镜像层
 
-You’ll be building plenty more images as you work through this book. For this chapter
-we’ll stick with this simple one and use it to get a better understanding of how images
-work, and the relationship between images and containers.
+在阅读本书的过程中，你将会构建更多的镜像。在本章中，我们将继续使用这个简单的例子，来更好的理解镜像是如何工作的、以及容器和镜像之间的关系。
 
-The Docker image contains all the files you packaged, which become the con-
-tainer’s filesystem, and it also contains a lot of metadata about the image itself. That
-includes a brief history of how the image was built. You can use that to see each layer
-of the image and the command that built the layer.
+Docker 镜像包含了你打包的所有文件，这些文件成为了容器的文件系统的一部分，然后同时也包含了很多镜像本身的元数据信息，也就是镜像如何构建的简要过程，你可以通过它来查看镜像的每一层以及每一层的命令。
 
-TRY IT NOW
-Check the history for your web-ping image:
-docker image history web-ping
+<b>现在就试试</b> 检查你的 web-ping 镜像的历史信息:
 
-You’ll see an output line for each image layer; these are the first few (abbreviated)
-lines from my image:
+`docker image history web-ping`
+
+你将会看到每个镜像层的输出行信息，下面是我执行时前面几行信息：
 
 ```
 > docker image history web-ping
@@ -192,16 +186,9 @@ IMAGE CREATED CREATED BY
 <missing> 30 hours ago /bin/sh -c #(nop) WORKDIR /web-ping
 ```
 
-The CREATED BY commands are the Dockerfile instructions—there’s a one-to-one rela-
-tionship, so each line in the Dockerfile creates an image layer. We’re going to dip into
-a little more theory here, because understanding image layers is your key to making
-the most efficient use of Docker.
+CREATED BY 这一列展示了 Dockerfile 指令信息，与 Dockerfile 是一对一的关系，所以 Dockerfile 中的每一行都创建了一个镜像层。我们将稍微深入研究一下，因为理解镜像层是你充分使用 Docker 的关键。
 
-A Docker image is a logical collection of image layers. Layers are the files that are
-physically stored in the Docker Engine’s cache. Here’s why that’s important: image
-layers can be shared between different images and different containers. If you have
-lots of containers all running Node.js apps, they will all share the same set of image
-layers that contain the Node.js runtime. Figure 3.8 shows how that works.
+Docker 镜像是镜像层的逻辑集合。层是物理上存储在 Docker 引擎的缓存文件，这就是为什么这很重要:镜像层可以在不同的镜像和不同的容器之间共享。如果你有很多运行 Node.js 应用的容器，它们都将共享同一组包含Node.js 运行时的镜像层。图3.8 显示了其工作原理。
 
 ![图3.8](./images/Figure3.8.png)
 <center>图3.8 </center>
