@@ -204,40 +204,20 @@ Docker 镜像是镜像层的逻辑集合。层是物理上存储在 Docker 引�
 ![图3.9](./images/Figure3.9.png)
 <center>图3.9 </center>
 
-It looks like all the Node.js images take up the same amount of space—75 MB each
-on Linux. There are three of those: diamol/node, the original sample app you pulled
-from Docker Hub in diamol/ch03-web-ping, and the version you built yourself in
-web-ping. They should be sharing the base image layers, but the output from docker
-image ls suggests they’re each 75 MB in size, so that’s 75 * 3 = 225 MB in total.
+看上去所有的 Node.js 镜像占用了同样的 75MB 的空间，它们包括： diamol/node, 从 Docker Hub 拉取的原始示例镜像 diamol/ch03-web-ping，以及你自己构建的镜像 web-ping。它们共享了基础镜像层，但是 docker images ls 的输显示每个镜像都是差不多 75M 大小，所以它们总共是 75 * 3 = 225 MB ？
 
-But not exactly. The size column you see is the logical size of the image—that’s
-how much disk space the image would use if you didn’t have any other images on your
-system. If you do have other images that share layers, the disk space Docker uses is
-much smaller. You can’t see that from the image list, but there are Docker system com-
-mands that tell you more.
+并不完全正确，你看到的 size 列只是镜像的逻辑大小——指的是如果没有其它镜像存在的情况下该镜像实际占用的磁盘空间大小。如果你还有其它镜像共享层，Docker 镜像占用的磁盘空间相对会小一些，所以你无法从 image 清单看到真实信息，但是 Docker system 命令可以告知你更多的信息。
 
-TRY IT NOW
-My image list shows a total of 363.96 MB of images, but that’s the
-total logical size. The system df command shows exactly how much disk
-space Docker is using:
-docker system df
+<b>现在就试试</b>  我的镜像清单显示了总共 363.96 MB 镜像大小,但是那只是逻辑上的总数。 system df 命令实际会显示 Docker 占用的磁盘大小:
+
+`docker system df`
 
 ![图3.10](./images/Figure3.10.png)
 <center>图3.10 </center>
 
-You can see in figure 3.10 that my image cache is actually using 202.2 MB, meaning
-163 MB of image layers are being shared between images, a 45% saving on disk space.
-The amount of disk space you save through reuse is typically much larger when you
-have a large number of application images all sharing the same base layers for the run-
-time. Those base layers might have Java, .NET Core, PHP—whatever technology stack
-you use, Docker’s behavior is the same.
+你可以通过图 3.10 看到我的镜像缓存实际占用 202.2MB，也就意味着有 163MB 的空间被镜像共享层所共享，大约节省 45% 的磁盘空间。当你拥有大量共享同样的基础层的运行时镜像时，将会节省很多的磁盘空间，那些基础层可以是 java\.Net\PHP 等，不管你使用什么技术栈，Docker 的行为是一模一样的。
 
-One last piece of theory. If image layers are shared around, they can’t be edited—
-otherwise a change in one image would cascade to all the other images that share the
-changed layer. Docker enforces that by making image layers read-only. Once you cre-
-ate a layer by building an image, that layer can be shared by other images, but it can’t
-be changed. You can take advantage of that to make your Docker images smaller and
-your builds faster by optimizing your Dockerfiles.
+最后再说明一下，如果镜像层被共享，则它们就不可以被编辑——否则一个镜像的更改将会影响所有其它共享层的镜像。Docker 通过将镜像层设置为只读，来控制这一点。一旦你通过构建镜像创建了一个层，那么该层就可以被其它镜像所共享，而且也不可变更，你可以利用这一点来使得你的镜像尽量小一点，通过优化 Dockerfile 文件来加快构建的速度。
 
 ## 3.5 优化 Dockerfile 使用镜像缓存层
 
