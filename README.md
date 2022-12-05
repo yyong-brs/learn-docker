@@ -38,14 +38,14 @@
 
   - 第三章 [构建你自己的镜像](./chapter3.md)
 
-    - 3.1 [使用 Docker Hub 的镜像](./chapter3.md#31-使用-Docker-Hub-的镜像)
+    - 3.1 [使用 Docker Hub 的镜像](./chapter3.md#31-使用-docker-hub-的镜像)
 
-    - 3.2 [编写第一个 Dockerfile](./chapter3.md#32-编写第一个-Dockerfile)
+    - 3.2 [编写第一个 Dockerfile](./chapter3.md#32-编写第一个-dockerfile)
 
     - 3.3 [构建镜像](./chapter3.md#33-构建镜像)
 
-    - 3.4 [理解 Docker 镜像以及镜像层](./chapter3.md#34-理解-Docker-镜像以及镜像层)
+    - 3.4 [理解 Docker 镜像以及镜像层](./chapter3.md#34-理解-docker-镜像以及镜像层)
 
-    - 3.5 [优化 Dockerfile 使用镜像缓存层](./chapter3.md#35-优化-Dockerfile-使用镜像缓存层)
+    - 3.5 [优化 Dockerfile 使用镜像缓存层](./chapter3.md#35-优化-dockerfile-使用镜像缓存层)
 
     - 3.6 [实验室](./chapter3.md#36-实验室)
