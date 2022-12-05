@@ -221,20 +221,13 @@ Docker 镜像是镜像层的逻辑集合。层是物理上存储在 Docker 引�
 
 ## 3.5 优化 Dockerfile 使用镜像缓存层
 
-There’s a layer of your web-ping image that contains the application’s JavaScript file.
-If you make a change to that file and rebuild your image, you’ll get a new image layer.
-Docker assumes the layers in a Docker image follow a defined sequence, so if you
-change a layer in the middle of that sequence, Docker doesn’t assume it can reuse the
-later layers in the sequence.
+在你的 web-ping 镜像中包含了一个 JavaScript 文件的层，如果你对那个文件做点变更然后重新构建你的镜像，你将会得到一个新的镜像层。Docker 假设镜像中的层遵循定义的序列，所以如果你在序列中间更改一个层，Docker 将不会认为可以重用后续的层。
 
-TRY IT NOW
-Make a change to the app.js file in the ch03-web-ping direc-
-tory. It doesn’t have to be a code change; just adding a new empty line at the
-end of the file will do. Then build a new version of your Docker image:
-docker image build -t web-ping:v2 .
+<b>现在就试试</b>  对 ch03-web-ping 目录中的 app.js 文件做出一些修改，你不必修改代码，只需要新增一个空行即可，然后构建一个新版本的 Docker 镜像:
 
-You’ll see the same output as mine in figure 3.11. Steps 2 through 5 of the build use
-layers from the cache, and steps 6 and 7 generate new layers.
+`docker image build -t web-ping:v2 .`
+
+你将会看到与图 3.11 类似的输出。 步骤 2 到 5 使用了缓存中的层,然后步骤 6 和 7 生成了新的层。
 
 ![图3.11](./images/Figure3.11.png)
 <center>图3.11 </center>
