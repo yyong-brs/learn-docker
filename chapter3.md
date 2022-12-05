@@ -193,21 +193,13 @@ Docker 镜像是镜像层的逻辑集合。层是物理上存储在 Docker 引�
 ![图3.8](./images/Figure3.8.png)
 <center>图3.8 </center>
 
-The diamol/node image has a slim operating system layer, and then the Node.js run-
-time. The Linux image takes up about 75 MB of disk (the base OS layer for Windows
-containers is larger, so the Windows version of the image uses closer to 300 MB). Your
-web-ping image is based on diamol/node, so it starts with all the layers from that
-image—that’s what the FROM instruction in the Dockerfile gives you. The app.js file
-you package on top of the base image is only a few kilobytes in size, so how big is the
-web-ping image in total?
+此处的 diamol/node 镜像包含一个精简的操作系统层，然后就是 Node.js 运行时程序。这个 Linux 的镜像占用大约 75MB 的磁盘空间（windows 类型的容器镜像操作系统层会更大，接近 300MB左右）。你的 web-ping 镜像基于 diamo/node 镜像构建，所以它从该镜像的所有层开始——Dockerfile 中 FROM 指令指示了这么做。在基础镜像之上打包的 app.js 文件只有几千字节大小，所以你认为 web-ping 镜像总共有多大？
 
-TRY IT NOW
-You can list images with docker image ls, which also shows the
-size of the image. If you don’t include a filter in the command, you’ll see all
-images:
-docker image ls
+<b>现在就试试</b> 你可以使用 docker image ls 查看镜像清单,同时也会显示镜像大小:
 
-Your output will be like mine in figure 3.9.
+`docker image ls`
+
+你的输出将会和图 3.9 类似。
 
 ![图3.9](./images/Figure3.9.png)
 <center>图3.9 </center>
