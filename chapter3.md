@@ -232,39 +232,17 @@ Docker 镜像是镜像层的逻辑集合。层是物理上存储在 Docker 引�
 ![图3.11](./images/Figure3.11.png)
 <center>图3.11 </center>
 
-Every Dockerfile instruction results in an image layer, but if the instruction doesn’t
-change between builds, and the content going into the instruction is the same,
-Docker knows it can use the previous layer in the cache. That saves executing the
-Dockerfile instruction again and generating a duplicate layer. The input is the same,
-so the output will be the same, so Docker can use what’s already there in the cache.
+每个 Dockerfile 指令都会生成一个镜像层，但如果某指令在构建之间没有变化并且进入指令的内容是相同的，那么 Docker 会使用缓存中的前一层。这么做避免了再次执行 Dockerfile 指令生成的重复层。因为输入是相同的，所以输出也是相同的，所以 Docker 可以使用缓存中已经存在的内容。
 
-Docker calculates whether the input has a match in the cache by generating a
-hash, which is like a digital fingerprint representing the input. The hash is made from
-the Dockerfile instruction and the contents of any files being copied. If there’s no
-match for the hash in the existing image layers, Docker executes the instruction, and
-that breaks the cache. As soon as the cache is broken, Docker executes all the instruc-
-tions that follow, even if they haven’t changed.
+Docker 通过生成的 hash 值去判断缓存中是否包含匹配层，类似数字指纹。这个 hash 值是通过 Dockerfile 指令以及它拷贝的文件内容来创建，如果在现有镜像层中找不到 hash 匹配项，那么 Docker 将执行该指令，并且这会中断缓存。一旦缓存被中断，docker 将会执行后续所有的指令，即使他们没有任何变化。 
 
-That has an impact even in this small example image. The app.js file has changed
-since the last build, so the COPY instruction in step 6 needs to run. The CMD instruction
-in step 7 is the same as the last build, but because the cache was broken at step 6, that
-instruction runs as well.
+即使在这个小示例镜像中，这也会产生影响。app.js文件自上次构建以来已更改，因此需要运行步骤6中的Copy指令。步骤7中的CMD指令与上次构建相同，但由于缓存在步骤6中被破坏，该指令也会运行。
 
-Any Dockerfile you write should be optimized so that the instructions are ordered
-by how frequently they change—with instructions that are unlikely to change at the
-start of the Dockerfile, and instructions most likely to change at the end. The goal is
-for most builds to only need to execute the last instruction, using the cache for
-everything else. That saves time, disk space, and network bandwidth when you start
-sharing your images.
+您编写的任何 Dockerfile 都应该进行优化，以便根据变化的频率对指令进行排序, 相比较 DOckerfile 的开头，更有可能修改 Dockerfilel 结尾的内容。我们的目标是对于大多数构建，只需要执行最后一条指令，其他则使用缓存的一切。这在启动时基于共享的镜像节省了时间、磁盘空间和网络带宽。
 
-There are only seven instructions in the web-ping Dockerfile, but it can still be
-optimized. The CMD instruction doesn’t need to be at the end of the Dockerfile; it can
-be anywhere after the FROM instruction and still have the same result. It’s unlikely to
-change, so you can move it nearer the top. And one ENV instruction can be used to set
-multiple environment variables, so the three separate ENV instructions can be com-
-bined. The optimized Dockerfile is shown in listing 3.2.
+web-ping Dockerfile 中只有七条指令，但它仍然可以优化。CMD 指令不需要在 Dockerfile的 末尾；它可以在 FROM 指令之后的任何位置，仍然具有相同的结果。因为它不太可能改变，这样你就可以把它移得更靠近顶部。一条 ENV 指令可用于设置多个环境变量，因此三个单独的ENV指令可以组合成一个固定的。优化的Dockerfile如清单3.2所示。
 
-> Listing 3.2 The optimized web-ping Dockerfile
+> 展示 3.2 优化的 web-ping Dockerfile
 
 ```
 FROM diamol/node
@@ -276,31 +254,23 @@ WORKDIR /web-ping
 COPY app.js .
 ```
 
-TRY IT NOW
-The optimized Dockerfile is in the source code for this chapter
+<b>现在就试试</b>  The optimized Dockerfile is in the source code for this chapter
 too. Switch to the web-ping-optimized folder and build the image from the
 new Dockerfile:
 cd ../web-ping-optimized
 docker image build -t web-ping:v3 .
+优化的 Dockerfile 在本章的源代码中可以被找到，切换到 web-ping-optimized 文件夹，并从新Dockerfile 构建： 
 
-You won’t notice too much difference from the previous build. There are now five
-steps instead of seven, but the end result is the same—you can run a container from
-this image, and it behaves just like the other versions. But now if you change the appli-
-cation code in app.js and rebuild, all the steps come from the cache except the final
-one, which is exactly what you want, because that’s all you’ve changed.
+```
+cd ../web-ping-optimized
+docker image build -t web-ping:v3
+```
 
-That’s all for building images in this chapter. You’ve seen the Dockerfile syntax
-and the key instructions you need to know, and you’ve learned how to build and work
-with images from the Docker CLI.
+您不会注意到与以前的版本有太大的差异。现在有五个步骤而不是七步，但最终结果是相同的，您可以用这个镜像运行容器，它的行为与其他版本一样。但现在如果你改变app.js 中的应用代码并重建，除了最后一步所有步骤都会来自缓存，这正是你想要的，因为这就是你所改变的。
 
-There are two more important things to take from this chapter, which will be of
-good service to you in every image you build: optimize your Dockerfiles, and make
-sure your image is portable so you use the same image when you deploy to different
-environments. That really just means you should take care how you structure your
-Dockerfile instructions, and make sure the application can read configuration values
-from the container. It means you can build images quickly, and when you deploy to
-production you’re using the exact same image that was quality-approved in your test
-environments.
+这就是本章中构建镜像的全部内容。您已经看到 Dockerfile 语法以及你需要知道的关键指令，你已经学会了如何构建镜像以及使用 Docker CLI 运行镜像。
+
+本章说到了两个更重要的内容，在您构建的每个镜像中都能为您提供良好的服务：优化 Dockerfile 确保您的镜像是可移植的，以便可以同时部署到不同的环境。这真的意味着你应该注意你的Dockerfile指令结构，并确保应用程序可以从容器读取配置值。这意味着您可以快速构建镜像，您生产所使用的镜像与测试中通过质量认证的镜像完全相同。
 
 ## 3.6 实验室
 
