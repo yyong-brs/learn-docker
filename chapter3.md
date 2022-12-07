@@ -274,20 +274,14 @@ docker image build -t web-ping:v3
 
 ## 3.6 实验室
 
-Okay, it’s lab time. The goal here is to answer this question: how do you produce a
-Docker image without a Dockerfile? The Dockerfile is there to automate the deploy-
-ment of your app, but you can’t always automate everything. Sometimes you need to run
-the application and finish off some steps manually, and those steps can’t be scripted.
+好的，现在是实验室时间。本次的目标是回答这个问题：在没有 Dockerfile 的情况下，你如何创建镜像？Dockerfile 可以自动部署您的应用程序，但您不可能总是自动部署所有内容。有时候你需要运行应用并手动完成一些步骤，而这些步骤无法通过脚本实现。
 
-This lab is a much simpler version of that. You’re going to start with an image on
-Docker Hub: diamol/ch03-lab. That image has a file at the path /diamol/ch03.txt.
-You need to update that text file and add your name at the end. Then produce your
-own image with your changed file. You’re not allowed to use a Dockerfile.
+这个实验室是一个更简单的版本。您将从 Docker Hub 上的镜像开始：diamol/ch03-lab。该镜像在路径 /dimal/ch03.txt 下有一个文件，您需要更新该文本文件并在末尾添加您的姓名，然后使用更改的文件创建你自己的镜像，不允许使用Dockerfile。
 
-There’s a sample solution on the book’s GitHub repository if you need it. You’ll
-find it here: https://github.com/sixeyed/diamol/tree/master/ch03/lab.
-Here are some hints to get you going:
-- Remember that the -it flags let you run to a container interactively.
-- The filesystem for a container still exists when it is exited.
-- There are lots of commands you haven’t used yet. docker container --help
-  will show you two that could help you solve the lab.
+
+如果你需要，在本书的 Github 仓库下有解决方案样例。你可以访问：https://github.com/yyong-brs/learn-docker/tree/master/diamol/ch03/lab 获取。
+
+有三点可以帮助到你：
+- 记住 -it 参数可以让你以交互方式运行一个容器。
+- 容器的文件系统，在其退出状态时任然存在。
+- 有很多命令你还未用到。 `docker container --help` 可以帮助你在本实验中解决问题。
