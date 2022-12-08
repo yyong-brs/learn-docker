@@ -49,3 +49,17 @@
     - 3.5 [优化 Dockerfile 使用镜像缓存层](./chapter3.md#35-优化-dockerfile-使用镜像缓存层)
 
     - 3.6 [实验室](./chapter3.md#36-实验室)
+
+  - 第四章 [将应用程序源码打包到镜像中](./chapter4.md)
+
+    - 4.1 [有了 Dockerfile 谁还需要构建服务器](./chapter4.md#41-有了-dockerfile-谁还需要构建服务器)
+
+    - 4.2 [应用演练：Java 源代码](./chapter4.md#42-应用演练：java-源代码)
+
+    - 4.3 [应用演练：Node.js 源代码](./chapter4.md#43-应用演练：node.js-源代码)
+
+    - 4.4 [应用演练：Go 源代码](./chapter4.md#44-应用演练：go-源代码)
+
+    - 4.5 [理解 Dockerfile 的多阶段构建](./chapter4.md#45-理解-dockerfile-的多阶段构建)
+
+    - 4.6 [实验室](./chapter4.md#46-实验室)    
