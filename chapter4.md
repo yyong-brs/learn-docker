@@ -1,28 +1,14 @@
 # 第四章 将应用程序源码打包到镜像中
 
-Building Docker images is easy. In chapter 3 you learned that you just need a few
-instructions in a Dockerfile to package an application to run in a container. There’s
-one other thing you need to know to package your own applications: you can also
-run commands inside Dockerfiles.
+构建 Docker 镜像非常简单，在第三章你已经学会了仅仅需要在 Dockerfile 中定义一些信息你就可以打包应用程序并在容器中运行。关于打包你自己的应用程序还有另外一件事情你需要知道：你同样可以在 Dockerfiles 中运行命令。
 
-Commands execute during the build, and any filesystem changes from the command are saved in the image layer. That makes Dockerfiles about the most flexible
-packaging format there is; you can expand zip files, run Windows installers, and do
-pretty much anything else. In this chapter you’ll use that flexibility to package
-applications from source code.
+构建过程中执行的命令以及基于这些命令产生的任何文件系统的变更都被保存在了镜像层。这使得 Dockerfile 成为最具扩展性的打包格式；你可以解压 zip 文件，运行 windows 安装程序以及任何其他诸如此类的事情。在本章，你将使用此扩展性来基于你的源代码打包应用程序。
 
 ## 4.1 有了 Dockerfile 谁还需要构建服务器
 
-Building software on your laptop is something you do for local development, but
-when you’re working in a team there’s a more rigorous delivery process. There’s a
-shared source control system like GitHub where everyone pushes their code
-changes, and there’s typically a separate server (or online service) that builds the
-software when changes get pushed.
+在你的笔记本构建软件是你为本地开发环境做的事情，但是当你在一个团队中工作，会有一个更严格的交付过程。将会有一个像 GitHub 的源代码控制系统，要求大家推送他们的代码变更，通常当构建的软件包含一些变更的推送，将有一个单独的服务器(或在线服务)来执行构建。
 
-That process exists to catch problems early. If a developer forgets to add a file
-when they push code, the build will fail on the build server and the team will be
-alerted. It keeps the project healthy, but the cost is having to maintain a build server.
-Most programming languages need a lot of tools to build projects—figure 4.1 shows
-some examples.
+这个过程的存在是为了及早发现问题。如果开发人员忘记添加文件。当他们推送代码时，构建服务器上的构建将失败，团队将收到警报。它使项目保持健康，但成本是必须维护构建服务器。大多数编程语言需要很多工具来构建项目--如图4.1所示的一些例子。
 
 ![图4.1](./images/Figure4.1.png)
 <center>图4.1 </center>
