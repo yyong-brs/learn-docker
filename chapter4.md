@@ -13,22 +13,13 @@
 ![图4.1](./images/Figure4.1.png)
 <center>图4.1 </center>
 
-There’s a big maintenance overhead here. A new starter on the team will spend
-the whole of their first day installing the tools. If a developer updates their local
-tools so the build server is running a different version, the build can fail. You have the
-same issues even if you’re using a managed build service, and there you may have a
-limited set of tools you can install.
+这里有很大的维护开销。团队的新成员会花费一整体来安装工具。如果开发人员更新了他们的本地工具，而构建服务器正在运行不同的版本，构建可能会失败。你即使使用的是托管服务器来构建服务，也会出现同样的问题。
 
-It would be much cleaner to package the build toolset once and share it, which is
-exactly what you can do with Docker. You can write a Dockerfile that scripts the
-deployment of all your tools, and build that into an image. Then you can use that
-image in your application Dockerfiles to compile the source code, and the final out-
-put is your packaged application.
+如果一次性打包构建工具集并将其共享，就会干净得多，你可以用 Docker 做什么。您可以编写 Dockerfile 脚本部署所有的工具，并将其构建到一个镜像中，然后你就可以用它了，在你的应用程序Dockerfiles中编译源代码，并最终输出的是打包的应用程序。
 
-Let’s start with a very simple example, because there are a couple of new things to
-understand in this process. 
+让我们从一个非常简单的例子开始，因为有一些新的东西用来了解这个过程。
 
-> Listing 4.1 shows a Dockerfile with the basic workflow.
+> 清单 4.1 显示了具有基本工作流的 Dockerfile
 
 ```
 FROM diamol/base AS build-stage
@@ -41,34 +32,19 @@ COPY --from=test-stage /build.txt /build.txt
 CMD cat /build.txt
 ```
 
-This is called a multi-stage Dockerfile, because there are several stages to the build.
-Each stage starts with a FROM instruction, and you can optionally give stages a name
-with the AS parameter. Listing 4.1 has three stages: build-stage, test-stage, and the
-final unnamed stage. Although there are multiple stages, the output will be a single
-Docker image with the contents of the final stage.
+这被称作多阶段 Dockerfile，因为针对构建存在几个阶段。每个阶段都以 FROM 指令开始，然后你可以可选的通过 AS 参数给予阶段一个名字。清单 4.1 有三个阶段：build-state、test-stage 以及最后一个未命名的 stage。尽管有多个阶段，但是输出将会是包含最后一个阶段内容的镜像。
 
-Each stage runs independently, but you can copy files and directories from previous
-stages. I’m using the COPY instruction with the --from argument, which tells Docker to
-copy files from an earlier stage in the Dockerfile, rather than from the filesystem of the
-host computer. In this example I generate a file in the build stage, copy it into the test
-stage, and then copy the file from the test stage into the final stage.
+每个阶段都独立运行，但您可以从以前的阶段复制文件和目录。我将COPY指令与--from参数一起使用，它告诉 Docker 从Dockerfile的早期阶段复制文件，而不是从
+主机。在本例中，我在 build-stage 生成一个文件，并将其复制到 test-stage，然后将文件从 test-stage 复制到最终阶段。
 
-There’s one new instruction here, RUN, which I’m using to write files. The RUN
-instruction executes a command inside a container during the build, and any out-
-put from that command is saved in the image layer. You can execute anything in a
-RUN instruction, but the commands you want to run need to exist in the Docker
-image you’re using in the FROM instruction. In this example I used diamol/base as
-the base image, and it contains the echo command, so I knew my RUN instruction
-would work.
+这里有一个新的指令，RUN，我正在用它来写文件。RUN 指令在构建期间在容器内执行命令，该命令的任何输出都保存在镜像层中。您可以在 RUN指令中执行任何动作，但要运行的命令需要存在于FROM指令 使用的镜像中。在本例中，我使用了diamol/base作为基础图像，它包含echo命令，所以我知道 RUN 指令会起作用。
 
-Figure 4.2 shows what’s going to happen when we build this Dockerfile—Docker
-will run the stages sequentially.
+图 4.2 显示了当我们构建这个 Dockerfile时会发生什么： Docker将依次运行阶段。
 
 ![图4.2](./images/Figure4.2.png)
 <center>图4.2 </center>
 
-It’s important to understand that the individual stages are isolated. You can use different base images with different sets of tools installed and run whatever commands you
-like. The output in the final stage will only contain what you explicitly copy from earlier stages. If a command fails in any stage, the whole build fails.
+重要的是要了解各个阶段是孤立的。您可以在安装了不同工具集的情况下使用不同的基础镜像，并运行您喜欢的任何命令。最后阶段的输出将只包含从早期阶段显式复制的内容。如果命令在任何阶段失败，整个构建都会失败。
 
 TRY IT NOW Open a terminal session to the folder where you stored the book’s source code, and build this multi-stage Dockerfile:
 
