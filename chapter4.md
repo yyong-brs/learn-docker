@@ -46,21 +46,21 @@ CMD cat /build.txt
 
 重要的是要了解各个阶段是孤立的。您可以在安装了不同工具集的情况下使用不同的基础镜像，并运行您喜欢的任何命令。最后阶段的输出将只包含从早期阶段显式复制的内容。如果命令在任何阶段失败，整个构建都会失败。
 
-TRY IT NOW Open a terminal session to the folder where you stored the book’s source code, and build this multi-stage Dockerfile:
+<b>现在就试试</b> 打开会话终端进入到本书的源代码目录, 构建多阶段 Dockerfile:
 
 ```
 cd ch04/exercises/multi-stage
 docker image build -t multi-stage .
 ```
 
-You’ll see that the build executes the steps in the order of the Dockerfile, which gives
-the sequential build through the stages you can see in figure 4.3.
+你将会看到构建按照 Dockerfile 的顺序步骤执行，你可以看到图 4.3 类似的输出。
 
 ![图4.3](./images/Figure4.3.png)
 <center>图4.3 </center>
 
 This is a simple example, but the pattern is the same for building apps of any complexity with a single Dockerfile. Figure 4.4 shows what the workflow looks like for a
 Java application.
+这是一个简单的例子，但是和复杂应用的模式是一样的，都是通过单个 Dockerfile 构建。图 4.4 是构建Java 应用程序的例子。
 
 ![图4.4](./images/Figure4.4.png)
 <center>图4.4 </center>
