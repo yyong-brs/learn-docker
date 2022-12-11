@@ -254,12 +254,7 @@ WORKDIR /web-ping
 COPY app.js .
 ```
 
-<b>现在就试试</b>  The optimized Dockerfile is in the source code for this chapter
-too. Switch to the web-ping-optimized folder and build the image from the
-new Dockerfile:
-cd ../web-ping-optimized
-docker image build -t web-ping:v3 .
-优化的 Dockerfile 在本章的源代码中可以被找到，切换到 web-ping-optimized 文件夹，并从新Dockerfile 构建： 
+<b>现在就试试</b> 优化的 Dockerfile 在本章的源代码中可以被找到，切换到 web-ping-optimized 文件夹，并从新Dockerfile 构建： 
 
 ```
 cd ../web-ping-optimized
