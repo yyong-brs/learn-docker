@@ -71,22 +71,11 @@ docker image build -t multi-stage .
 
 ## 4.2 应用演练：Java 源代码
 
-We’ll move on to a real example now, with a simple Java Spring Boot application that
-we’ll build and run using Docker. You don’t need to be a Java developer or have any
-Java tools installed on your machine to use this app; everything you need will come
-in Docker images. If you don’t work with Java, you should still read through this
-section—it describes a pattern that works for other compiled languages like .NET
-Core and Erlang.
+现在我们将转向一个真实的示例，使用一个简单的 Java Spring Boot 应用程序,我们将使用 Docker 构建和运行它。你不需要是Java开发人员或者在你的机器上安装Java工具来使用这个应用程序;你需要的一切都会来自于 Docker 镜像中。如果你不使用Java，你仍然应该阅读这篇章节——它描述了一种适用于其他编译语言(如.net和Erlang)的模式。
 
-The source code is in the repository for the book, at the folder path ch04/
-exercises/image-of-the-day. The application uses a fairly standard set of tools for
-Java: Maven, which is used to define the build process and fetch dependencies, and
-OpenJDK, which is a freely distributable Java runtime and developer kit. Maven uses
-an XML format to describe the build, and the Maven command line is called mvn.
-That should be enough information to make sense of the application Dockerfile in
-listing 4.2.
+源代码位于该书的存储库中，文件夹路径为 ch04/exercises/image-of-the]-day。该应用程序使用一组相当标准的工具 Java: Maven，用于定义构建过程和获取依赖项 以及 OpenJDK，这是一个可自由分发的Java运行时和开发工具包。Maven 使用一种描述构建的XML格式，Maven命令行称为mvn。这些信息应该足以理解清单4.2 Dockerfile 所构建的应用程序。
 
-> Listing 4.2 Dockerfile for building a Java app with Maven
+> 清单 4.2 Dockerfile 通过 maven 构建 Java 应用
 
 ```
 FROM diamol/maven AS builder
@@ -103,41 +92,25 @@ EXPOSE 80
 ENTRYPOINT ["java", "-jar", "/app/iotd-service-0.1.0.jar"]
 ```
 
-Almost all the Dockerfile instructions here are ones you’ve seen before, and the patterns are familiar from examples that you’ve built. It’s a multi-stage Dockerfile, which
-you can tell because there’s more than one FROM instruction, and the steps are laid out
-to get maximum benefit from Docker’s image layer cache.
+基本上该清单中所有的 Dockerfile 指令在之前都碰到过，并且模式和之前构建的例子都很类似。你可以知道这是一个多阶段构建的 Dockerfile，，因为有不止一条From 指令，并且这些步骤是为了从 Docker 的镜像层缓存中获得最大的好处。
 
-The first stage is called builder. Here’s what happens in the builder stage:
-- It uses the diamol/maven image as the base. That image has the OpenJDK Java
-development kit installed, as well as the Maven build tool.
-- The builder stage starts by creating a working directory in the image and then
-copying in the pom.xml file, which is the Maven definition of the Java build.
-- The first RUN statement executes a Maven command, fetching all the application dependencies. This is an expensive operation, so it has its own step to
-make use of Docker layer caching. If there are new dependencies, the XML file
-will change and the step will run. If the dependencies haven’t changed, the
-layer cache is used.
-- Next the rest of the source code is copied in—COPY . . means “copy all files and
-directories from the location where the Docker build is running, into the working directory in the image.”
-- The last step of the builder is to run mvn package, which compiles and packages
-the application. The input is a set of Java source code files, and the output is a
-Java application package called a JAR file.
+第一阶段被称为 builder 阶段。下面是在 builder 阶段发生的事情:
+- 它使用 diamol/maven 镜像作为基础。该映像包含已安装的 OpenJDK Java 开发工具包，以及 Maven 构建工具。
+- builder 阶段首先在镜像中创建一个工作目录，然后复制 pom.xml 文件，这是 Java 构建的 Maven 定义文件。
+- 第一个 RUN 语句执行 Maven 命令，获取所有应用程序依赖项。这是一项昂贵的步骤，所以它有自己的步骤利用Docker层缓存。如果有新的依赖项，则XML文件
+将改变，步骤将运行。如果依赖项没有更改，则使用层缓存。
+- 接下来剩余的源代码复制在：copy . . 表示“从Docker构建运行的位置复制所有文件和目录到镜像中的工作目录”。
+- builder 的最后一步是运行mvn package，它编译和打包应用程序。输入是一组Java源代码文件，输出是一个 Java 应用程序包:称为JAR文件。
 
-When this stage completes, the compiled application will exist in the builder stage
-filesystem. If there are any problems with the Maven build—if the network is offline
-and fetching dependencies fails, or if there is a coding error in the source—the RUN
-instruction will fail, and the whole build fails.
+当此阶段完成时，已编译的应用程序将存在于 builder 阶段的文件系统。如果 Maven 构建有任何问题—如果网络脱机并且获取依赖项失败，或者源中存在编码错误
+RUN 指令将失败，整个构建将失败。
 
-If the builder stage completes successfully, Docker goes on to execute the final
-stage, which produces the application image:
-- It starts from diamol/openjdk, which is packaged with the Java 11 runtime, but
-none of the Maven build tools.
-- This stage creates a working directory and copies in the compiled JAR file from
-the builder stage. Maven packages the application and all its Java dependencies
-in this single JAR file, so this is all that’s needed from the builder.
-- The application is a web server that listens on port 80, so that port is explicitly listed in the EXPOSE instruction, which tells Docker that this port can be
-published.
-- The ENTRYPOINT instruction is an alternative to the CMD instruction—it tells
-Docker what to do when a container is started from the image, in this case running Java with the path to the application JAR.
+如果 builder 阶段成功完成，Docker将继续执行最终阶段，生成应用程序镜像:
+
+- 这从diamol/openjdk开始，它用Java 11运行时打包，但没有Maven构建工具。
+- 此阶段创建一个工作目录，并从 builder 阶段复制已编译的JAR文件。 Maven将应用程序和其所有Java依赖项打包在单个JAR文件中，因此这是构建器所需的一切。
+- 该应用程序是一个监听端口 80 端口的Web服务器，因此在 EXPOSE 指令中明确列出该端口，告诉 Docker 该端口可以发布。
+- ENTRYPOINT 指令是 CMD 指令的替代方法 - 它告诉 Docker，当从镜像启动容器时要执行什么操作，在这种情况下运行JAR的路径下的 Java 应用程序。
 
 TRY IT NOW Browse to the Java application source code and build the image:
 
