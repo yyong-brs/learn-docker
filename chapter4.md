@@ -58,27 +58,16 @@ docker image build -t multi-stage .
 ![图4.3](./images/Figure4.3.png)
 <center>图4.3 </center>
 
-This is a simple example, but the pattern is the same for building apps of any complexity with a single Dockerfile. Figure 4.4 shows what the workflow looks like for a
-Java application.
 这是一个简单的例子，但是和复杂应用的模式是一样的，都是通过单个 Dockerfile 构建。图 4.4 是构建Java 应用程序的例子。
 
 ![图4.4](./images/Figure4.4.png)
 <center>图4.4 </center>
 
-In the build stage you use a base image that has your application’s build tools installed.
-You copy in the source code from your host machine and run the build command.
-You can add a test stage to run unit tests, which uses a base image with the test framework installed, copies the compiled binaries from the build stage, and runs the tests.
-The final stage starts from a base image with just the application runtime installed,
-and it copies the binaries from the build stage that have been successfully tested in the
-test stage.
+在 build 阶段，你使用了一个基础镜像，该镜像安装了你应用构建时所需的工具。你拷贝你主机上的源代码并允许构建命令。你可以添加一个 test 阶段以运行单元测试，该单元测试使用了一个包含已安装的测试框架的基础镜像，拷贝 build 阶段编译产生的二进制文件并运行测试。而最终的 final 阶段仅仅从包含了应用运行时的基础镜像开始，然后它拷贝 build 阶段产生的经过 test 阶段成功测试的二进制文件。
 
-This approach makes your application truly portable. You can run the app in a container anywhere, but you can also build the app anywhere—Docker is the only prerequisite. Your build server just needs Docker installed; new team members get set up
-in minutes, and the build tools are all centralized in Docker images, so there’s no
-chance of getting out of sync.
+这种方法使您的应用程序真正可移植。你可以在任何地方的容器中运行应用，但你也可以在任何地方构建应用——docker是唯一的先决条件。你的构建服务器只需要安装Docker;新的团队成员开始工作在几分钟内，构建工具都集中在 Docker 镜像中，所以没有不同步的几率。
 
-All the major application frameworks already have public images on Docker Hub
-with the build tools installed, and there are separate images with the application runtime. You can use these images directly or wrap them in your own images. You’ll get
-the benefit of using all the latest updates with images that are maintained by the project teams.
+所有主流的应用程序框架都已经在 Docker Hub 上有了安装了构建工具的公共镜像，相关应用程序运行时有单独的镜像。您可以直接使用这些镜像，也可以将它们包装在自己的镜像中。你会得到使用由项目团队维护的镜像的所有最新更新的好处。
 
 ## 4.2 应用演练：Java 源代码
 
