@@ -112,30 +112,23 @@ RUN 指令将失败，整个构建将失败。
 - 该应用程序是一个监听端口 80 端口的Web服务器，因此在 EXPOSE 指令中明确列出该端口，告诉 Docker 该端口可以发布。
 - ENTRYPOINT 指令是 CMD 指令的替代方法 - 它告诉 Docker，当从镜像启动容器时要执行什么操作，在这种情况下运行JAR的路径下的 Java 应用程序。
 
-TRY IT NOW Browse to the Java application source code and build the image:
+<b>现在就试试</b> 进入 Java 应用目录构建镜像:
 
 ```
 cd ch04/exercises/image-of-the-day
 docker image build -t image-of-the-day
 ```
 
-There’s a lot of output from this build because you’ll see all the logs from Maven,
-fetching dependencies, and running through the Java build. Figure 4.5 shows an
-abbreviated section of my build.
+你将会看到构建时很多的输出，因为 maven 构建获取依赖产生了大量日志，图 4.5 显示了我构建时的输出。
 
 ![图4.5](./images/Figure4.5.png)
 <center>图4.5 </center>
 
-So what have you just built? It’s a simple REST API that wraps access to NASA’s Astronomy Picture of the Day service (https://apod.nasa.gov). The Java app fetches the
-details of today’s picture from NASA and caches it, so you can make repeated calls to
-this application without repeatedly hitting NASA’s service.
+你刚刚构建的是什么？它是一个简单的 REST API，封装了对 NASA 每日天文图片服务的访问(https://apod.nasa.gov)。这个 Java 应用获取了今天 NASA 的图片并缓存了下来，这样子你就无需频繁访问 NASA 服务。
 
-The Java API is just one part of the full application you’ll be running in this
-chapter—it will actually use multiple containers, and they need to communicate with
-each other. Containers access each other across a virtual network, using the virtual IP
-address that Docker allocates when it creates the container. You can create and manage virtual Docker networks through the command line.
+Java API 只是本章将要运行的完整应用程序的一部分 - 实际上它将使用多个容器，并且它们需要相互通信。 容器通过虚拟网络相互访问，使用Docker在创建容器时分配的虚拟IP地址。 您可以通过命令行创建和管理虚拟Docker网络。
 
-TRY IT NOW Create a Docker network for containers to communicate with each other:
+<b>现在就试试</b> 创建容器虚拟网络与其它容器通信:
 
 `docker network create nat`
 
