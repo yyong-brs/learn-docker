@@ -132,29 +132,18 @@ Java API 只是本章将要运行的完整应用程序的一部分 - 实际上�
 
 `docker network create nat`
 
-If you see an error from that command, it’s because your setup already has a Docker
-network called nat, and you can ignore the message. Now when you run containers
-you can explicitly connect them to that Docker network using the --network flag, and
-any containers on that network can reach each other using the container names.
+如果您从该命令中看到错误，那是因为您的设置已经有一个名为 nat 的 Docker 网络，因此您可以忽略该消息。现在，当您运行容器时，您可以使用--network 标志显式地将容器连接到该Docker网络，并且该网络上的任何容器都可以使用容器名称相互访问。
 
-TRY IT NOW Run a container from the image, publishing port 80 to the host
-computer, and connecting to the nat network:
+<b>现在就试试</b> 从镜像运行容器，将端口 80 发布到主机计算机，并连接到 nat 网络：
 
 `docker container run --name iotd -d -p 800:80 --network nat image-of-the-day`
 
-Now you can browse to http:/ /localhost:800/image and you’ll see some JSON details
-about NASA’s image of the day. On the day I ran the container, the image was from a
-solar eclipse—figure 4.6 shows the details from my API.
+现在，您可以浏览http://localhost:800/image，并看到有关 NASA 今日图像的一些 JSON 详细信息。在我运行容器的那天，该图像来自日全食-图4.6显示了我的API的详细信息。
 
 ![图4.6](./images/Figure4.6.png)
 <center>图4.6 </center>
 
-The actual application in this container isn’t important (but don’t remove it yet—
-we’ll be using it later in the chapter). What’s important is that you can build this on
-any machine with Docker installed, just by having a copy of the source code with the
-Dockerfile. You don’t need any build tools installed, you don’t need a specific version
-of Java—you just clone the code repo, and you’re a couple of Docker commands away
-from running the app.
+容器中的实际应用程序并不重要（但不要立即删除它-我们将在本章后面使用它）。重要的是，只需拥有带有Dockerfile的源代码的副本，就可以在安装了Docker的任何机器上构建它。您不需要安装任何构建工具，也不需要特定版本的Java-只需克隆代码库，然后再运行几个Docker命令就可以运行应用程序。
 
 One other thing to be really clear on here: the build tools are not part of the final
 application image. You can run an interactive container from your new image-of-the-day Docker image, and you’ll find there’s no mvn command in there. Only the
