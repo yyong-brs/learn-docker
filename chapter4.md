@@ -400,26 +400,19 @@ startup times, but it also means you have less software available in your applic
 image, which means fewer potential exploits for attackers.
 
 ## 4.6 实验室   
-Lab time! You’re going to put into practice what you’ve learned about multi-stage
-builds and optimizing Dockerfiles. In the source code for the book, you’ll find a
-folder at ch04/lab which is your starting point. It’s a simple Go web server application,
-which already has a Dockerfile, so you can build and run it in Docker. But the Docker-
-file is in dire need of optimizing, and that is your job.
 
-There are specific goals for this lab:
-- Start by building an image using the existing Dockerfile, and then optimize the
-Dockerfile to produce a new image.
-- The current image is 800 MB on Linux and 5.2 GB on Windows. Your opti-
-mized image should be around 15 MB on Linux or 260 MB on Windows.
-- If you change the HTML content with the current Dockerfile, the build exe-
-cutes seven steps.
-- Your optimized Dockerfile should only execute a single step when you change
-the HTML.
+实验时间！您将实践您学到的关于多阶段构建和优化 Dockerfile 的知识。在本书的源代码中，您会发现在 ch04/lab文件夹中是您的起点。这是一个简单的Go Web服务器应用程序，已经有一个Dockerfile，因此您可以在Docker中构建和运行它。但是Dockerfile需要优化，这是您的工作。
+
+实验的具体目标是：
+
+- 首先使用现有的 Dockerfile 构建镜像，然后优化 Dockerfile 以生成新镜像。
+- 目前的镜像在Linux上是800 MB，在Windows上是5.2 GB。您的优化镜像应该在Linux上约为15 MB或在Windows上约为260 MB。
+- 如果使用当前的Dockerfile更改HTML内容，则构建会执行七个步骤。
+- 您的优化的 Dockerfile 应该只执行一个步骤，当您更改HTML时。
 
 As always, there’s a sample solution on the book’s GitHub repository. But this is one
 lab you should really try and find time to do, because optimizing Dockerfiles is a valu-
 able skill you’ll use in every project. If you need it, though, my solution is here:
 https://github.com/sixeyed/diamol/blob/master/ch04/lab/Dockerfile.optimized.
 
-No hints this time, although I would say this sample app looks very similar to one
-you’ve already built in this chapter.
+与往常一样，本书的 GitHub 存储库中有一个示例解决方案。但是，这是一个您应该真正尝试找时间去做的实验，因为优化 Dockerfile 是一种宝贵的技能，您将在每个项目中使用它。但是，如果您需要，我的解决方案在这里：https://github.com/yyong-brs/learn-docker/tree/master/diamol/ch04/lab/Dockerfile.optimized。
