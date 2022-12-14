@@ -245,18 +245,9 @@ using Pip for dependencies, or Ruby using Gems.
 
 ## 4.4 应用演练：Go 源代码
 
-We’ve got one last example of a multi-stage Dockerfile—for a web application written
-in Go. Go is a modern, cross-platform language that compiles to native binaries. That
-means you can compile your apps to run on any platform (Windows, Linux, Intel, or
-Arm), and the compiled output is the complete application. You don’t need a sepa-
-rate runtime installed like you do with Java, .NET Core, Node.js, or Python, and that
-makes for extremely small Docker images.
+我们最后一个例子是用 Go 编写的 web 应用程序的多阶段 Dockerfile。Go 是一种现代的跨平台语言，可编译为本地二进制文件。这意味着您可以编译应用程序以在任何平台（Windows、Linux、Intel或Arm）上运行，编译后的输出就是完整的应用程序。您不需要像Java、.NET Core、Node.js 或者 Python 那样安装单独的运行时，这使得 Docker 镜像非常小。
 
-There are a few other languages that also compile to native binaries—Rust and Swift
-are popular—but Go has the widest platform support, and it’s also a very popular lan-
-guage for cloud-native apps (Docker itself is written in Go). Building Go apps in Docker
-means using a multi-stage Dockerfile approach similar to the one you used for the Java
-app, but there are some important differences. Listing 4.4 shows the full Dockerfile.
+还有一些其他语言也可以编译成原生二进制文件。Rust和Swift很流行，但Go具有最广泛的平台支持，它也是云原生应用程序非常流行的语言（Docker本身是用Go编写的）。在Docker中构建Go应用程序意味着使用与Java应用程序类似的多阶段 Dockerfile 方法，但有一些重要的区别。清单 4.4 显示了完整的Dockerfile。
 
 ```
 FROM diamol/golang AS builder
@@ -277,35 +268,25 @@ COPY --from=builder /server .
 RUN chmod +x server
 ```
 
-Go compiles to native binaries, so each stage in the Dockerfile uses a different base
-image. The builder stage uses diamol/golang, which has all the Go tools installed. Go
-applications don’t usually fetch dependencies, so this stage goes straight to building
-the application (which is just one code file, main.go). The final application stage uses
-a minimal image, which just has the smallest layer of operating system tools, called
-diamol/base.
+Go 编译为本地二进制文件，因此 Dockerfile 中的每个阶段都使用不同的基本镜像。builder 阶段使用 diamol/golang，它安装了所有Go工具。Go应用程序通常不获取依赖项，因此这个阶段直接构建应用程序（它只是一个代码文件 main.go）。最后的应用程序阶段使用一个最小的镜像，它只有最小的操作系统工具层，称为 diamol/base。
 
-The Dockerfile captures some configuration settings as environment variables and
-specifies the startup command as the compiled binary. The application stage ends by
-copying in the HTML file the application serves from the host and the web server
-binary from the builder stage. Binaries need to be explicitly marked as executable in
-Linux, which is what the final chmod command does (this has no effect on Windows).
+Dockerfile 捕获一些配置设置作为环境变量，并将启动命令指定为编译的二进制文件。应用程序阶段结束时，从主机复制应用程序提供的 HTML文件，并从 builder 阶段复制 web 服务器二进制文件。二进制文件需要在Linux中明确标记为可执行，这就是最后的chmod命令所做的（这对Windows没有影响）。
 
-TRY IT NOW Browse to the Go application source code and build the image:
+<b>现在就试试</b> 浏览 Go 应用程序源代码并构建镜像：
 
 ```
 cd ch04/exercises/image-gallery
 docker image build -t image-gallery .
 ```
-This time there won’t be a lot of compiler output, because Go is quiet and only writes
-logs when there are failures. You can see my abbreviated output in figure 4.9.
+
+这次不会有太多编译器输出，因为Go是安静的，只输出故障时记录。您可以在图4.9中看到我的简短输出。
 
 ![图4.9](./images/Figure4.9.png)
 <center>图4.9 </center>
 
-This Go application does do something useful, but before you run it, it’s worth taking
-a look at the size of the images that go in and come out.
+这个 Go 应用程序确实做了一些有用的事情，但在您运行它之前，它是值得的看看进出的镜像的大小。
 
-TRY IT NOW Compare the Go application image size with the Go toolset image:
+<b>现在就试试</b> 将 Go 应用程序镜像大小与 Go 工具集镜像进行比较：
 
 `docker image ls -f reference=diamol/golang -f reference=image-gallery`
 
@@ -359,56 +340,28 @@ Docker, so your pipeline is just docker image build.
 
 ## 4.5 理解 Dockerfile 的多阶段构建
 
-We’ve covered a lot of ground in this chapter, and I’m going to end with some key
-points so you’re really clear on how multi-stage Dockerfiles work, and why it’s incredi-
-bly useful to build your apps inside containers.
+在本章中，我们已经介绍了很多内容，我将以一些关键内容结束，至此，你已经非常清楚多阶段 Dockerfile 是如何工作的，以及为什么它在容器中构建应用程序非常有用。
 
-The first point is about standardization. I know when you run the exercises for this
-chapter that your builds will succeed and your apps will work because you’re using the
-exact same set of tools that I’m using. It doesn’t matter what operating system you
-have or what’s installed on your machine—all the builds run in Docker containers,
-and the container images have all the correct versions of the tools. In your real projects you’ll find that this hugely simplifies on-boarding for new developers, eliminates
-the maintenance burden for build servers, and removes the potential for breakages
-where users have different versions of tools.
+第一点是关于标准化。我知道你做本章的练习时将会成功运行，因为你和我使用的工具都是一样的。无论您使用什么操作系统，所有构建都在Docker容器中运行，并且容器镜像具有所有正确版本的工具。在您的实际项目中，您会发现这大大简化了新开发人员的入职，降低构建服务器的维护负担，并消除因为用户具有不同版本的工具而造成损坏的可能性。
 
-The second point is performance. Each stage in a multi-stage build has its own
-cache. Docker looks for a match in the image layer cache for each instruction; if it
-doesn’t find one, the cache is broken and all the rest of the instructions are executed—
-but only for that stage. The next stage starts again from the cache. You’ll be spending
-time structuring your Dockerfiles carefully, and when you get the optimization done,
-you’ll find 90% of your build steps use the cache.
+第二点是性能。多级构建中的每个阶段都有自己的缓存。Docker 在镜像层缓存中查找每个指令的匹配项；如果找不到，缓存将被破坏，所有其余的指令将被执行，但仅限于该阶段。下一阶段再次从缓存开始。您将花费时间仔细构建Dockerfile，当您完成优化后，您将发现 90% 的构建步骤都使用缓存。
 
-The final point is that multi-stage Dockerfiles let you fine-tune your build so the
-final application image is as lean as possible. This is not just for compilers—any tool-
-ing you need can be isolated in earlier stages, so the tool itself isn’t present in the final
-image. A good example is curl—a popular command-line tool you can use for down-
-loading content from the internet. You might need that to download files your app
-needs, but you can do that in an early stage in your Dockerfile so curl itself isn’t
-installed in your application image. This keeps image size down, which means faster
-startup times, but it also means you have less software available in your application
-image, which means fewer potential exploits for attackers.
+最后一点是，多阶段 Dockerfile 允许您对构建进行微调，从而使最终的应用程序镜像尽可能精简。这不仅适用于编译器，您需要的任何工具都可以在早期阶段被隔离，因此工具本身不会出现在最终镜像中。一个很好的例子是curl，这是一个流行的命令行工具，可以用于从互联网下载内容。您可能需要下载应用程序所需的文件，但您可以在 Dockerfile 的早期阶段这样做，这样curl本身就不会安装在应用程序镜像中。这样可以减小镜像大小，这意味着启动时间更快，但这也意味着应用程序镜像中可用的软件更少，这也意味着攻击者的潜在攻击更少。
 
 ## 4.6 实验室   
-Lab time! You’re going to put into practice what you’ve learned about multi-stage
-builds and optimizing Dockerfiles. In the source code for the book, you’ll find a
-folder at ch04/lab which is your starting point. It’s a simple Go web server application,
-which already has a Dockerfile, so you can build and run it in Docker. But the Docker-
-file is in dire need of optimizing, and that is your job.
 
-There are specific goals for this lab:
-- Start by building an image using the existing Dockerfile, and then optimize the
-Dockerfile to produce a new image.
-- The current image is 800 MB on Linux and 5.2 GB on Windows. Your opti-
-mized image should be around 15 MB on Linux or 260 MB on Windows.
-- If you change the HTML content with the current Dockerfile, the build exe-
-cutes seven steps.
-- Your optimized Dockerfile should only execute a single step when you change
-the HTML.
+实验时间！您将实践您学到的关于多阶段构建和优化 Dockerfile 的知识。在本书的源代码中，您会发现在 ch04/lab文件夹中是您的起点。这是一个简单的Go Web服务器应用程序，已经有一个Dockerfile，因此您可以在Docker中构建和运行它。但是Dockerfile需要优化，这是您的工作。
+
+实验的具体目标是：
+
+- 首先使用现有的 Dockerfile 构建镜像，然后优化 Dockerfile 以生成新镜像。
+- 目前的镜像在Linux上是800 MB，在Windows上是5.2 GB。您的优化镜像应该在Linux上约为15 MB或在Windows上约为260 MB。
+- 如果使用当前的Dockerfile更改HTML内容，则构建会执行七个步骤。
+- 您的优化的 Dockerfile 应该只执行一个步骤，当您更改HTML时。
 
 As always, there’s a sample solution on the book’s GitHub repository. But this is one
 lab you should really try and find time to do, because optimizing Dockerfiles is a valu-
 able skill you’ll use in every project. If you need it, though, my solution is here:
 https://github.com/sixeyed/diamol/blob/master/ch04/lab/Dockerfile.optimized.
 
-No hints this time, although I would say this sample app looks very similar to one
-you’ve already built in this chapter.
+与往常一样，本书的 GitHub 存储库中有一个示例解决方案。但是，这是一个您应该真正尝试找时间去做的实验，因为优化 Dockerfile 是一种宝贵的技能，您将在每个项目中使用它。但是，如果您需要，我的解决方案在这里：https://github.com/yyong-brs/learn-docker/tree/master/diamol/ch04/lab/Dockerfile.optimized。
