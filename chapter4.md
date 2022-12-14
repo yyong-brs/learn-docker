@@ -256,18 +256,9 @@ using Pip for dependencies, or Ruby using Gems.
 
 ## 4.4 应用演练：Go 源代码
 
-We’ve got one last example of a multi-stage Dockerfile—for a web application written
-in Go. Go is a modern, cross-platform language that compiles to native binaries. That
-means you can compile your apps to run on any platform (Windows, Linux, Intel, or
-Arm), and the compiled output is the complete application. You don’t need a sepa-
-rate runtime installed like you do with Java, .NET Core, Node.js, or Python, and that
-makes for extremely small Docker images.
+我们最后一个例子是用 Go 编写的 web 应用程序的多阶段 Dockerfile。Go 是一种现代的跨平台语言，可编译为本地二进制文件。这意味着您可以编译应用程序以在任何平台（Windows、Linux、Intel或Arm）上运行，编译后的输出就是完整的应用程序。您不需要像Java、.NET Core、Node.js 或者 Python 那样安装单独的运行时，这使得 Docker 镜像非常小。
 
-There are a few other languages that also compile to native binaries—Rust and Swift
-are popular—but Go has the widest platform support, and it’s also a very popular lan-
-guage for cloud-native apps (Docker itself is written in Go). Building Go apps in Docker
-means using a multi-stage Dockerfile approach similar to the one you used for the Java
-app, but there are some important differences. Listing 4.4 shows the full Dockerfile.
+还有一些其他语言也可以编译成原生二进制文件。Rust和Swift很流行，但Go具有最广泛的平台支持，它也是云原生应用程序非常流行的语言（Docker本身是用Go编写的）。在Docker中构建Go应用程序意味着使用与Java应用程序类似的多阶段 Dockerfile 方法，但有一些重要的区别。清单 4.4 显示了完整的Dockerfile。
 
 ```
 FROM diamol/golang AS builder
@@ -288,35 +279,25 @@ COPY --from=builder /server .
 RUN chmod +x server
 ```
 
-Go compiles to native binaries, so each stage in the Dockerfile uses a different base
-image. The builder stage uses diamol/golang, which has all the Go tools installed. Go
-applications don’t usually fetch dependencies, so this stage goes straight to building
-the application (which is just one code file, main.go). The final application stage uses
-a minimal image, which just has the smallest layer of operating system tools, called
-diamol/base.
+Go 编译为本地二进制文件，因此 Dockerfile 中的每个阶段都使用不同的基本镜像。builder 阶段使用 diamol/golang，它安装了所有Go工具。Go应用程序通常不获取依赖项，因此这个阶段直接构建应用程序（它只是一个代码文件 main.go）。最后的应用程序阶段使用一个最小的镜像，它只有最小的操作系统工具层，称为 diamol/base。
 
-The Dockerfile captures some configuration settings as environment variables and
-specifies the startup command as the compiled binary. The application stage ends by
-copying in the HTML file the application serves from the host and the web server
-binary from the builder stage. Binaries need to be explicitly marked as executable in
-Linux, which is what the final chmod command does (this has no effect on Windows).
+Dockerfile 捕获一些配置设置作为环境变量，并将启动命令指定为编译的二进制文件。应用程序阶段结束时，从主机复制应用程序提供的 HTML文件，并从 builder 阶段复制 web 服务器二进制文件。二进制文件需要在Linux中明确标记为可执行，这就是最后的chmod命令所做的（这对Windows没有影响）。
 
-TRY IT NOW Browse to the Go application source code and build the image:
+<b>现在就试试</b> 浏览 Go 应用程序源代码并构建镜像：
 
 ```
 cd ch04/exercises/image-gallery
 docker image build -t image-gallery .
 ```
-This time there won’t be a lot of compiler output, because Go is quiet and only writes
-logs when there are failures. You can see my abbreviated output in figure 4.9.
+
+这次不会有太多编译器输出，因为Go是安静的，只输出故障时记录。您可以在图4.9中看到我的简短输出。
 
 ![图4.9](./images/Figure4.9.png)
 <center>图4.9 </center>
 
-This Go application does do something useful, but before you run it, it’s worth taking
-a look at the size of the images that go in and come out.
+这个 Go 应用程序确实做了一些有用的事情，但在您运行它之前，它是值得的看看进出的镜像的大小。
 
-TRY IT NOW Compare the Go application image size with the Go toolset image:
+<b>现在就试试</b> 将 Go 应用程序镜像大小与 Go 工具集镜像进行比较：
 
 `docker image ls -f reference=diamol/golang -f reference=image-gallery`
 
