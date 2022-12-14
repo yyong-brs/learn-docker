@@ -145,32 +145,17 @@ Java API 只是本章将要运行的完整应用程序的一部分 - 实际上�
 
 容器中的实际应用程序并不重要（但不要立即删除它-我们将在本章后面使用它）。重要的是，只需拥有带有Dockerfile的源代码的副本，就可以在安装了Docker的任何机器上构建它。您不需要安装任何构建工具，也不需要特定版本的Java-只需克隆代码库，然后再运行几个Docker命令就可以运行应用程序。
 
-One other thing to be really clear on here: the build tools are not part of the final
-application image. You can run an interactive container from your new image-of-the-day Docker image, and you’ll find there’s no mvn command in there. Only the
-contents of the final stage in the Dockerfile get made into the application image; any-
-thing you want from previous stages needs to be explicitly copied in that final stage.
+请注意，构建工具不是最终应用程序镜像的一部分。您可以从新的 image-of-the-day 镜像运行交互式容器，并发现其中没有 mvn 命令。 Dockerfile 中的最终阶段中的内容才会制成应用程序镜像；您需要从以前一个阶段复制的任何内容都需要在最终阶段明确复制。
 
 ## 4.3 应用演练：Node.js 源代码
 
-We’re going to go through another multi-stage Dockerfile, this time for a Node.js
-application. Organizations are increasingly using diverse technology stacks, so it’s
-good to have an understanding of how different builds look in Docker. Node.js is a
-great option because of its popularity, and also because it’s an example of a different
-type of build—this pattern also works with other scripted languages like Python,
-PHP, and Ruby. The source code for this app is at the folder path ch04/exercises/access-log.
+我们将继续通过另一个多阶段 Dockerfile，这次是用于 Node.js 应用程序。组织越来越多地使用不同的技术栈，因此了解不同构建在 Docker 中的样子是很有用的。Node.js 是一个很好的选择，因为它很受欢迎，而且还是另一种构建类型的例子 - 这种模式也适用于 Python，PHP 和 Ruby 等脚本语言。此应用程序的源代码位于 ch04/exercises/access-log 文件夹路径中。
 
-Java applications are compiled, so the source code gets copied into the build stage,
-and that generates a JAR file. The JAR file is the compiled app, and it gets copied
-into the final application image, but the source code is not. It’s the same with .NET
-Core, where the compiled artifacts are DLLs (Dynamic Link Libraries). Node.js is
-different—it uses JavaScript, which is an interpreted language, so there’s no compilation step. Dockerized Node.js apps need the Node.js runtime and the source code in
-the application image.
+Java 应用程序是需要编译的，因此源代码会被复制到构建阶段，并生成一个 JAR 文件。JAR 文件是编译的应用程序包，它被复制到最终的应用程序镜像中，但源代码不需要。.NET Core 是一样的，其中编译的工件是 DLL（动态链接库）。Node.js 不同 - 它使用 JavaScript，这是一种解释型语言，因此没有编译步骤。使用 Docker 的 Node.js 应用程序需要 Node.js 运行时和应用程序镜像中的源代码。
 
-There’s still a need for a multi-stage Dockerfile though: it optimizes dependency
-loading. Node.js uses a tool called npm (the Node package manager) to manage depen-
-dencies. Listing 4.3 shows the full Dockerfile for this chapter’s Node.js application.
+还是需要多阶段 Dockerfile：它优化了依赖项加载。Node.js 使用名为 npm 的工具（Node 包管理器）来管理依赖项。列表 4.3 显示了本章 Node.js 应用程序的完整 Dockerfile。
 
-> Listing 4.3 Dockerfile for building a Node.js app with npm
+> 清单 4.3 构建 npm Node.js 应用的 Dockerfile
 
 ```
 FROM diamol/node AS builder
@@ -186,62 +171,39 @@ COPY --from=builder /src/node_modules/ /app/node_modules/
 COPY src/ .
 ```
 
-The goal here is the same as for the Java application—to package and run the app
-with only Docker installed, without having to install any other tools. The base image
-for both stages is diamol/node, which has the Node.js runtime and npm installed. The
-builder stage in the Dockerfile copies in the package.json files, which describe all the
-application’s dependencies. Then it runs npm install to download the dependencies.
-There’s no compilation, so that’s all it needs to do.
+这里的目标与 Java 应用程序相同 - 只安装 Docker 即可打包和运行应用程序，而无需安装其他任何工具。两个阶段的基础镜像都是 diamol/node，其中包含 Node.js 运行时和 npm。Dockerfile 中的构建器阶段复制了 package.json 文件，该文件描述了所有应用程序的依赖项。然后它运行 npm install 下载依赖项。没有编译，因此这些就是它需要做的了。
 
-This application is another REST API. In the final application stage, the steps
-expose the HTTP port and specify the node command line as the startup command.
-The last thing is to create a working directory and copy in the application artifacts.
-The downloaded dependencies are copied from the builder stage, and the source
-code is copied from the host computer. The src folder contains the JavaScript files,
-including server.js, which is the entry point started by the Node.js process.
+这个应用程序是另一个 REST API。在最终的应用程序阶段，步骤公开 HTTP 端口并指定 node 命令行作为启动命令。最后一件事是创建一个工作目录并复制应用程序工件。下载的依赖项从构建器阶段复制，源代码从主机计算机复制。src 文件夹包含 JavaScript 文件，包括 server.js，它是由 Node.js 进程启动的入口点。
 
-We have a different technology stack here, with a different pattern for packaging
-the application. The base images, tools, and commands for a Node.js app are all dif-
-ferent from a Java app, but those differences are captured in the Dockerfile. The pro-
-cess for building and running the app is exactly the same.
+我们这里有一个不同的技术栈，采用了不同的应用程序打包模式。Node.js 应用程序的基础镜像，工具和命令都与 Java 应用程序不同，但这些差异都被捕获在 Dockerfile 中。构建和运行应用程序的过程完全相同。
 
-TRY IT NOW Browse to the Node.js application source code and build the image:
+<b>现在就试试</b> 浏览 Node.js 应用程序源代码并构建镜像：
 
 ```
 cd ch04/exercises/access-log
 docker image build -t access-log .
 ```
 
-You’ll see a whole lot of output from npm (which may show some error and warning
-messages too, but you can ignore those). Figure 4.7 shows part of the output from my
-build. The packages that are downloaded get saved in the Docker image layer cache,
-so if you work on the app and just make code changes, the next build you run will be
-super fast.
+您会看到来自 npm 的大量输出（这也可能显示一些错误和警告消息，但您可以忽略这些）。图 4.7 显示了我构建的部分输出。下载的包被保存在 Docker 镜像层缓存中，因此如果您在工作中仅进行代码更改，则下一次运行的构建将非常快。
 
 ![图4.7](./images/Figure4.7.png)
 <center>图4.7 </center>
 
-The Node.js app you’ve just built is not at all interesting, but you should still run it
-to check that it’s packaged correctly. It’s a REST API that other services can call to
-write logs. There’s an HTTP POST endpoint for recording a new log, and a GET endpoint that shows how many logs have been recorded.
+您刚刚构建的 Node.js 应用程序根本没有意思，但您仍应该运行它以检查打包是否正确。它是一个 REST API，其他服务可以调用它来写日志。有一个用于记录新日志的 HTTP POST 端点，还有一个 GET 端点，显示已记录的日志数。
 
-TRY IT NOW Run a container from the log API image, publishing port 80 to
-host and connecting it to the same nat network:
+<b>现在就试试</b>从 log API 镜像运行容器，将端口 80 发布到主机并将其连接到相同的 nat 网络：
+
 
 `docker container run --name accesslog -d -p 801:80 --network nat access-log`
 
-Now browse to http:/ /localhost:801/stats and you’ll see how many logs the service has
-recorded. Figure 4.8 shows I have zero logs so far—Firefox nicely formats the API
-response, but you may see the raw JSON in other browsers.
+现在浏览 http://localhost:801/stats，您将看到服务记录了多少日志。图 4.8 显示我迄今为止没有日志 - Firefox 很好地格式化了 API 响应，但您在其他浏览器中可能会看到原始 JSON。
 
 ![图4.8](./images/Figure4.8.png)
 <center>图4.8 </center>
 
-The log API is running in Node.js version 10.16, but just like with the Java example,
-you don’t need any versions of Node.js or any other tools installed to build and run
-this app. The workflow in this Dockerfile downloads dependencies and then copies
-the script files into the final image. You can use the exact same approach with Python,
-using Pip for dependencies, or Ruby using Gems.
+The log API is running in Node.js version 10.16, but just like with the Java example,you don’t need any versions of Node.js or any other tools installed to build and run
+this app. The workflow in this Dockerfile downloads dependencies and then copies the script files into the final image. You can use the exact same approach with Python,using Pip for dependencies, or Ruby using Gems.
+日志 API 正在运行 Node.js 版本 10.16，但就像 Java 示例一样，您无需安装任何版本的 Node.js 或其他工具即可构建和运行此应用程序。该 Dockerfile 中的工作流下载依赖项，然后将脚本文件复制到最终镜像中。您可以使用与 Python 相同的方法，使用 Pip 获取依赖项，或 Ruby 所使用的 Gems。
 
 ## 4.4 应用演练：Go 源代码
 
