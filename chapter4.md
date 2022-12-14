@@ -201,8 +201,6 @@ docker image build -t access-log .
 ![图4.8](./images/Figure4.8.png)
 <center>图4.8 </center>
 
-The log API is running in Node.js version 10.16, but just like with the Java example,you don’t need any versions of Node.js or any other tools installed to build and run
-this app. The workflow in this Dockerfile downloads dependencies and then copies the script files into the final image. You can use the exact same approach with Python,using Pip for dependencies, or Ruby using Gems.
 日志 API 正在运行 Node.js 版本 10.16，但就像 Java 示例一样，您无需安装任何版本的 Node.js 或其他工具即可构建和运行此应用程序。该 Dockerfile 中的工作流下载依赖项，然后将脚本文件复制到最终镜像中。您可以使用与 Python 相同的方法，使用 Pip 获取依赖项，或 Ruby 所使用的 Gems。
 
 ## 4.4 应用演练：Go 源代码
