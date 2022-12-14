@@ -370,34 +370,13 @@ Docker, so your pipeline is just docker image build.
 
 ## 4.5 理解 Dockerfile 的多阶段构建
 
-We’ve covered a lot of ground in this chapter, and I’m going to end with some key
-points so you’re really clear on how multi-stage Dockerfiles work, and why it’s incredi-
-bly useful to build your apps inside containers.
+在本章中，我们已经介绍了很多内容，我将以一些关键内容结束，至此，你已经非常清楚多阶段 Dockerfile 是如何工作的，以及为什么它在容器中构建应用程序非常有用。
 
-The first point is about standardization. I know when you run the exercises for this
-chapter that your builds will succeed and your apps will work because you’re using the
-exact same set of tools that I’m using. It doesn’t matter what operating system you
-have or what’s installed on your machine—all the builds run in Docker containers,
-and the container images have all the correct versions of the tools. In your real projects you’ll find that this hugely simplifies on-boarding for new developers, eliminates
-the maintenance burden for build servers, and removes the potential for breakages
-where users have different versions of tools.
+第一点是关于标准化。我知道你做本章的练习时将会成功运行，因为你和我使用的工具都是一样的。无论您使用什么操作系统，所有构建都在Docker容器中运行，并且容器镜像具有所有正确版本的工具。在您的实际项目中，您会发现这大大简化了新开发人员的入职，降低构建服务器的维护负担，并消除因为用户具有不同版本的工具而造成损坏的可能性。
 
-The second point is performance. Each stage in a multi-stage build has its own
-cache. Docker looks for a match in the image layer cache for each instruction; if it
-doesn’t find one, the cache is broken and all the rest of the instructions are executed—
-but only for that stage. The next stage starts again from the cache. You’ll be spending
-time structuring your Dockerfiles carefully, and when you get the optimization done,
-you’ll find 90% of your build steps use the cache.
+第二点是性能。多级构建中的每个阶段都有自己的缓存。Docker 在镜像层缓存中查找每个指令的匹配项；如果找不到，缓存将被破坏，所有其余的指令将被执行，但仅限于该阶段。下一阶段再次从缓存开始。您将花费时间仔细构建Dockerfile，当您完成优化后，您将发现 90% 的构建步骤都使用缓存。
 
-The final point is that multi-stage Dockerfiles let you fine-tune your build so the
-final application image is as lean as possible. This is not just for compilers—any tool-
-ing you need can be isolated in earlier stages, so the tool itself isn’t present in the final
-image. A good example is curl—a popular command-line tool you can use for down-
-loading content from the internet. You might need that to download files your app
-needs, but you can do that in an early stage in your Dockerfile so curl itself isn’t
-installed in your application image. This keeps image size down, which means faster
-startup times, but it also means you have less software available in your application
-image, which means fewer potential exploits for attackers.
+最后一点是，多阶段 Dockerfile 允许您对构建进行微调，从而使最终的应用程序镜像尽可能精简。这不仅适用于编译器，您需要的任何工具都可以在早期阶段被隔离，因此工具本身不会出现在最终镜像中。一个很好的例子是curl，这是一个流行的命令行工具，可以用于从互联网下载内容。您可能需要下载应用程序所需的文件，但您可以在 Dockerfile 的早期阶段这样做，这样curl本身就不会安装在应用程序镜像中。这样可以减小镜像大小，这意味着启动时间更快，但这也意味着应用程序镜像中可用的软件更少，这也意味着攻击者的潜在攻击更少。
 
 ## 4.6 实验室   
 
