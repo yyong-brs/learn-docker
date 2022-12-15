@@ -250,53 +250,30 @@ docker image build -t image-gallery .
 
 `docker image ls -f reference=diamol/golang -f reference=image-gallery`
 
-Many Docker commands let you filter the output. This command lists all images and
-filters the output to only include images with a reference of diamol/golang or image-
-gallery—the reference is really just the image name. When you run this, you’ll see
-how important it is to choose the right base images for your Dockerfile stages:
+许多的 Docker 命令都可以过滤输出。此命令列车所有镜像，并过滤输出以包含具有 diamol/golang 或 image-gallery 引用的镜像。当你运行它时，你会看到选择适当的基础镜像对于 Dockerfile 阶段是多么重要:
+
 ```
 REPOSITORY TAG IMAGE ID CREATED SIZE
 image-gallery latest b41869f5d153 20 minutes ago 25.3MB
 diamol/golang latest ad57f5c226fc 2 hours ago 774MB
 ```
 
-On Linux, the image with all the Go tools installed comes in at over 770 MB; the
-actual Go application image is only 25 MB. Remember, that’s the virtual image size, so
-a lot of those layers can be shared between different images. The important saving
-isn’t so much the disk space, but all the software that isn’t in the final image. The
-application doesn’t need any of the Go tools at runtime. By using a minimal base
-image for the application, we’re saving nearly 750 MB of software, which is a huge
-reduction in the surface area for potential attacks.
+在 Linux 上，安装了所有 Go 工具的镜像大小超过 770 MB；实际的 Go 应用程序镜像只有 25 MB。请记住，这是虚拟镜像大小，因此许多层可以在不同的镜像之间共享。重要的节省不是磁盘空间，而是最终镜像中不存在的所有软件。应用程序在运行时不需要任何 Go 工具。通过为应用程序使用最小的基础镜像，我们可以节省近 750 MB 的软件，这大大减少了潜在攻击的表面积。
 
-Now you can run the app. This ties together your work in this chapter, because the
-Go application actually uses the APIs from the other applications you’ve built. You
-should make sure you have those containers running, with the correct names from
-the earlier try-it-now exercises. If you run docker container ls, you should see two
-containers from this chapter—the Node.js container called accesslog and the Java
-container called iotd. When you run the Go container, it will use the APIs from the
-other containers.
+现在您可以运行应用程序了。这将本章的工作结合起来，因为 Go 应用程序实际上使用了您构建的其他应用程序的 API。您应该确保您正在运行容器，并使用来自前面的 try-it-now 练习的正确名称。如果您运行 docker container ls，您应该会看到本章的两个容器 - 叫做 accesslog 的 Node.js 容器和叫做 iotd 的 Java 容器。当您运行 Go 容器时，它将使用其他容器的 API。
 
-TRY IT NOW Run the Go application image, publishing the host port and connecting to the nat network:
+<b>现在就试试</b> 运行 GO 应用镜像，发布主机端口并连接到 nat 网络：
 
 `docker container run -d -p 802:80 --network nat image-gallery`
 
-You can browse to http:/ /localhost:802 and you’ll see NASA’s Astronomy Picture of
-the Day. Figure 4.10 shows the image when I ran my containers.
+您可以浏览 http://localhost:802，您将看到 NASA 的天文照片。图4.10 显示了我运行容器时的图像。
 
 ![图4.10](./images/Figure4.10.png)
 <center>图4.10 </center>
 
-Right now you’re running a distributed application across three containers. The Go
-web application calls the Java API to get details of the image to show, and then it calls
-the Node.js API to log that the site has been accessed. You didn’t need to install any
-tools for any of those languages to build and run all the apps; you just needed the
-source code and Docker.
+现在，您正在跨三个容器运行分布式应用程序。Go Web 应用程序调用 Java API 获取要显示的图像的详细信息，然后调用 Node.js API 记录站点已被访问。您无需安装这些语言的任何工具来构建和运行所有应用程序，您只需要源代码和 Docker 即可。
 
-Multi-stage Dockerfiles make your project entirely portable. You might use Jenkins
-to build your apps right now, but you could try AppVeyor’s managed CI service or
-Azure DevOps without having to write any new pipeline code—they all support
-Docker, so your pipeline is just docker image build.
-
+多阶段 Dockerfile 可以使您的项目完全可移植。您可能现在正在使用 Jenkins 来构建应用程序，但您可以尝试 AppVeyor 的托管 CI 服务或 Azure DevOps，而无需编写任何新的管道代码 - 它们都支持 Docker，因此您的管道只是 docker image build。
 
 ## 4.5 理解 Dockerfile 的多阶段构建
 
@@ -318,10 +295,5 @@ Docker, so your pipeline is just docker image build.
 - 目前的镜像在Linux上是800 MB，在Windows上是5.2 GB。您的优化镜像应该在Linux上约为15 MB或在Windows上约为260 MB。
 - 如果使用当前的Dockerfile更改HTML内容，则构建会执行七个步骤。
 - 您的优化的 Dockerfile 应该只执行一个步骤，当您更改HTML时。
-
-As always, there’s a sample solution on the book’s GitHub repository. But this is one
-lab you should really try and find time to do, because optimizing Dockerfiles is a valu-
-able skill you’ll use in every project. If you need it, though, my solution is here:
-https://github.com/sixeyed/diamol/blob/master/ch04/lab/Dockerfile.optimized.
 
 与往常一样，本书的 GitHub 存储库中有一个示例解决方案。但是，这是一个您应该真正尝试找时间去做的实验，因为优化 Dockerfile 是一种宝贵的技能，您将在每个项目中使用它。但是，如果您需要，我的解决方案在这里：https://github.com/yyong-brs/learn-docker/tree/master/diamol/ch04/lab/Dockerfile.optimized。
