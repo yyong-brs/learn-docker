@@ -1,85 +1,81 @@
 # 第五章 通过 Docker Hub 及其它仓库共享镜像
 
-You’ve spent the last few chapters getting a good understanding of the build and run parts of the Docker workflow—now it’s time for share. Sharing is all about taking the images you’ve built on your local machine and making them available for other people to use. I really think this is the most important part of the Docker equation. Packaging your software along with all its dependencies means anyone can use it easily, on any machine—there are no gaps between environments, so there are no more days wasted setting up software or tracking down bugs that are actually deployment problems.
+在前面几章中，您已经很好地理解了Docker工作流的构建和运行部分——现在是分享的时候了。共享就是将您在本地机器上构建的镜像提供给其他人使用。我真的认为这是Docker等式中最重要的部分。打包软件及其所有依赖项意味着任何人都可以在任何机器上轻松使用它——没有环境之间的差距，因此不需要再浪费时间设置软件或跟踪实际上是部署问题的错误。
 
 ## 5.1 使用 registry、repository 以及镜像 Tag
 
-Software distribution is built into the Docker platform. You’ve already seen that you can run a container from an image, and if you don’t have that image locally,Docker will download it. The server that stores images centrally is called a Docker registry. Docker Hub is the most popular image registry, hosting hundreds of thousands of images, which are downloaded billions of times every month. It’s also the default registry for the Docker Engine, which means it’s the first place Docker looks for images that aren’t available locally.
+软件分发内置在 Docker 平台中。您已经看到可以从镜像运行容器，如果本地没有该镜像，Docker将下载它。集中存储镜像的服务器称为Docker 仓库（registry）。Docker Hub是最受欢迎的镜像仓库，拥有数十万个镜像，每个月被下载数十亿次。它也是Docker引擎的默认仓库，这意味着它是Docker寻找本地不可用镜像的第一个地方。
 
 Docker images need a name, and that name contains enough information for Docker to find the exact image you’re looking for. So far we’ve used very simple names with one or two parts, like image-gallery or diamol/golang. There are actually four parts to a full image name (which is properly called the image refer-ence). Figure 5.1 shows all those parts in the full reference for diamol/golang:
+Docker 镜像需要一个名称，该名称包含足够的信息，以便Docker找到您正在寻找的确切镜像。到目前为止，我们使用的名称都非常简单，只有一到两个部分，比如image-gallery或diamol/golang。一个完整的镜像名称实际上有四个部分(正确地称为镜像引用)。图5.1显示了diamol/golang完整参考中的所有部分:
 
 ![图5.1](./images/Figure5.1.png)
 <center>图5.1 解剖 Docker 镜像引用</center>
 
-You’ll be making use of all the parts of an image reference when you start managing your own application images. On your local machine you can name images anything you like, but when you want to share them on a registry, you’ll need to add some more details, because the image reference is a unique identifier for one specific image on a registry.
+当您开始管理自己的应用程序镜像时，您将使用镜像引用的所有部分。在您的本地机器上，您可以为镜像命名任何您喜欢的名称，但是当您希望在仓库上共享它们时，您将需要添加更多细节，因为镜像引用是仓库上一个特定镜像的唯一标识符。
 
-Docker uses a couple of defaults if you don’t provide values for parts of the image reference. The default registry is Docker Hub, and the default tag is latest. Docker Hub’s domain is docker.io so my image, diamol/golang, is a short version of docker.io/diamol/golang:latest. You can use either of those references. The diamol account is an organization on Docker Hub, and golang is a repository within that organization. It’s a public repository, so anyone can pull the image, but you need to be a member of the diamol organization to push images.
+如果你不为镜像引用的某些部分提供值，Docker会使用一些默认值。默认的仓库是Docker Hub，默认的 tag 是 latest。Docker Hub的域是Docker.io。因此，我的镜像，diamol/golang，是docker.io/diamol/golang:latest的简短版本。你可以使用这些参考中的任何一个。diamol帐户是Docker Hub上的一个组织，golang是该组织中的一个存储库。它是一个公共存储库，因此任何人都可以提取镜像，但您必须是diamol组织的成员才能推送镜像。
 
-Large companies usually have their own Docker registry in their own cloud environment or their local network. You target your own registry by including the domain name in the first part of the reference, so Docker knows not to use Docker Hub. If I hosted my own registry at r.sixeyed.com, my image could be stored at r.sixeyed.com/diamol/golang. That’s all pretty simple, but the most important part of the image reference is the tag.
+大公司通常在自己的云环境或本地网络中有自己的Docker 仓库。通过在引用的第一部分包含域名来针对自己的仓库，因此Docker知道不要使用Docker Hub。如果我在r.sixeyed.com上托管自己的仓库，我的镜像就可以存储在r.sixeyed.com/diamol/golang上。这非常简单，但镜像引用中最重要的部分是 tag。
 
-You haven’t used image tags so far because it’s simpler to get started without them, but when you start building your own application images, you should always tag them. Tags are used to identify different versions of the same application. The official Docker OpenJDK image has hundreds of tags—openjdk:13 is the latest release, openjdk:8u212-jdk is a specific release of Java 8, and there are more for different Linux distributions and Windows versions. If you don’t specify a tag when you create an image, Docker uses the default tag latest. That's a misleading name,because the image tagged “latest” might not actually be the most recent image version. When you push your own images, you should always tag them with explicit versions.
+到目前为止，您还没有使用镜像 Tag，因为开始时不使用它们会更简单，但是当您开始构建自己的应用程序镜像时，您应该始终 tag 它们。tag 用于标识同一应用程序的不同版本。官方Docker OpenJDK镜像有数百个 tag——OpenJDK:13是最新版本，OpenJDK:8u212-jdk是Java 8的特定版本，还有更多针对不同Linux发行版和Windows版本的 tag。如果在创建镜像时没有指定 tag，Docker将使用默认tag latest。这是一个误导性的名称，因为标记为“最新”的镜像实际上可能不是最新的镜像版本。当你推送自己的镜像时，你应该总是用明确的版本来标记它们。
 
 ## 5.2 推送你自己的镜像到 Docker Hub
 
-We’ll get started by pushing one of the images you built in chapter 4 up to Docker Hub. You’ll need a Docker Hub account for that—if you don’t have one, browse to https://hub.docker.com and follow the link to sign up for an account (it’s free and it won’t get you a ton of spam in your inbox).
+我们将从将您在第4章中构建的一个镜像推到 Docker Hub 开始。为此，你需要一个Docker Hub账户——如果你没有，请浏览https://hub.docker.com并按照链接注册一个账户(它是免费的，而且它不会让你的收件箱里有大量垃圾邮件)。
 
-You need to do two things to push an image to a registry. First you need to log in to the registry with the Docker command line, so Docker can check that your user account is authorized to push images. Then you need to give your image a reference that includes the name of an account where you have permission to push.
+要将镜像推送到仓库，需要做两件事。首先，您需要使用Docker命令行登录仓库，这样Docker就可以检查您的用户帐户是否被授权推送镜像。然后，您需要为您的镜像提供一个引用，其中包括您有权推送的帐户的名称。
 
-Every reader will have their own Docker Hub username, so to make it easier to follow along with the exercises, let’s start by capturing your own Docker ID in a variable in your terminal session. After this, you’ll be able to copy and paste the rest of this chapter’s commands.
+每个读者都有自己的Docker Hub用户名，为了便于练习，让我们先在终端会话的变量中捕获自己的Docker ID。在此之后，您将能够复制和粘贴本章的其余命令。
 
-TRY IT NOW
-Open a terminal session and save your Docker Hub ID in a variable. Your Docker ID is your username, not your email address. This is one command that is different on Windows and Linux, so you’ll need to choose the right option:
+<b>现在就试试</b> 打开一个终端会话并将Docker Hub ID保存在一个变量中。Docker ID是您的用户名，而不是您的电子邮件地址。这是一个在Windows和Linux上不同的命令，所以你需要选择正确的选项:
 
 ```
-# using PowerShell on Windows
-$dockerId="<your-docker-id-goes-here>"
-# using Bash on Linux or Mac
-export dockerId="<your-docker-id-goes-here>"
+# 使用 Windows 上的 PowerShell:
+$dockerId="<输入你的 Docker id>"
+# 使用 linux or mac 上的 bash:
+export dockerId="<输入你的 docker id>"
 ```
 
-I’m running Windows at the moment, and my Docker Hub username is sixeyed, so the command I run is $dockerId="sixeyed"; on Linux I would run dockerId="sixeyed".On any system, you can run echo $dockerId and you should see your username displayed. From now on, you can copy the commands in the exercises and they’ll use your Docker ID.
+我现在正在运行Windows，我的Docker Hub用户名是sixeyed，所以我运行的命令是$dockerId="sixeyed";在Linux上，我会运行dockerId="sixeyed"。在任何系统上，您都可以运行echo $dockerId，您应该会看到显示您的用户名。从现在开始，你可以复制练习中的命令，它们将使用你的Docker ID。
 
-Start by logging in to Docker Hub. It’s actually the Docker Engine that pushes and pulls images, but you authenticate using the Docker command line—when you run the login command, it will ask for your password, which is your Docker Hub password.
+首先登录到 Docker Hub。实际上是Docker引擎推送和提取镜像，但是您使用Docker命令行进行身份验证——当您运行登录命令时，它将询问您的密码，请输入您的Docker Hub密码。
 
-TRY IT NOW
-Log in to Docker Hub. Hub is the default registry, so you don’t need to specify a domain name:
+<b>现在就试试</b> 登录 Docker Hub。Hub是默认仓库，所以你不需要指定域名:
 
 `docker login --username $dockerId`
 
-You’ll see output like mine in figure 5.2—sensibly, Docker doesn’t show the password when you type it in.
+您将看到如图5.2所示的输出——很明显，当您输入密码时，Docker不会显示密码。
 
 ![图5.2](./images/Figure5.2.png)
 <center>图5.2 登录 Docker Hub</center>
 
-Now that you’re logged in, you can push images to your own account or to any organizations you have access to. I don’t know you, but if I wanted your help looking after the images for this book, I could add your account to the diamol organization, and you would be able to push images that start with diamol/. If you’re not a member of any organizations, you can only push images to repositories in your own account.
+现在您已经登录，您可以将镜像推送到您自己的帐户或您可以访问的任何组织。我不认识你，但如果我想让你帮忙照看这本书的镜像，我可以把你的账号添加到diamol组织，你就可以推送以diamol/开头的镜像。如果您不是任何组织的成员，则只能在自己的帐户中将镜像推送到存储库。
 
-You built a Docker image called image-gallery in chapter 4. That image reference doesn’t have an account name, so you can’t push it to any registries. You don’t need to rebuild the image to give it a new reference though—images can have several references.
+你在第4章中构建了一个名为image-gallery的Docker 镜像。该镜像引用没有帐户名称，因此不能将其推送到任何仓库。您不需要重新构建镜像来给它一个新的引用-一个镜像可以有几个引用。
 
-TRY IT NOW
-Create a new reference for your existing image, tagging it as version 1:
+<b>现在就试试</b> 为现有镜像创建一个新的引用，将其标记为v1:
 
 `docker image tag image-gallery $dockerId/image-gallery:v1`
 
-Now you have two references; one has an account and version number, but both references point to the same image. Images also have a unique ID, and you can see when you list them if a single image ID has multiple references.
+现在你有了两个引用;其中一个有帐户和版本号，但两个引用都指向相同的镜像。镜像也有唯一的ID，如果一个镜像ID有多个引用，可以在列出它们时看到。
 
-TRY IT NOW
-List the image-gallery image references:
+<b>现在就试试</b> 列出镜像 image-gallery 的引用：
 
 `docker image ls --filter reference=image-gallery --filter reference='*/image-gallery'`
 
-You’ll see similar output to mine in figure 5.3, except your tagged image will show your Docker Hub username instead of sixeyed.
+在图5.3中，您将看到与我的类似的输出，只不过您的 tag 镜像将显示您的Docker Hub用户名而不是sixeyed。
 
 ![图5.3](./images/Figure5.3.png)
 <center>图5.3 一个镜像两个引用</center>
 
-You now have an image reference with your Docker ID in the account name, and you’re logged in to Docker Hub, so you’re ready to share your image! The docker image push command is the counterpart of the pull command; it uploads your local image layers to the registry.
+现在，您的帐户名中有一个Docker ID的镜像引用，并且您已经登录到Docker Hub，因此您已经准备好共享您的镜像了!docker image push命令相当于pull命令;它将您的本地镜像层上传到仓库。
 
-TRY IT NOW
-List the image-gallery image references:
+<b>现在就试试</b> 列出镜像 image-gallery 的引用：
 
 `docker image push $dockerId/image-gallery:v1`
 
-Docker registries work at the level of image layers in the same way as the local Docker Engine. You push an image, but Docker actually uploads the image layers. In the output you’ll see a list of layer IDs and their upload progress. In my (abbreviated) output,you can see the layers being pushed:
+Docker 仓库在镜像层级别上的工作方式与本地Docker引擎相同。你推送一个镜像，但Docker实际上上传了镜像层。在输出中，你会看到一个层id列表和它们的上传进度。在我的(缩写)输出中，你可以看到层被推送:
 
 ```
 The push refers to repository [docker.io/sixeyed/image-gallery]
@@ -90,34 +86,34 @@ c8c60e5dbe37: Pushed
 v1: digest: sha256:127d0ed6f7a8d1... size: 2296
 ```
 
-The fact that registries work with image layers is another reason why you need to spend time optimizing your Dockerfiles. Layers are only physically uploaded to the registry if there isn’t an existing match for that layer’s hash. It’s like your local Docker Engine cache, but applied across all images on the registry. If you optimize to the point where 90% of layers come from the cache when you build, 90% of those layers will already be in the registry when you push. Optimized Dockerfiles reduce build time, disk space, and network bandwidth.
+仓库与镜像层一起工作的事实是您需要花时间优化dockerfile的另一个原因。层只有在没有与该层的散列匹配的情况下才会物理上传到注册表。它就像你的本地Docker引擎缓存，但应用于仓库上的所有镜像。如果你优化到构建时90%的层来自缓存，那么当你推送时，90%的层已经在仓库中了。优化后的dockerfile减少了构建时间、磁盘空间和网络带宽。
 
-You can browse to Docker Hub now and check your image. The Docker Hub UI uses the same repository name format as image references, so you can work out the URL of your image from your account name.
+您现在可以访问 Docker Hub并检查您的镜像。Docker Hub UI使用与镜像引用相同的存储库名称格式，因此您可以从帐户名计算出镜像的URL。
 
-TRY IT NOW
-This little script writes the URL to your image’s page on Docker Hub:
+<b>现在就试试</b> 这个小脚本输出 Docker Hub上的镜像页面URL
 
 `echo "https://hub.docker.com/r/$dockerId/image-gallery/tags"`
 
-When you browse to that URL, you’ll see something like figure 5.4, showing the tags for your image and the last update time.
+当您访问该URL时，您将看到如图5.4所示的内容，其中显示了镜像的Tag和最后一次更新时间。
 
 ![图5.4](./images/Figure5.4.png)
 <center>图5.4 查看 Docker Hub 中镜像</center>
 
-That’s all there is to pushing images. Docker Hub creates a new repository for an image if it doesn’t already exist, and by default that repository has public read rights. Now anyone can find, pull, and use your image-gallery application. They’d need to work out themselves how to use it, but you can put documentation on Docker Hub too.
+这就是推送镜像的全部内容。如果镜像还不存在，Docker Hub会为镜像创建一个新的存储库，默认情况下，该存储库具有公共读权限。现在任何人都可以找到、提取和使用您的镜像库应用程序。他们需要自己弄清楚如何使用它，但是你也可以把文档放在Docker Hub上。
 
-Docker Hub is the easiest registry to get started with, and it gives you a huge amount of functionality for zero cost—although you can pay a monthly subscription for extra features, like private repositories. There are lots of alternative registries too.
+Docker Hub是最容易上手的仓库，它为你提供了大量零成本的功能——尽管你可以每月付费订阅额外的功能，比如私有存储库。还有很多可供选择的仓库。
 
-The registry is an open API spec, and the core registry server is an open source product from Docker. All the clouds have their own registry services, and you can manage your own registry in the datacenter with commercial products like Docker Trusted Registry or you can run a simple registry in a container.
+仓库是一个开放的API规范，core registry server 是来自Docker的开源产品。所有的云都有自己的仓库服务，你可以在数据中心中使用Docker Trusted registry等商业产品管理自己的仓库，也可以在容器中运行一个简单的仓库。
 
 ## 5.3 运行并使用你自己的 Docker 仓库
 
-It’s useful to run your own registry on your local network. It cuts down on band-width use and transfer times, and it lets you own the data in your environment. Even if you’re not concerned about that, it’s still good to know that you can spin up a local registry quickly, which you can use as a backup option if your main registry goes offline.
+在本地网络上运行自己的仓库非常有用。它减少了带宽的使用和传输时间，并允许您拥有环境中的数据。即使您不担心这一点，知道您可以快速启动本地仓库仍然是件好事，如果您的主仓库离线，您可以将其用作备份选项。
 
-Docker maintains the core registry server on GitHub in the source code repository docker/distribution. It gives you the basic functionality to push and pull images,and it uses the same layer cache system as Docker Hub, but it doesn’t give you the web UI you get with Hub. It’s a super-lightweight server that I’ve packaged into a diamol image, so you can run it in a container.
+Docker在源代码存储库 Docker /distribution中维护GitHub上的核心注册表服务器。它为你提供了推送和拉取镜像的基本功能，它使用了与Docker Hub相同的层缓存系统，但它没有为你提供Hub所提供的web UI。它是一个超轻量级的服务器，我将它打包到一个diamol 镜像中，因此您可以在容器中运行它。
 
 TRY IT NOW
 Run the Docker registry in a container, using my image:
+<b>现在就试试</b>
 ```
 # run the registry with a restart flag so the container gets
 # restarted whenever you restart Docker:
