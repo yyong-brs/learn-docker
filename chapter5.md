@@ -111,61 +111,54 @@ Docker Hub是最容易上手的仓库，它为你提供了大量零成本的功�
 
 Docker在源代码存储库 Docker /distribution中维护GitHub上的核心注册表服务器。它为你提供了推送和拉取镜像的基本功能，它使用了与Docker Hub相同的层缓存系统，但它没有为你提供Hub所提供的web UI。它是一个超轻量级的服务器，我将它打包到一个diamol 镜像中，因此您可以在容器中运行它。
 
-TRY IT NOW
-Run the Docker registry in a container, using my image:
-<b>现在就试试</b>
+<b>现在就试试</b> 使用我的镜像在容器中允许 Docker 仓库：
 ```
-# run the registry with a restart flag so the container gets
-# restarted whenever you restart Docker:
+# 使用一个restart标志运行仓库，这样当你重启Docker时容器就会重新启动:
 docker container run -d -p 5000:5000 --restart always diamol/registry
 ```
 
-You now have a registry server on your local machine. The default port for the server is 5000, which this command publishes. You can tag images with the domain localhost:5000 and push them to this registry, but that’s not really useful—you can only use the registry on your local machine. Instead, it’s better to give your machine an alias so you can use a proper domain name for your registry.
+您现在在本地机器上有一个仓库服务了。服务器的默认端口是5000，该命令发布该端口。您可以用域localhost:5000 tag 映像并将它们推送到这个仓库，但这并不是真正有用的—您只能在本地机器上使用仓库。相反，最好给你的机器一个别名，这样你就可以为你的仓库使用一个合适的域名。
 
-This next command creates that alias. It will give your computer the name registry.local, in addition to any other network names it has. It does this by writing to the computer’s hosts file, which is a simple text file that links network names to IP addresses.
+下一个命令创建别名。它将为您的计算机提供名称 registry.local。它通过写入计算机的hosts文件来实现这一点，该文件是一个简单的文本文件，将网络名称链接到IP地址。
 
-TRY IT NOW
-Windows, Linux, and Mac machines all use the same hosts file format, but the file paths are different. The command is also different on Windows, so you’ll need to choose the right one:
+<b>现在就试试</b> Windows、Linux和Mac机器的hosts文件格式相同，但路径不同。Windows上的命令也不同，因此需要选择正确的命令：
 
 ```
-# using PowerShell on Windows
+# 在 Windows 使用 powershell
 Add-Content -Value "127.0.0.1 registry.local" -Path /windows/system32/drivers/etc/hosts
-# using Bash on Linux or Mac
+# 使用 Linux or Mac 上的 bash
 echo $'\n127.0.0.1 registry.local' | sudo tee -a /etc/hosts
 ```
 
-If you get a permissions error from that command, you’ll need to be logged in with administrator privileges in an elevated PowerShell session on Windows, or use sudo on Linux or Mac. When you’ve run the command successfully, you should be able to run ping registry.local and see a response from your computer’s home IP address,127.0.0.1, as in figure 5.5.
+如果您从该命令得到权限错误，您将需要在Windows上的提升PowerShell会话中以管理员权限登录，或者在Linux或Mac上使用sudo。当您成功运行该命令时，您应该能够运行ping registry.local,然后看到来自计算机的主IP地址127.0.0.1的响应，如图5.5所示。
 
 ![图5.5](./images/Figure5.5.png)
 <center>图5.5 为你的计算机添加新的网络别名</center>
 
-Now you can use the domain name registry.local:5000 in your image references to use your registry. Adding the domain name to an image involves the same process of tagging that you’ve already done for Docker Hub. This time you just include the registry domain in the new image reference.
+现在你可以使用域名registry.local:5000 在镜像中引用来使用仓库。将域名添加到镜像中涉及到与Docker Hub中所做的tag 相同的过程。这一次，您只需在新的镜像引用中包含仓库域名。
 
-TRY IT NOW
-Tag your image-gallery image with your registry domain:
+<b>现在就试试</b> 使用你的仓库域名来为镜像 image-gallery 打tag:
 
 `docker image tag image-gallery registry.local:5000/gallery/ui:v1`
 
-Your local registry doesn’t have any authentication or authorization set up. That’s obviously not production quality, but it might work for a small team, and it does let you use your own image-naming schemes. Three containers make up the NASA image-of-the-day app in chapter 4—you could tag all the images to group them together using gallery as the project name:
+您的本地仓库没有设置任何身份验证或授权。这显然不是产品质量，但它可能适用于小型团队，而且它确实允许您使用自己的镜像命名方案。在第4章中，有三个容器组成了NASA每日图片应用程序——你可以用gallery作为项目名称来标记所有镜像并将它们组合在一起:
 
 - registry.local:5000/gallery/ui:v1—The Go web UI
 - registry.local:5000/gallery/api:v1—The Java API
 - registry.local:5000/gallery/logs:v1—The Node.js API
 
-There’s one more thing you need to do before you can push this image to your local registry. The registry container is using plain-text HTTP rather than encrypted HTTPS to push and pull images. Docker won’t communicate with an unencrypted registry by default, because it’s not secure. You need to explicitly add your registry domain to a list of permitted insecure registries before Docker will let you use it.
+在将该镜像推送到本地仓库之前，还需要做一件事。仓库容器使用明文HTTP而不是加密的HTTPS来推送和提取镜像。Docker默认情况下不会与未加密的仓库通信，因为它不安全。在Docker允许您使用仓库域名之前，您需要显式地将仓库域名添加到允许的不安全仓库列表中。
 
-This brings us to configuring Docker. The Docker Engine uses a JSON configuration file for all sorts of settings, including where Docker stores the image layers on disk, where the Docker API listens for connections, and which insecure registries are permitted. The file is called daemon.json and it usually lives in the folder C:\ProgramData\docker\config on Windows Server, and /etc/docker on
-Linux. You can edit that file directly, but if you’re using Docker Desktop on Macor Windows, you’ll need use the UI, where you can change the main configuration settings.
+这就把我们带到了配置Docker。Docker引擎使用JSON配置文件进行各种设置，包括Docker在磁盘上存储镜像层的位置，Docker API监听连接的位置，以及允许哪些不安全仓库。这个文件叫做daemon.json。它通常在Windows Server上的C:\ProgramData\docker\config文件夹中，在Linux Server上的/etc/docker文件夹中。你可以直接编辑这个文件，但如果你在Macor Windows上使用Docker Desktop，你需要使用UI，在那里你可以更改主要的配置设置。
 
-TRY IT NOW
-Right-click the Docker whale icon in your taskbar, and select Settings (or Preferences on the Mac). Then open the Daemon tab and enter registry.local:5000 in the insecure registries list—you can see my settings in figure 5.6.
+<b>现在就试试</b> 右键单击任务栏中的Docker鲸鱼图标，并选择设置(或Mac上的首选项)。然后打开Daemon选项卡并输入insecure registries 信息registry.Local:5000 —您可以在图5.6中看到我的设置。
 
 ![图5.6](./images/Figure5.6.png)
 <center>图5.6 允许在 Docker Desktop 中使用不安全协议的仓库</center>
 
-The Docker Engine needs to be restarted to load any new configuration settings, and Docker Desktop does that for you when you apply changes.
+Docker引擎需要重新启动来加载任何新的配置设置，当你应用更改时，Docker Desktop会为你做这些。
 
-If you’re not running Docker Desktop, you’ll need to do this manually. Start by opening the daemon.json file in a text editor—or create it if it doesn’t exist—and add the insecure registry details in JSON format. The configuration settings will look like this—but if you’re editing an existing file, be sure to leave the original settings in there too:
+如果您没有运行Docker Desktop，则需要手动执行此操作。首先打开守护进程。在文本编辑器中使用json文件(如果不存在则创建它)并以json格式添加不安全的仓库详细信息。配置设置看起来像这样，但如果你编辑一个现有的文件，一定要保留原始的设置:
 ```
 {
   "insecure-registries": [
@@ -174,28 +167,26 @@ If you’re not running Docker Desktop, you’ll need to do this manually. Start
 }
 ```
 
-Then restart Docker using Restart-Service docker on Windows Server, or service docker restart on Linux. You can check which insecure registries your Docker Engine allows, along with a stack of other information, using the info command.
+然后在Windows Server上使用restart - service Docker重启Docker，或者在Linux上使用service Docker restart重启Docker。你可以使用info命令检查Docker引擎允许哪些不安全仓库，以及其他信息。
 
-TRY IT NOW
-List the information about your Docker Engine and check your registry is in the insecure registries list:
+<b>现在就试试</b> 列出关于Docker引擎的信息，并在insecure registries 列表中检查您的仓库：
 
 `docker info`
 
-At the end of the output, you’ll see the registry configuration, which should include your insecure registry—you can see mine in figure 5.7.
+在输出的最后，您将看到仓库配置，其中应该包括您的不安全仓库—您可以在图5.7中看到我的仓库。
 
 ![图5.7](./images/Figure5.7.png)
 <center>图5.7 非安全的仓库允许 Docker 使用</center>
 
-You should be careful about adding insecure registries to your Docker configuration. Your connection could be compromised, and attackers could read layers when you push images. Or worse, they could inject their own data when you pull images. All the commercial registry servers run on HTTPS, and you can also configure Docker’s open source registry to use HTTPS. For demonstrating with a local server, however,it’s an acceptable risk.
+在Docker配置中添加不安全仓库时，你应该小心。您的连接可能会受到损害，攻击者可以在您推送镜像时读取图层。或者更糟的是，当您提取镜像时，它们可能会注入自己的数据。所有的商业仓库都运行在HTTPS上，你也可以配置Docker的开源仓库来使用HTTPS。然而，对于使用本地服务器进行演示，这是可以接受的风险。
 
-You can now push your tagged image to your own registry. The registry domain is part of the image reference, so Docker knows to use something other than Docker Hub, and your HTTP registry running in a container is cleared in the list of insecure registries.
+您现在可以将标记的镜像推到自己的仓库中。仓库域名是镜像引用的一部分，因此Docker知道使用Docker Hub以外的东西，并且在容器中运行的HTTP 仓库在不安全仓库列表中被清除。
 
-TRY IT NOW
-Push your tagged image:
+<b>现在就试试</b> 推送你已标记好的镜像：
 
 `docker image push registry.local:5000/gallery/ui:v1`
 
-Your registry is completely empty when you run the first push, so you’ll see all the layers being uploaded. If you then repeat the push command, you’ll see that all the layers already exist and nothing gets uploaded. That’s all you need to do to run your own Docker registry in a container. You could share it on your network using your machine’s IP address or the real domain name.
+当你运行第一次推送时，仓库是完全空的，所以你会看到所有的层都被上传了。如果你重复push命令，你会看到所有的层都已经存在，没有上传任何东西。这就是在容器中运行自己的Docker 仓库所需要做的全部工作。您可以使用机器的IP地址或真实域名在网络上共享它。
 
 ## 5.4 有效运用镜像 Tag
 
