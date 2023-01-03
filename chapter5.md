@@ -190,14 +190,14 @@ Docker引擎需要重新启动来加载任何新的配置设置，当你应用�
 
 ## 5.4 有效运用镜像 Tag
 
-You can put any string into a Docker image tag, and as you’ve already seen, you can have multiple tags for the same image. You’ll use that to version the software in your images and let users make informed choices about what they want to use—and to make your own informed choices when you use other people’s images.
+您可以将任何字符串放入 Docker 镜像 tag 中，正如您已经看到的，您可以为同一镜像设置多个 tag。您将使用它来为您的镜像中的软件设置版本，并让用户对他们想要使用的内容做出明智的选择，并在使用其他人的镜像时做出明智的选择。
 
-Many software projects use a numeric versioning scheme with decimal points to indicate how big a change there is between versions, and you can do that with your image tags. The basic idea is something like [major].[minor].[patch], which has some implicit guarantees. A release that only increments the patch number might have bug fixes, but it should have the same features as the last version; a release that increments the minor version might add features but shouldn’t remove any; and a major release could have completely different features.
+许多软件项目使用带有小数点的数字版本控制方案来表示版本之间的变化有多大，您可以使用镜像标记来实现这一点。基本概念是[major (大调)].[minor(小调)].[patch (补丁)]，其中有一些隐含的信息。一个只增加补丁号的版本可能有bug修复，但它应该具有与上一个版本相同的功能;增加小版本的版本号可能会增加功能，但不应该删除任何功能;一个主要版本可能会有完全不同的功能。
 
-If you use the same approach with your image tags, you can let users choose whether to stick to a major version or a minor version, or just always have the latest release.
+如果您对镜像标记使用相同的方法，您可以让用户选择是坚持使用主要版本还是次要版本，或者始终使用最新版本。
 
-TRY IT NOW
-Create a few new tags for the Go application you have packaged in the image to indicate the major, minor, and patch release versions:
+<b>现在就试试</b> 为镜像中打包的Go应用程序创建几个新 tag ，以指示主要、次要和补丁发布版本:
+
 ```
 docker image tag image-gallery registry.local:5000/gallery/ui:latest
 docker image tag image-gallery registry.local:5000/gallery/ui:2
@@ -205,18 +205,18 @@ docker image tag image-gallery registry.local:5000/gallery/ui:2.1
 docker image tag image-gallery registry.local:5000/gallery/ui:2.1.106
 ```
 
-Now imagine that an application has monthly releases, which increment the version numbers. Figure 5.8 shows how the image tags might evolve over releases from July to October.
+现在假设一个应用程序每月发布一次，它会增加版本号。图5.8显示了从7月到10月的各个版本中镜像 tag 可能如何演变。
 
 ![图5.8](./images/Figure5.8.png)
 <center>图5.8 软件发布期间镜像tag的演变</center>
 
-You can see that some of these image tags are a moving target. gallery/ui:2.1 is an alias for the 2.1.106 release in July, but in August the same 2.1 tag is an alias for the 2.1.114 release. gallery/ui:2 is also an alias for 2.1.106 in July, but by September the 2 tag is an alias for the 2.2.11 release. The latest tag has the most movement—in July gallery/ui is an alias for 2.1.106, but in October it’s an alias for 3.0.42.
+您可以看到其中一些镜像 tag 是一个移动的目标。gallery/ui:2.1是7月份2.1.106发行版的别名，但在8月份，同样的2.1标记是2.1.114发行版的别名。gallery/ui:2在7月也是2.1.106的别名，但到了9月，2标记是2.2.11发行版的别名。最新的 tag 变化最大——7月份gallery/ui是2.1.106的别名，但10月份它是3.0.42的别名。
 
-This is a typical versioning scheme you’ll see for Docker images. It’s one you should adopt yourself, because it lets users of your image choose how current they want to be. They can pin to a specific patch version in their image pull commands, or in the FROM instruction in their Dockerfiles, and be sure that the image they use will always be the same. The 2.1.106 tag in this example is the same image from July through October. If they want to get patch updates, they can use the 2.1 tag, and if they want to get minor releases they can use the 2 tag.
+这是Docker 镜像的典型版本控制方案。这是你自己应该采用的，因为它让你的目标用户选择他们想要的最新程度。他们可以在镜像提取命令或dockerfile中的FROM指令中固定到特定的补丁版本，并确保他们使用的镜像始终是相同的。本例中的2.1.106标记是7月到10月的相同镜像。如果他们想要获得补丁更新，他们可以使用2.1 tag，如果他们想要获得小版本，他们可以使用2 tag。
 
-Any of those choices is fine; it’s just a case of balancing risk—using a specific patch version means the application will be the same whenever you use it, but you won’t get security fixes. Using a major version means you’ll get all the latest fixes, but there might be unexpected feature changes down the line.
+这些选择都可以;这只是一个平衡风险的例子——使用特定的补丁版本意味着无论何时使用它，应用程序都是一样的，但你不会得到安全补丁。使用主版本意味着您将获得所有最新的修复，但可能会有意想不到的功能更改。
 
-It’s especially important to use specific image tags for the base images in your own Dockerfiles. It’s great to use the product team’s build tools image to build your apps and their runtime image to package your apps, but if you don’t specify versions in the tags, you’re setting yourself up for trouble in the future. A new release of the build image could break your Docker build. Or worse, a new release of the runtime could break your application.
+在您自己的dockerfile中为基础镜像使用特定的镜像 tag 尤其重要。使用产品团队的构建工具来构建应用程序，使用它们的运行时镜像来打包应用程序是很好的，但如果你没有在标记中指定版本，你就会在未来给自己带来麻烦。构建镜像的新版本可能会破坏Docker构建。或者更糟的是，运行时的新版本可能会破坏应用程序。
 
 ## 5.5 转换官方镜像为黄金镜像
 
