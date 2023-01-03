@@ -257,16 +257,16 @@ CMD ["dotnet", "/app/app.dll"]
 
 ## 5.6 实验室
 
-This lab is going to take some detective work, but it will be worth it in the end. You’re going to need to dig around the Docker Registry API v2 specification (https://docs.docker.com/registry/spec/api/), because the REST API is the only way you can interact with your local Docker registry—you can’t search or delete images using the Docker CLI (yet).
+这个实验室需要一些侦查工作，但最终是值得的。你需要深入挖掘Docker Registry API v2规范(https://docs.docker.com/registry/spec/api/)，因为REST API是你与本地Docker Registry交互的唯一方式——你不能使用Docker CLI搜索或删除镜像(目前)。
 
-The goal for this lab is to push all the tags for your gallery/ui image to your local registry, check that they’re all there, and then delete them all and check that they’re gone. We won’t include the gallery/api or gallery/logs images because this lab focuses on images with multiple tags, and we have those for gallery/ui. Here are a few hints:
-- You can use a single image push command to push all these tags.
-- The URL for your local registry API is http://registry.local:5000/v2.
-- Start by listing the image tags for the repository.
-- Then you’ll need to get the image manifest.
-- You can delete images through the API, but you need to use the manifest.
-- Read the docs—there’s a specific request header you need to use in your HEAD request.
+本实验的目标是将 gallery/ui 镜像的所有 tag 推到本地仓库，检查它们是否都在那里，然后将它们全部删除并检查它们是否已经消失。我们将不包括 gallery/api或gallery/logs图像，因为这个实验室关注的是带有多个 tag 的镜像，我们为gallery/ui提供了这些 tag。这里有一些提示:
+- 你可以使用一个镜像推送命令来推送所有这些 tag。
+- 本地注册表API的URL是 http://registry.local:5000/v2。
+- 首先列出存储库的镜像 tag。
+- 然后你需要拿到镜像清单。
+- 可以通过API删除镜像，但需要使用manifest。
+- 阅读文档-在HEAD请求中需要使用特定的请求头。
 
-The solution is on the book’s GitHub repository, and this is a rare case where it’s OK to cheat a little. The first couple of steps should be straightforward for you to work out, but then it gets a little awkward, so don’t feel too bad if you end up heading here: https://github.com/sixeyed/diamol/tree/master/ch05/lab.
+解决方案在这本书的 GitHub 存储库中，这是一个很少的情况。最初的几个步骤对您来说应该很简单，但接下来就会有点尴尬，所以如果您最终访问了这里:https://github.com/yyong-brs/learn-docker/tree/master/diamol/ch05/lab，请不要感到太糟糕。
 
-Good luck. And remember to read the docs.
+祝你好运，记得阅读文档。
