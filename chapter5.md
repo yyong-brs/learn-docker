@@ -220,19 +220,18 @@ docker image tag image-gallery registry.local:5000/gallery/ui:2.1.106
 
 ## 5.5 转换官方镜像为黄金镜像
 
-There’s one last thing to understand when you’re looking at Docker Hub and other registries: can you trust the images you find there? Anyone can push an image to Docker Hub and make it publicly available. For hackers, that’s a nice way to distribute malware; you just need to give your image an innocent name and a fake description, and wait for people to start using it. Docker Hub solves that problem with verified publishers and official images.
+当您查看 Docker Hub 和其他仓库时，还有最后一件事需要了解:您能相信在那里找到的镜像吗?任何人都可以将镜像推送到Docker Hub并使其公开可用。对于黑客来说，这是一种传播恶意软件的好方法;你只需要给你的镜像一个无辜的名字和一个虚假的描述，然后等待人们开始使用它。Docker Hub通过经过验证的发布者和官方镜像解决了这个问题。
 
-Verified publishers are companies like Microsoft, Oracle, and IBM, who publish images on Docker Hub. Their images go through an approval process that includes security scanning for vulnerabilities; they may also be certified, which means they have the backing of Docker and the publisher. If you want to run off-the-shelf software in containers, certified images from verified publishers are the best bet.
+经过验证的发布者是像 Microsoft、Oracle和IBM这样在Docker Hub上发布镜像的公司。他们的镜像要经过一个审批流程，包括安全扫描漏洞;他们也可能是经过认证的，这意味着他们有Docker和出版商的支持。如果您想在容器中运行现成的软件，那么来自经过验证的发布者的认证镜像是最好的选择。
 
-Official images are something different—they’re usually open source projects, maintained jointly by the project team and Docker. They’re security scanned and regularly updated, and they conform to Dockerfile best practices. All the content for the official images is open source, so you can see the Dockerfiles on GitHub. Most people start using official images as the base for their own images but at some point find they need more control. Then they introduce their own preferred base images, called golden images—figure 5.9 shows you how it works.
+官方镜像某些方面有所不同——它们通常是开源项目，由项目团队和Docker共同维护。它们经过安全扫描并定期更新，并且符合Dockerfile最佳实践。官方镜像的所有内容都是开源的，所以你可以在GitHub上看到Dockerfiles。大多数人开始使用官方镜像作为自己的基础镜像，但在某些时候，他们发现自己需要更多的控制。然后他们介绍自己首选的基础镜像，称为黄金镜像——图5.9向您展示了它是如何工作的。
 
 ![图5.9](./images/Figure5.9.png)
 <center>图5.9 使用一个黄金镜像来封装官方镜像</center>
 
-Golden images use an official image as the base and then add in whatever custom setup they need, such as installing security certificates or configuring default environment settings. The golden image lives in the company’s repositories on Docker Hubor in their own registry, and all application images are based on the golden image. This approach offers the benefits of the official image—with the best-practice setup by the project team—but with the extra config you need.
+黄金镜像使用官方镜像作为基础，然后添加所需的任何自定义设置，例如安装安全证书或配置默认环境设置。黄金镜像存在于Docker Hubor上的公司仓库中，在他们自己的仓库中，所有应用程序镜像都基于黄金镜像。这种方法提供了官方镜像的好处(具有项目团队的最佳实践设置)，但需要额外的配置。
 
-TRY IT NOW
-There are two Dockerfiles in the source code for this chapter that can be built as golden images for .NET Core apps. Browse to each folder and build the image:
+<b>现在就试试</b> 在本章的源代码中有两个dockerfile，它们可以被构建为.Net Core应用程序的黄金镜像。访问每个文件夹并构建镜像：
 ```
 cd ch05/exercises/dotnet-sdk
 docker image build -t golden/dotnetcore-sdk:3.0 .
@@ -241,9 +240,9 @@ cd ../aspnet-runtime
 docker image build -t golden/aspnet-core:3.0 .
 ```
 
-There’s nothing special about golden images. They start with a Dockerfile, and that builds an image with your own reference and naming scheme. If you look at the Docker-files you’ve built, you’ll see that they add some metadata to the image using the LABEL instruction, and they set up some common configuration. Now you can use those images in a multi-stage Dockerfile for a .NET Core application, which would look something like listing 5.1.
+黄金镜像并没有什么特别之处。它们从Dockerfile开始，然后用您自己的引用和命名方案构建一个镜像。如果您查看您构建的dockerfile，您将看到它们使用LABEL指令向镜像添加了一些元数据，并设置了一些公共配置。现在可以在.net Core应用程序的多阶段Dockerfile中使用这些镜像，类似于清单5.1。
 
-> Listing 5.1 A multi-stage Dockerfile using .NET Core golden images
+> 清单 5.1 一个多阶段 Dockerfile 使用 .NET Core 黄金镜像
 
 ```
 FROM golden/dotnetcore-sdk:3.0 AS builder
@@ -254,9 +253,7 @@ COPY --from=builder /out /app
 CMD ["dotnet", "/app/app.dll"]
 ```
 
-The application Dockerfile has the same format as any multi-stage build, but now you own the base images. The official images may have a new release every month, but you can choose to restrict your golden images to quarterly updates. And golden images open up one other possibility—you can enforce their use with tools in your continuous integration (CI) pipeline: Dockerfiles can be scanned, and if someone tries to build an app without using golden images, that build fails. It’s a good way of locking down the source images teams can use.
-
-
+应用程序 Dockerfile 具有与任何多阶段构建相同的格式，但现在您拥有基础镜像。官方镜像可能每个月都有一个新的版本，但你可以选择限制你的黄金镜像每季度更新一次。而且黄金镜像提供了另一种可能性——您可以在持续集成(CI)管道中使用工具强制使用它们:dockerfile可以被扫描，如果有人试图在不使用黄金镜像的情况下构建应用程序，那么构建就会失败。这是锁定团队可以使用的源镜像的好方法。
 
 ## 5.6 实验室
 
