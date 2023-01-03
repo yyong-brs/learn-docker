@@ -56,12 +56,26 @@
 
     - 4.1 [有了 Dockerfile 谁还需要构建服务器](./chapter4.md#41-有了-dockerfile-谁还需要构建服务器)
 
-    - 4.2 [应用演练：Java 源代码](./chapter4.md#42-应用演练：java-源代码)
+    - 4.2 [应用演练：Java 源代码](./chapter4.md#42-应用演练java-源代码)
 
-    - 4.3 [应用演练：Node.js 源代码](./chapter4.md#43-应用演练：node.js-源代码)
+    - 4.3 [应用演练：Node.js 源代码](./chapter4.md#43-应用演练node.js-源代码)
 
-    - 4.4 [应用演练：Go 源代码](./chapter4.md#44-应用演练：go-源代码)
+    - 4.4 [应用演练：Go 源代码](./chapter4.md#44-应用演练go-源代码)
 
     - 4.5 [理解 Dockerfile 的多阶段构建](./chapter4.md#45-理解-dockerfile-的多阶段构建)
 
     - 4.6 [实验室](./chapter4.md#46-实验室)    
+
+  - 第五章 [通过 Docker Hub 及其它仓库共享镜像](./chapter5.md)
+
+    - 5.1 [使用 registry、repository 以及镜像 Tag](./chapter5.md#51-使用-registry、repository-以及镜像-tag)
+
+    - 5.2 [推送你自己的镜像到 Docker Hub](./chapter5.md#52-推送你自己的镜像到-docker-hub)
+
+    - 5.3 [运行并使用你自己的 Docker 仓库](./chapter5.md#53-运行并使用你自己的-docker-仓库)
+
+    - 5.4 [有效运用镜像 Tag](./chapter5.md#54-有效运用镜像-tag)
+
+    - 5.5 [转换官方镜像为黄金镜像](./chapter5.md#55-转换官方镜像为黄金镜像)
+
+    - 5.6 [实验室](./chapter5.md#56-实验室)    
