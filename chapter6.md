@@ -64,9 +64,6 @@ docker container start --attach f1
 
 修改容器中的文件会影响该容器的运行方式，但不会影响镜像或该镜像中的任何其他容器。更改后的文件只存在于该容器的可写层中——新容器将使用镜像中的原始内容，当容器f1被删除时，更新后的文件就消失了。
 
-TRY IT NOW
-Start a new container to check that the file in the image is unchanged. Then remove the original container and confirm that the data is gone:
-
 <b>现在就试试</b>启动一个新容器以检查镜像中的文件是否没有改变。然后删除原来的容器，并确认数据已经消失:
 
 ```
@@ -104,9 +101,6 @@ COPY --from=builder /out/ .
 ```
 
 当您从这个镜像运行容器时，Docker将自动创建一个卷并将其附加到容器。容器将在/data(或Windows容器上的C:\data)处有一个目录，它可以正常地读取和写入该目录。但数据实际上存储在一个卷中，在容器被移除后，该卷将继续存在。如果从镜像运行一个容器，然后检查卷，就可以看到这一点。
-
-TRY IT NOW
-Run a container for the to-do list app, and have a look at the volume Docker created:
 
 <b>现在就试试</b>运行一个用于待办事项列表应用程序的容器，看看Docker创建的卷:
 
