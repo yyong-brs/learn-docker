@@ -93,3 +93,19 @@
     - 6.5 [理解容器文件系统如何构建](./chapter6.md#65-理解容器文件系统如何构建)
 
     - 6.6 [实验室](./chapter6.md#66-实验室)   
+
+- **第二部分** 在容器中运行分布式应用
+
+  - 第七章 [通过 Docker Compose 运行多容器应用](./chapter7.md)
+
+    - 7.1 [剖析 Docker Compose 文件](./chapter7.md#71-剖析-docker-compose-文件)
+
+    - 7.2 [通过 Compose 运行多容器应用](./chapter7.md#72-通过-compose-运行多容器应用)
+
+    - 7.3 [Docker 如何将容器连接起来](./chapter7.md#73-docker-如何将容器连接起来)
+
+    - 7.4 [Docker Compose 中的应用配置](./chapter7.md#74-docker-compose-中的应用配置)
+
+    - 7.5 [理解 Docker Compose 可以解决的问题](./chapter7.md#75-理解-docker-compose-可以解决的问题)
+
+    - 7.6 [实验室](./chapter7.md#76-实验室)  
