@@ -484,5 +484,52 @@ dent you’re releasing the exact same binaries and dependencies into production
 have passed the tests in all other environments.
 
 ## 7.5 理解 Docker Compose 可以解决的问题
+Docker Compose is a very neat way of describing the setup for complex distributed
+apps in a small, clear file format. The Compose YAML file is effectively a deployment
+guide for your application, but it’s miles ahead of a guide written as a Word docu-
+ment. In the old days those Word docs described every step of the application release,
+and they ran to dozens of pages filled with inaccurate descriptions and out-of-date
+information. The Compose file is simple and it’s actionable—you use it to run your
+app, so there’s no risk of it going out of date.
+ Compose is a useful part of your toolkit when you start making more use of Docker
+containers. But it’s important to understand exactly what Docker Compose is for, and
+what its limitations are. Compose lets you define your application and apply the
+definition to a single machine running Docker. It compares the live Docker resources
+on that machine with the resources described in the Compose file, and it will send
+requests to the Docker API to replace resources that have been updated and create
+new resources where they are needed.
+ You get the desired state of your application when you run docker-compose up, but
+that’s where Docker Compose ends. It is not a full container platform like Docker
+Swarm or Kubernetes—it does not continually run to make sure your application
+keeps its desired state. If containers fail or if you remove them manually, Docker Com-
+pose will not restart or replace them until you explicitly run docker-compose up again.
+Figure 7.12 gives you a good idea of where Compose fits into the application life cycle.
+
+That’s not to say Docker Compose isn’t suitable for production. If you’re just starting
+with Docker and you’re migrating workloads from individual VMs to containers, it
+might be fine as a starting point. You won’t get high availability, load balancing, or
+failover on that Docker machine, but you didn’t get that on your individual app VMs
+either. You will get a consistent set of artifacts for all your applications—everything has
+Dockerfiles and Docker Compose files—and you’ll get consistent tools to deploy and
+manage your apps. That might be enough to get you started before you look into run-
+ning a container cluster.
 
 ## 7.6 实验室 
+
+There are some useful features in Docker Compose that add reliability to running
+your app. In this lab I’d like you to create a Compose definition to run the to-do web
+app more reliably in a test environment:
+
+- The application containers will restart if the machine reboots, or if the Docker
+engine restarts.
+- The database container will use a bind mount to store files, so you can bring the
+app down and up again but retain your data.
+- The web application should listen on standard port 80 for test. 
+Just one hint for this one:
+- You can find the Docker Compose file specification in Docker’s reference docu-
+mentation at https://docs.docker.com/compose/compose-file. That defines all
+the settings you can capture in Compose.
+
+My sample solution is on the book’s GitHub repository as always. Hopefully this one
+isn’t too complex, so you won’t need it: https://github.com/sixeyed/diamol/blob/
+master/ch07/lab/README.md.
